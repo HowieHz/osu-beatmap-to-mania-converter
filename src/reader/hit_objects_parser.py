@@ -34,4 +34,4 @@ def hit_objects_parser(hit_objects_list: list[str]) -> list[HitObject]:
     for hit_object in hit_objects_list:
         object_params: list[str] = hit_object.split(",")
         debug(f"object_params: {object_params}")
-        debug(bin(object_params[3]))
+        debug(bin(int(object_params[3])))
