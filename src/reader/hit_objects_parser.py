@@ -81,11 +81,9 @@ def hit_objects_parser(
         end_time: int = 0
 
         object_params: list[str] = hit_object.split(",")
-        debug("object_params", data=object_params)
         raw_type: str = (
             str(bin(int(object_params[3]))).removeprefix("0b").zfill(8)
         )  # 处理下数据，十进制转二进制，然后去掉左边 0b 标识，补齐八位避免 IndexError，转换成字符串方便直接取位值
-        debug("raw_type", data=raw_type)
 
         if raw_type[-1] == "1":
             type = "hit circle"
@@ -130,5 +128,4 @@ def hit_objects_parser(
 
         rt_list.append({"type": type, "start_time": start_time, "end_time": end_time})
 
-    debug("rt_list", data=rt_list)
     return rt_list
