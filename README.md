@@ -90,11 +90,11 @@ python ./src/main.py
 
 ### 当目标产物为 osu!mania 1k
 
-[读取器](./src/lib/reader/) -> [生成器](./src/lib/exporter/)
+[读取器（包括预处理）](./src/lib/reader/) -> [生成器](./src/lib/exporter/)
 
 ### 当目标产物为 osu!mania 2k
 
-[读取器](./src/lib/reader/) -> [处理器](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
+[读取器（包括预处理）](./src/lib/reader/) -> [处理器](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
 
 ## 为何创建此项目
 
@@ -112,6 +112,9 @@ python ./src/main.py
 8. 给 README 添加徽章
 9. 写项目单元测试
 10. 配置线上单元测试检查的软件
+11. 编写英文文档
+12. 软件支持英文
+13. cli 程序
 
 ## 更新日志
 
