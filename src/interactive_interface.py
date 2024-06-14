@@ -74,7 +74,7 @@ def main():
     # mania 2k 生成参数询问部分
     mania_2k_start_key: int  # 铺面起手键位置
     mania_2k_trill_start_key: int  # 交互起手键位置
-    mania_2k_maximum_jack_time_interval: float  # 最大叠键时间间距，单位毫秒
+    mania_2k_minimum_jack_time_interval: float  # 最小叠键时间间距，单位毫秒
     mania_2k_maximum_number_of_jack_notes: int  # 最大叠键数
 
     if number_of_keys == 2:
@@ -98,14 +98,14 @@ def main():
         else:  # 输入值非法，取默认值
             mania_2k_trill_start_key = mania_2k_options_default["trill_start_key"]
         
-        # 最大叠键时间间距询问
-        raw_input_mania_2k_maximum_jack_time_interval = input(
-            MANIA_2K_PLEASE_INPUT_MAXIMUM_JACK_TIME_INTERVAL
+        # 最小叠键时间间距询问
+        raw_input_mania_2k_minimum_jack_time_interval = input(
+            MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL
         )
-        if raw_input_mania_2k_maximum_jack_time_interval == "":
-            mania_2k_maximum_jack_time_interval = mania_2k_options_default["maximum_jack_time_interval"]
+        if raw_input_mania_2k_minimum_jack_time_interval == "":
+            mania_2k_minimum_jack_time_interval = mania_2k_options_default["minimum_jack_time_interval"]
         else:
-            mania_2k_maximum_jack_time_interval = float(raw_input_mania_2k_maximum_jack_time_interval)
+            mania_2k_minimum_jack_time_interval = float(raw_input_mania_2k_minimum_jack_time_interval)
         
         # 最大叠键数询问
         raw_input_maximum_number_of_jack_notes = input(
@@ -120,7 +120,7 @@ def main():
         mania_2k_options: Mania2kOptions = {
             "start_key": mania_2k_start_key,
             "trill_start_key": mania_2k_trill_start_key,
-            "maximum_jack_time_interval": mania_2k_maximum_jack_time_interval,
+            "minimum_jack_time_interval": mania_2k_minimum_jack_time_interval,
             "maximum_number_of_jack_notes": mania_2k_maximum_number_of_jack_notes,
         }
 

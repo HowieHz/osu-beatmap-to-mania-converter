@@ -31,7 +31,7 @@ def mania_1k_to_2k(
     # 长纵连转交互
     hit_objects_list = _convert_long_jack_to_trill(
         trill_start_key=options["trill_start_key"],
-        maximum_jack_time_interval=options["maximum_jack_time_interval"],
+        minimum_jack_time_interval=options["minimum_jack_time_interval"],
         maximum_number_of_jack_notes=options["maximum_number_of_jack_notes"],
         hit_objects_list=hit_objects_list,
     )
@@ -49,7 +49,7 @@ def _set_beatmap_start_key(
 
 def _convert_long_jack_to_trill(
     trill_start_key: int,
-    maximum_jack_time_interval: float,
+    minimum_jack_time_interval: float,
     maximum_number_of_jack_notes: int,
     hit_objects_list: list[ManiaHitObject],
 ) -> list[ManiaHitObject]:
@@ -82,7 +82,7 @@ def _convert_long_jack_to_trill(
         # 是否符合 jack 要求
         if (
             this_hit_object["start_time"] - last_hit_object["start_time"]
-        ) < maximum_jack_time_interval:
+        ) < minimum_jack_time_interval:
             if index - 1 == 0:
                 jack_node_stack.append({"index": 0, "hit_object": last_hit_object})
             
