@@ -45,6 +45,7 @@ PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"
 # mania 2k only
 # MANIA_2K_PLEASE_INPUT_
 
+MANIA_2k_PLEASE_INPUT_MAIN_KEY: str = "请输入惯用单戳指所在的轨道，物件将优先生成在这个轨道上（1 为左，2 为右，默认值为 1）"
 MANIA_2K_PLEASE_INPUT_START_KEY: str = "请输入铺面生成起始轨（1 为左，2 为右，默认值为 1）："
 MANIA_2K_PLEASE_INPUT_TRILL_START_KEY: str = "请输入交互起始轨（1 为左，2 为右，默认值为取铺面生成起始轨的值）："
 MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL: str = "请输入最小叠键时间间距，两键间距小于这个值的才有可能被转换为切。可为整数或小数，单位毫秒（默认值为 200.0）："

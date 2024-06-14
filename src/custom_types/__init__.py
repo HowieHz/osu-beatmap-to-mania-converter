@@ -32,11 +32,13 @@ class Mania2kOptions(TypedDict):
     """_summary_
 
     Args:
+        main_key (int): 惯用单戳键设置，1 为左，2 为右
         start_key (int): 铺面起手键，1 为左，2 为右
         trill_start_key (int): 交互起手键，1 为左，2 为右
         minimum_jack_time_interval (float): 最小叠键时间间距，单位毫秒。
         maximum_number_of_jack_notes (int): 最大叠键数。
     """
+    main_key: int
     start_key: int
     trill_start_key: int
     minimum_jack_time_interval: float

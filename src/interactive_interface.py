@@ -72,12 +72,22 @@ def main():
     info(f"{OUTPUT_FILENAME_IS}{final_osu_file_name}")
 
     # mania 2k 生成参数询问部分
+    mania_2k_main_key: int # 主要单戳指设置
     mania_2k_start_key: int  # 铺面起手键位置
     mania_2k_trill_start_key: int  # 交互起手键位置
     mania_2k_minimum_jack_time_interval: float  # 最小叠键时间间距，单位毫秒
     mania_2k_maximum_number_of_jack_notes: int  # 最大叠键数
 
     if number_of_keys == 2:
+        # 主要单戳纸询问
+        raw_mania_2k_main_key = input(MANIA_2k_PLEASE_INPUT_MAIN_KEY)
+        if raw_mania_2k_main_key == "":
+            mania_2k_main_key = mania_2k_options_default["main_key"]
+        elif raw_mania_2k_main_key in ("1", "2"):
+            mania_2k_main_key: int = int(raw_mania_2k_main_key)
+        else:  # 输入值非法，取默认值
+            mania_2k_main_key = mania_2k_options_default["main_key"]
+        
         # 起手键询问
         raw_input_mania_2k_start_key = input(MANIA_2K_PLEASE_INPUT_START_KEY)
         if raw_input_mania_2k_start_key == "":
@@ -118,6 +128,7 @@ def main():
         
         # 生成配置
         mania_2k_options: Mania2kOptions = {
+            "main_key": mania_2k_main_key,
             "start_key": mania_2k_start_key,
             "trill_start_key": mania_2k_trill_start_key,
             "minimum_jack_time_interval": mania_2k_minimum_jack_time_interval,

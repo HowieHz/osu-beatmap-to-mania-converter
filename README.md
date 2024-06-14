@@ -63,10 +63,11 @@ osu!mania 1k, osu!mania 2k
 
 设置选项
 
-1. 设置铺面从哪一轨开始生成（start key）
-2. 交互起手设置：最开始的交互哪个轨道起手（Trill start key）
-3. 纵连两键间距小于多少毫秒开始转交互（Minimum Jack Time Interval）
-4. 几个纵开始转交互（Maximum number of jack notes）
+1. 设置惯用单戳指所在轨道：物件会优先生成在这个轨道上（main key）
+2. 设置铺面从哪一轨开始生成（start key）
+3. 交互起手设置：最开始的交互哪个轨道起手（Trill start key）
+4. 纵连两键间距小于多少毫秒开始转交互（Minimum Jack Time Interval）
+5. 几个纵开始转交互（Maximum number of jack notes）
 
 ## 如何下载使用
 
