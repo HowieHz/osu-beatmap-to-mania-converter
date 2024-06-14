@@ -89,11 +89,9 @@ def hit_objects_parser(
         if raw_type[-1] == "1":
             type = "hit circle"
             start_time = end_time = int(object_params[2])
-            debug("hit circle time", data=start_time)
         elif raw_type[-2] == "1":
             type = "slider"
             start_time = int(object_params[2])
-            debug("slider start time", data=start_time)
 
             # TODO: 此处 length 值应该是 Decimal 精确小数，滑条的视觉长度。单位是 osu! 像素。换高精库来算
             length = float(object_params[-4])
@@ -132,19 +130,15 @@ def hit_objects_parser(
             slide_time = length / (BASE_SLIDER_VELOCITY * 100 * slider_velocity_multiplier) * beat_length
 
             end_time = start_time + slide_time
-            debug("spinner end time", data=end_time)
         elif raw_type[-4] == "1":
             type = "spinner"
             start_time = int(object_params[2])
             end_time = int(object_params[5])
-            debug("spinner start time", data=start_time)
-            debug("spinner end time", data=end_time)
         elif raw_type[-8] == "1":
+            # 样例数据 448,192,31331,128,8,31836:2:0:0:0:
             type = "hold"
             start_time = int(object_params[2])
-            end_time = int(object_params[5])
-            debug("hold start time", data=start_time)
-            debug("hold end time", data=end_time)
+            end_time = int(object_params[5].split(":")[0])
         else:
             type = "unknown"
 
