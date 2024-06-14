@@ -8,6 +8,9 @@ def generate_mania_1k_osu_file(
     debug("file_metadata", data=file_metadata)
     debug("hit_objects_list", data=hit_objects_list)
 
+    # 生成元数据
+    raw_file_metadata = "".join(file_metadata)
+
     # 米例：256,192,83,1,0,0:0:0:0:
     # 面例：256,192,505,128,0,1347:0:0:0:0:
 
@@ -23,6 +26,5 @@ def generate_mania_1k_osu_file(
         else:
             pass
 
-    # 文件末加个空行，保持和制铺器生成的一致
-    raw_hit_objects_list += "\n"
-    return raw_hit_objects_list
+    # 文件末不用加空行，因为上面每行末尾都有\n，保持和制铺器生成的一致
+    return raw_file_metadata + raw_hit_objects_list
