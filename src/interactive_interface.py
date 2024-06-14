@@ -6,7 +6,7 @@ from message import *
 
 import reader, processor, exporter, message
 from reader import load_hit_objects_list, load_osu_file_metadata ,hit_objects_parser
-from processor import std_object_type_to_mania, any_to_mania_1k, std_metadata_to_mania
+from processor import std_object_type_to_mania, any_to_mania_1k, any_metadata_to_mania
 from exporter import generate_mania_1k_osu_file, generate_mania_2k_osu_file
 
 
@@ -22,7 +22,7 @@ def main():
     debug("osu_file_metadata", data=osu_file_metadata)
     
     # 将 osu!std 元数据转换为 osu!mania 元数据
-    osu_file_metadata = std_metadata_to_mania(osu_file_metadata)
+    osu_file_metadata = any_metadata_to_mania(osu_file_metadata)
     
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
     parsed_hit_objects_list: list[HitObject] = hit_objects_parser(load_hit_objects_list(osu_file_full_path))

@@ -1,4 +1,4 @@
-# osu-standard-to-mania-converter
+# osu-beatmap-to-mania-converter
 
 > Convert osu!standard(osu!std) to osu!mania
 
@@ -12,7 +12,7 @@
 
 ---
 
-- [osu-standard-to-mania-converter](#osu-standard-to-mania-converter)
+- [osu-beatmap-to-mania-converter](#osu-beatmap-to-mania-converter)
   - [主要功能](#主要功能)
     - [输出铺面类型](#输出铺面类型)
     - [输出规则](#输出规则)
