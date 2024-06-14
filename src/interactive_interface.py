@@ -4,6 +4,7 @@ from logger import debug, info, warning, error
 from custom_types import HitObject, ManiaHitObject, Mania2kOptions
 from message import *
 
+from options_default import mania_2k_options_default
 from reader import load_hit_objects_list, load_osu_file_metadata, hit_objects_parser
 from processor import (
     std_object_type_to_mania,
@@ -71,18 +72,20 @@ def main():
     info(f"{OUTPUT_FILENAME_IS}{final_osu_file_name}")
 
     # mania 2k 生成参数询问部分
-    mania_2k_start_key: int = 1  # 铺面起手键位置, 1 为左, 2 为右
-    mania_2k_trill_start_key: int = 1  # 交互起手键位置, 1 为左, 2 为右
+    mania_2k_start_key: int  # 铺面起手键位置
+    mania_2k_trill_start_key: int  # 交互起手键位置
+    mania_2k_maximum_jack_time_interval: float  # 最大叠键时间间距，单位毫秒
+    mania_2k_maximum_number_of_jack_notes: int  # 最大叠键数
 
     if number_of_keys == 2:
         # 起手键询问
         raw_input_mania_2k_start_key = input(MANIA_2K_PLEASE_INPUT_START_KEY)
         if raw_input_mania_2k_start_key == "":
-            mania_2k_start_key = 1
+            mania_2k_start_key = mania_2k_options_default["start_key"]
         elif raw_input_mania_2k_start_key in ("1", "2"):
             mania_2k_start_key: int = int(raw_input_mania_2k_start_key)
         else:  # 输入值非法，取默认值
-            mania_2k_start_key = 1
+            mania_2k_start_key = mania_2k_options_default["start_key"]
 
         # 交互起手键询问
         raw_input_mania_2k_trill_start_key = input(
@@ -93,7 +96,33 @@ def main():
         elif raw_input_mania_2k_trill_start_key in ("1", "2"):
             mania_2k_trill_start_key: int = int(raw_input_mania_2k_trill_start_key)
         else:  # 输入值非法，取默认值
-            mania_2k_trill_start_key = 1
+            mania_2k_trill_start_key = mania_2k_options_default["trill_start_key"]
+        
+        # 最大叠键时间间距询问
+        raw_input_mania_2k_maximum_jack_time_interval = input(
+            MANIA_2K_PLEASE_INPUT_MAXIMUM_JACK_TIME_INTERVAL
+        )
+        if raw_input_mania_2k_maximum_jack_time_interval == "":
+            mania_2k_maximum_jack_time_interval = mania_2k_options_default["maximum_jack_time_interval"]
+        else:
+            mania_2k_maximum_jack_time_interval = float(raw_input_mania_2k_maximum_jack_time_interval)
+        
+        # 最大叠键数询问
+        raw_input_maximum_number_of_jack_notes = input(
+            MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES
+        )
+        if raw_input_maximum_number_of_jack_notes == "":
+            mania_2k_maximum_number_of_jack_notes = mania_2k_options_default["maximum_number_of_jack_notes"]
+        else:
+            mania_2k_maximum_number_of_jack_notes = int(raw_input_maximum_number_of_jack_notes)
+        
+        # 生成配置
+        mania_2k_options: Mania2kOptions = {
+            "start_key": mania_2k_start_key,
+            "trill_start_key": mania_2k_trill_start_key,
+            "maximum_jack_time_interval": mania_2k_maximum_jack_time_interval,
+            "maximum_number_of_jack_notes": mania_2k_maximum_number_of_jack_notes,
+        }
 
     info(LOADING_OSU_FILE)
 
@@ -127,11 +156,6 @@ def main():
         )
     elif number_of_keys == 2:
         # 目标产物 mania 2k
-        # 生成配置
-        mania_2k_options: Mania2kOptions = {
-            "start_key": mania_2k_start_key,
-            "trill_start_key": mania_2k_trill_start_key,
-        }
 
         # 将铺面从 1k 转换为 2k
         parsed_mania_2k_hit_objects_list = mania_1k_to_2k(

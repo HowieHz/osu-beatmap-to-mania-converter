@@ -16,7 +16,7 @@
   - [主要功能](#主要功能)
     - [输出铺面类型](#输出铺面类型)
     - [输出规则](#输出规则)
-    - [Mania 2k 输出配置选项](#mania-2k-输出配置选项)
+    - [Mania 2k 铺面输出可配置项](#mania-2k-铺面输出可配置项)
   - [如何下载使用](#如何下载使用)
     - [通过二进制文件运行](#通过二进制文件运行)
     - [Windows](#windows)
@@ -41,24 +41,32 @@ osu!mania 1k, osu!mania 2k
 2. 主模式长条 -> mania 长条
 3. 主模式转盘 -> mania 长条
 
-### Mania 2k 输出配置选项
+### Mania 2k 铺面输出可配置项
+
+> 需重写此段描述
 
 标记 TODO 的表示还是未完成的功能
 
-1. 设置铺面从哪一轨开始生成（start key）
-2. （TODO）交互起手设置：最开始的交互哪个轨道起手（Trill start key）
-3. （TODO）防长纵选项：生成成 1k 的时候会出现大量的纵连，此时根据这个规则开始转换
-   - 两音符击打时间间距小于一个值（Anti anchor/long jack）
+1. 长纵转交互：生成成 1k 的时候会出现大量的纵连，此时根据这个规则开始转换
+   - （TODO）两音符击打时间间距小于一个值（Anti long jack）
      - mode1: 不管这个间隔时间是否恒定（variable time interval）
      - mode2: 要求这个间隔时间必须恒定（constant time interval）
-   - 有多少个连续音符开始转换为交互
+   - （TODO）从哪个开始转换为交互（Conversion starts position）
      - mode1: 满足要求便从计算的第一个开始转换（Conversion starts with the first）
      - mode2: 满足要求从满足要求的那个开始转换（比如是大于 3 个连续音符开始转换，那就把第四个音符放在另一个轨道，前三个音符保持为一个三连段纵）（Conversion starts from a position of attainment）
-   - 转换模式
+   - （TODO）转换模式（trill or jack）
      - mode1: 满足要求便全部转换成交互（All to trill）
      - mode2: 满足要求便全部转换为短纵（All to jack）
      - mode3: 多少连续音符转换为分组短纵，超过多少音符转换为交互（Long jack converted to trill, keep short jack）
-4. （TODO）防止交互头尾连起来短纵选项：前一个交互的最后一个音符和下一个交互开头的音符要是间隔小于一个值，下一个交互就从另一个轨道开始（Anti minijack between trill）
+2. （TODO）防止交互头尾连起来短纵选项：前一个交互的最后一个音符和下一个交互开头的音符要是间隔小于一个值，下一个交互就从另一个轨道开始（Anti minijack between trill）
+3. 检测 ln 尾部和下一个 note 的间距，小于一个值就把这个 note 放到另一列上
+
+设置选项
+
+1. 设置铺面从哪一轨开始生成（start key）
+2. 交互起手设置：最开始的交互哪个轨道起手（Trill start key）
+3. 纵连两键间距小于多少毫秒开始转交互（Minimum Jack Time Interval）
+4. 几个纵开始转交互（Maximum number of jack notes）
 
 ## 如何下载使用
 
@@ -99,7 +107,8 @@ python ./src/main.py
 
 ## 为何创建此项目
 
-好玩
+1. 好玩
+2. 帮助萌新分配左手的两个键，而不是一直单戳
 
 ## TODO
 

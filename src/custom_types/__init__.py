@@ -29,5 +29,15 @@ class ManiaHitObject(HitObject):
     key: int
 
 class Mania2kOptions(TypedDict):
+    """_summary_
+
+    Args:
+        start_key (int): 铺面起手键，1 为左，2 为右
+        trill_start_key (int): 交互起手键，1 为左，2 为右
+        maximum_jack_time_interval (float): 最大叠键时间间距，单位毫秒。
+        maximum_number_of_jack_notes (int): 最大叠键数。
+    """
     start_key: int
     trill_start_key: int
+    maximum_jack_time_interval: float
+    maximum_number_of_jack_notes: int
