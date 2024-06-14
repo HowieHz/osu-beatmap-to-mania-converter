@@ -15,3 +15,4 @@ osu!std 转 osu!mania 铺面转换器
 """
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，请按下回车键。"
 PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "请输入你的铺面完整路径（.osu 结尾）："
+PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = "请输入转换后 Mania 铺面的键数（1 或 2）："
