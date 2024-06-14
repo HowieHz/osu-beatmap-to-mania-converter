@@ -85,8 +85,13 @@ def _convert_long_jack_to_trill(
         ) < maximum_jack_time_interval:
             if index - 1 == 0:
                 jack_node_stack.append({"index": 0, "hit_object": last_hit_object})
-            jack_node_stack.append({"index": index, "hit_object": this_hit_object})
-            jack_flag = True
+            
+            if jack_flag:
+                jack_node_stack.append({"index": index, "hit_object": this_hit_object})
+            else:
+                jack_node_stack.append({"index": 0, "hit_object": last_hit_object})
+                jack_node_stack.append({"index": index, "hit_object": this_hit_object})
+                jack_flag = True
         else:
             if jack_flag:  # 说明 jack 停止了
                 # 检查是否满足长 jack 要求
