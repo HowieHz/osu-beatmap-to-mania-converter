@@ -37,5 +37,7 @@ WRITING_OSU_FILE: str = "铺面文件转换中，请稍等..."
 OSU_FILE_WRITTEN: str = "铺面文件已完成写入。"
 
 PLEASE_SUPPORT_THIS_PROJECT: str = (
-    "如果您还感到满意，\n请到 https://github.com/HowieHz/osu-beatmap-to-mania-converter 点个 star 吧支持本项目吧，\n你的支持将指引我砥砺前行！"
+    "如果您还感到满意，\n请到 https://github.com/HowieHz/osu-beatmap-to-mania-converter 点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
 )
+
+PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"

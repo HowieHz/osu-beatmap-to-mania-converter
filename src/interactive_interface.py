@@ -19,9 +19,15 @@ def main():
     print(PLEASE_PRESS_ENTER_AFTER_INPUT)
 
     osu_file_full_path: str = ""
-    # 获取 osu 文件路径
+    # 获取 osu 文件路径，去除两头的单双引号
     while osu_file_full_path == "":
-        osu_file_full_path: str = input(PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH)
+        osu_file_full_path: str = (
+            input(PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH)
+            .removeprefix('"')
+            .removeprefix("'")
+            .removesuffix('"')
+            .removesuffix("'")
+        )
 
     number_of_keys: int = 0
     # 询问用户输出 mania 1k 还是 mania 2k
@@ -31,8 +37,14 @@ def main():
         )
 
     output_dir = ""
-    # 询问输出目录
-    output_dir = input(PLEASE_OUTPUT_DIR)
+    # 询问输出目录，去除两头的单双引号
+    output_dir = (
+        input(PLEASE_OUTPUT_DIR)
+        .removeprefix('"')
+        .removeprefix("'")
+        .removesuffix('"')
+        .removesuffix("'")
+    )
     if output_dir == "":
         output_dir = str(Path(osu_file_full_path).parent)
 
@@ -63,8 +75,8 @@ def main():
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(osu_file_metadata, 
-        load_hit_objects_list(osu_file_full_path)
+    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(
+        osu_file_metadata, load_hit_objects_list(osu_file_full_path)
     )
 
     # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
@@ -102,8 +114,10 @@ def main():
     info(BEATMAP_CONVERTED)
     info(WRITING_OSU_FILE)
 
+    # 写入文件
     with open(f"{output_dir}{final_osu_file_name}", mode="w+", encoding="utf-8") as f:
         f.write(final_osu_file_content)
 
     info(OSU_FILE_WRITTEN)
     info(PLEASE_SUPPORT_THIS_PROJECT)
+    input(PRESS_ENTER_EXIT_SOFTWARE)
