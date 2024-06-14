@@ -46,18 +46,34 @@ def hit_objects_parser(
         list[HitObject]: 一个列表，装了解析后的铺面描述
     """
     rt_list: list[HitObject] = []
-    # 基础滑条速度倍率 Base slider velocity in hundreds of osu! pixels per beat
-    BASE_SLIDER_VELOCITY: float = 0.0
 
+    # 找出 基础滑条速度倍率：Base slider velocity in hundreds of osu! pixels per beat
+    BASE_SLIDER_VELOCITY: float = 0.0
     for line in osu_file_metadata:
         if line.startswith("SliderMultiplier:"):
             # TODO: 此处值应该是 Decimal 精确小数，换高精库来算
             BASE_SLIDER_VELOCITY = float(
                 osu_file_metadata[osu_file_metadata.index(line)]
-                .removesuffix("SliderMultiplier:")
-                .removesuffix(" ")
+                .removeprefix("SliderMultiplier:")
+                .strip()
             )
             break
+
+    timing_points_list: list[str] = []
+    # 找出时间点，即 [TimingPoints] 下每行的数据，例如 320,337.078651685393,4,2,1,50,1,0 又例 32679,-100,4,2,1,60,0,0。已经去除行末换行符（\\n）
+    append_timing_points_list_flag: bool = False
+    for line in osu_file_metadata:
+        if append_timing_points_list_flag:
+            if line.strip() == "":
+                break
+
+            timing_points_list.append(line.strip())
+            continue
+        
+        if line.rstrip() == "[TimingPoints]":
+            append_timing_points_list_flag = True
+    
+    print(timing_points_list)
 
     for hit_object in hit_objects_list:
         type: str = ""
@@ -82,9 +98,17 @@ def hit_objects_parser(
 
             # TODO: 此处 length 值应该是 Decimal 精确小数，滑条的视觉长度。单位是 osu! 像素。换高精库来算
             length = float(object_params[-4])
-            
+
+            given_by_effective_inherited_timing_point: bool = (
+                False  # 如果这个滑条受继承时间点（绿线）控制，则为 True
+            )
+            # 如果没有绿线控制，则 SV (slider_velocity_multiplier) 默认为 1
+            slider_velocity_multiplier = (
+                1 if not given_by_effective_inherited_timing_point else 0
+            )
+
             # 计算滑条持续时间
-            # slide_time = length / (BASE_SLIDER_VELOCITY * 100 * SV) * beatLength
+            # slide_time = length / (BASE_SLIDER_VELOCITY * 100 * slider_velocity_multiplier) * beatLength
             slide_time = 1000
 
             end_time = start_time + slide_time

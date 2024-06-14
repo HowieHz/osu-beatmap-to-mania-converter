@@ -26,19 +26,16 @@ def load_hit_objects_list(file_full_path: str) -> list[str]:
         # 这个为 true 就把接下来的内容写到输出列表内
         append_hit_objects_list_flag: bool = False
         for line in lines:
-            debug("read line", data=line)
-
             # 对列表操作删除不知道为什么没效果，删除了又从文件头开始读，可能是 f.readlines() 的特性，所以做了一个 flag，这样在单个循环内就可以读取
             if append_hit_objects_list_flag:
                 # 读到的 line 都是一串数据最后加个 \n
-                debug(f"read line(flag on)", data=line)
                 # 读取到 \n 代表 [HitObjects] 数据结束，就 break 循环
-                if line == "\n":
+                if line.strip() == "":
                     break
-                hit_objects_list.append(line.removesuffix("\n"))
+                hit_objects_list.append(line.rstrip())
+                continue
 
-            if line == "[HitObjects]\n":
+            if line.rstrip() == "[HitObjects]":
                 append_hit_objects_list_flag = True
 
-        debug("hit_objects_list", data=hit_objects_list)
         return hit_objects_list

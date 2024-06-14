@@ -24,15 +24,14 @@ def load_osu_file_metadata(file_full_path: str) -> list[str]:
         append_meta_data_list_flag: bool = True
 
         for line in lines:
-            debug("read line", data=line)
-            if line == "[HitObjects]\n":
+            if line.rstrip() == "[HitObjects]":
                 append_meta_data_list_flag = False
-
-            if append_meta_data_list_flag:
-                meta_data_list.append(line)
-            else:
-                if line == "\n":  # 读到 \n 代表 [HitObjects] 的部分结束
+            
+            if not append_meta_data_list_flag:
+                if line.strip() == "":  # 读到 \n 代表 [HitObjects] 的部分结束
                     append_meta_data_list_flag = True
+                continue
 
-        debug("meta_data_list", data=meta_data_list)
+            meta_data_list.append(line)
+
         return meta_data_list
