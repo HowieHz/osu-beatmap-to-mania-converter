@@ -1,2 +1,3 @@
-from .load_osu_file import load_osu_file
+from .load_hit_objects_list import load_hit_objects_list
 from .hit_objects_parser import hit_objects_parser
+from .load_osu_file_metadata import load_osu_file_metadata

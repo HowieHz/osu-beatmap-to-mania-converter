@@ -1,0 +1,2 @@
+from processor.std_to_mania.std_object_type_to_mania import std_object_type_to_mania
+from processor.std_to_mania.any_to_mania_1k import any_to_mania_1k

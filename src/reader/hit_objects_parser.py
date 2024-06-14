@@ -84,5 +84,4 @@ def hit_objects_parser(hit_objects_list: list[str]) -> list[HitObject]:
         rt_list.append({"type": type, "start_time": start_time, "end_time": end_time})
 
     debug("rt_list", data=rt_list)
-
     return rt_list
