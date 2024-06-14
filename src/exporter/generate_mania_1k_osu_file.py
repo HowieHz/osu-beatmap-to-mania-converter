@@ -21,8 +21,8 @@ def generate_mania_1k_osu_file(
             # x,y,时间,物件类型,打击音效,物件参数,打击音效组（默认 0:0:0:0:）
             raw_hit_objects_list += f"256,192,{hit_object['start_time']},1,0,0:0:0:0:\n"  # TODO 要能把打击音效和打击音效组继承过来
         elif hit_object["type"] == "hold":
-            # x,y,开始时间,物件类型,长键音效,结束时间,长键音效组
-            raw_hit_objects_list += f"256,192,{hit_object['start_time']},128,0,{hit_object['end_time']},0:0:0:0:\n"  # TODO 同上面
+            # x,y,开始时间,物件类型,长键音效,结束时间:长键音效组
+            raw_hit_objects_list += f"256,192,{hit_object['start_time']},128,0,{hit_object['end_time']}:0:0:0:0:\n"  # TODO 同上面
         else:
             pass
 
