@@ -59,19 +59,22 @@ def hit_objects_parser(
             )
             break
 
-    timing_points_list: list[str] = []
-    # 找出时间点，即 [TimingPoints] 下每行的数据，例如 320,337.078651685393,4,2,1,50,1,0 又例 32679,-100,4,2,1,60,0,0。已经去除行末换行符（\\n）
+    timing_points_list: list[list[str]] = []
+    # 找出时间点，即 [TimingPoints] 下每行的数据，例如 320,337.078651685393,4,2,1,50,1,0 又例 32679,-100,4,2,1,60,0,0。已经去除行末换行符（\\n），用 , 分割为列表
     append_timing_points_list_flag: bool = False
     for line in osu_file_metadata:
         if append_timing_points_list_flag:
             if line.strip() == "":
                 break
 
-            timing_points_list.append(line.strip())
+            timing_points_list.append(line.strip().split(","))
             continue
 
         if line.rstrip() == "[TimingPoints]":
             append_timing_points_list_flag = True
+
+    # 倒转一下，这样在列表头的就是时间最后的
+    timing_points_list.reverse()
 
     for hit_object in hit_objects_list:
         type: str = ""
@@ -95,17 +98,38 @@ def hit_objects_parser(
             # TODO: 此处 length 值应该是 Decimal 精确小数，滑条的视觉长度。单位是 osu! 像素。换高精库来算
             length = float(object_params[-4])
 
-            given_by_effective_inherited_timing_point: bool = (
-                False  # 如果这个滑条受继承时间点（绿线）控制，则为 True
-            )
-            # 如果没有绿线控制，则 SV (slider_velocity_multiplier) 默认为 1
-            slider_velocity_multiplier = (
-                1 if not given_by_effective_inherited_timing_point else 0
-            )
+            beat_length: float = -1.0
+            # 找出当前 beat length，也就是找最接近的一根红线
+            for timing_point in timing_points_list:
+                if (
+                    int(timing_point[0]) <= start_time and timing_point[-2] == "1"
+                ):  # 为非继承时间点（红线）
+                    # TODO: 换精确小数存储 beat_length
+                    beat_length = float(timing_point[1])
+                    break
+
+            if beat_length == -1.0:
+                # 如果还是 -1.0 说明压根没读到红线，非法数据
+                ...
+
+            # 找出当前 timing_point，计算 SV (slider_velocity_multiplier)
+            for timing_point in timing_points_list:
+                if int(timing_point[0]) > start_time:
+                    continue
+
+                if timing_point[-2] == "1":  # 为非继承时间点（红线）
+                    # 如果没有绿线控制，则 SV (slider_velocity_multiplier) 默认为 1
+                    slider_velocity_multiplier = 1
+                    break
+                elif timing_point[-2] == "0":  # 为继承时间点（绿线）
+                    # TODO: 换精确小数计算 beat_length -> float(timing_point[1])
+                    slider_velocity_multiplier = 100 / -(float(timing_point[1]))
+                    break
+                else:
+                    ...  # 非法数据
 
             # 计算滑条持续时间
-            # slide_time = length / (BASE_SLIDER_VELOCITY * 100 * slider_velocity_multiplier) * beatLength
-            slide_time = 1000
+            slide_time = length / (BASE_SLIDER_VELOCITY * 100 * slider_velocity_multiplier) * beat_length
 
             end_time = start_time + slide_time
             debug("spinner end time", data=end_time)
