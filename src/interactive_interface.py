@@ -1,12 +1,9 @@
-import locale
-
 from logger import debug, info, warning, error
 from custom_types import HitObject, ManiaHitObject
 from message import *
 
-import reader, processor, exporter, message
 from reader import load_hit_objects_list, load_osu_file_metadata ,hit_objects_parser
-from processor import std_object_type_to_mania, any_to_mania_1k, any_metadata_to_mania
+from processor import std_object_type_to_mania, any_object_to_mania_1k, any_metadata_to_mania
 from exporter import generate_mania_1k_osu_file, generate_mania_2k_osu_file
 
 
@@ -28,7 +25,7 @@ def main():
     parsed_hit_objects_list: list[HitObject] = hit_objects_parser(load_hit_objects_list(osu_file_full_path))
     
     # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
-    parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(map(any_to_mania_1k, map(std_object_type_to_mania, parsed_hit_objects_list)))
+    parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(map(any_object_to_mania_1k, map(std_object_type_to_mania, parsed_hit_objects_list)))
     debug("parsed_mania_1k_hit_objects_list", data=parsed_mania_1k_hit_objects_list)
     
     number_of_keys: int = 0

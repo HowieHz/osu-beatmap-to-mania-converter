@@ -1,2 +1,2 @@
-from generate_mania_1k_osu_file import generate_mania_1k_osu_file
-from generate_mania_2k_osu_file import generate_mania_2k_osu_file
+from .generate_mania_1k_osu_file import generate_mania_1k_osu_file
+from .generate_mania_2k_osu_file import generate_mania_2k_osu_file

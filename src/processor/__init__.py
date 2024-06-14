@@ -1,3 +1,3 @@
-from std_object_type_to_mania import std_object_type_to_mania
-from any_to_mania_1k import any_to_mania_1k
-from any_metadata_to_mania import any_metadata_to_mania
+from .std_object_type_to_mania import std_object_type_to_mania
+from .any_object_to_mania_1k import any_object_to_mania_1k
+from .any_metadata_to_mania import any_metadata_to_mania
