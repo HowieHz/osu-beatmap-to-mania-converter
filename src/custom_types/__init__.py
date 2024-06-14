@@ -27,3 +27,7 @@ class ManiaHitObject(HitObject):
     start_time: int
     end_time: int
     key: int
+
+class Mania2kOptions(TypedDict):
+    start_key: int
+    trill_start_key: int

@@ -41,3 +41,8 @@ PLEASE_SUPPORT_THIS_PROJECT: str = (
 )
 
 PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"
+
+# mania 2k only
+
+MANIA_2K_PLEASE_INPUT_START_KEY: str = "请输入铺面生成起始轨（1 为左，2 为右，默认值为 1）："
+MANIA_2K_PLEASE_INPUT_TRILL_START_KEY: str = "请输入交互起始轨（1 为左，2 为右，直接回车则取铺面生成起始轨的值）："
