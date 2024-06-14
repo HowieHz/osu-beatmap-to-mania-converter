@@ -1,5 +1,6 @@
 from custom_types import HitObject, ManiaHitObject
 
+
 def any_object_to_mania_1k(hit_object: HitObject) -> ManiaHitObject:
     """把物件添加到 mania 一轨
 

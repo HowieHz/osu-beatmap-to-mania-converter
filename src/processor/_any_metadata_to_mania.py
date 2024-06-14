@@ -1,5 +1,5 @@
-def any_metadata_to_mania(osu_file_metadata: list[str]) -> list[str]:
-    """将 osu 铺面的元数据转换成 osu!mania 的元数据
+def _any_metadata_to_mania(osu_file_metadata: list[str]) -> list[str]:
+    """设置元数据 Mode 标识为 mania
 
     Args:
         osu_file_metadata (list[str]): 未被转换的元数据列，每行应有换行符（"\\n"）

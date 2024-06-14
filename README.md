@@ -8,7 +8,7 @@
 
 如果想支持本项目就点个 star 吧，你的支持将指引我砥砺前行。
 
-如遇到 Bug，想提出新功能，对现有功能不满，想提出建议，想问问题，单纯想进行讨论，欢迎前来[提出新的 Issue](https://github.com/HowieHz/osu-standard-to-mania-converter/issues/new/choose)。
+如遇到 Bug，想提出新功能，对现有功能不满，想提出建议，想问问题，单纯想进行讨论，欢迎前来[提出新的 Issue](https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose)。
 
 ---
 
@@ -65,7 +65,7 @@ osu!mania 1k, osu!mania 2k
 
 ### Windows
 
-从 [Releases](https://github.com/HowieHz/osu-standard-to-mania-converter/releases) 下载最新版本二进制文件。
+从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件。
 解压后，运行 `main.exe` 即可开始运行程序，随后根据程序引导完成操作即可。
 
 ### MacOS & Linux
@@ -90,11 +90,11 @@ python ./src/main.py
 
 ### 当目标产物为 osu!mania 1k
 
-[读取器（包括预处理）](./src/lib/reader/) -> [生成器](./src/lib/exporter/)
+[读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
 
 ### 当目标产物为 osu!mania 2k
 
-[读取器（包括预处理）](./src/lib/reader/) -> [处理器](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
+[读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
 
 ## 为何创建此项目
 
@@ -115,6 +115,10 @@ python ./src/main.py
 11. 编写英文文档
 12. 软件支持英文
 13. cli 程序
+14. 程序运行加上计时器
+15. 允许用户运行完的时候输入一个值直接打开浏览器到项目页面
+16. 生成后提供直接修改游戏内铺面标题的设置
+17. 添加时间计量，每个步骤花费了多少时间
 
 ## 更新日志
 
