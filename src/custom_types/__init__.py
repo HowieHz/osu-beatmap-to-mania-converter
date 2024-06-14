@@ -18,7 +18,7 @@ class ManiaHitObject(HitObject):
     """
     描述一个物件的信息\n
 
-    type 取值在 "hit circle", "slider",  "spinner", "hold", "unknown" 中。\n
+    type 取值在 "hit circle", "slider",  "spinner", "hold", "unknown", "end sign" 中。\n
     开始时间和结束时间单位是毫秒。\n
     key 从左到右计数，最左边是 1。\n
     """

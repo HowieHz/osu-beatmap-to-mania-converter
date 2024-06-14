@@ -1,6 +1,7 @@
 from typing import TypedDict
 
 from custom_types import ManiaHitObject, Mania2kOptions
+from logger import debug
 from options_default import mania_2k_options_default
 
 
@@ -67,8 +68,16 @@ def _convert_long_jack_to_trill(
 
     # 把长 jack 筛选出来
     last_hit_object: ManiaHitObject = hit_objects_list[0]
-    for index, hit_object in enumerate(hit_objects_list[1:], start=1):
+    for index, hit_object in enumerate(
+        hit_objects_list[1:] + [{"type": "end sign"}], start=1
+    ):
         this_hit_object: ManiaHitObject = hit_object
+
+        if this_hit_object["type"] == "end sign":  # 读取到尾部了
+            if jack_flag and len(jack_node_stack) > maximum_number_of_jack_notes:
+                long_jack_node_stack_list.append(jack_node_stack)
+                jack_node_stack = []  # 无意义的清空
+            break
 
         # 是否符合 jack 要求
         if (
@@ -77,25 +86,34 @@ def _convert_long_jack_to_trill(
             if index - 1 == 0:
                 jack_node_stack.append({"index": 0, "hit_object": last_hit_object})
             jack_node_stack.append({"index": index, "hit_object": this_hit_object})
+            jack_flag = True
         else:
             if jack_flag:  # 说明 jack 停止了
                 # 检查是否满足长 jack 要求
                 if len(jack_node_stack) > maximum_number_of_jack_notes:
                     long_jack_node_stack_list.append(jack_node_stack)
                 jack_node_stack = []
+                jack_flag = False
 
         last_hit_object = this_hit_object
 
     # 开始处理长叠键为切
     for jack_node_stack in long_jack_node_stack_list:
-        hit_objects_list[0]["hit_object"]["key"] = trill_start_key
+        hit_objects_list[jack_node_stack[0]["index"]]["key"] = trill_start_key
 
-        for stack_index, this_index_hit_object in enumerate(jack_node_stack[1:], start=1):
+        for stack_index, this_index_hit_object in enumerate(
+            jack_node_stack[1:], start=1
+        ):
             last_index_hit_object = jack_node_stack[stack_index - 1]
+            debug(last_index_hit_object)
+            debug(hit_objects_list[last_index_hit_object["index"]] == last_index_hit_object["hit_object"])
+
+            debug("last:",hit_objects_list[last_index_hit_object["index"]]["key"])
+            debug("this:",hit_objects_list[this_index_hit_object["index"]]["key"])
             
             if hit_objects_list[last_index_hit_object["index"]]["key"] == 1:
-                hit_objects_list[this_index_hit_object["index"]]["key"] == 0
+                hit_objects_list[this_index_hit_object["index"]]["key"] = 2
             else:
-                hit_objects_list[this_index_hit_object["index"]]["key"] == 1
+                hit_objects_list[this_index_hit_object["index"]]["key"] = 1
 
     return hit_objects_list
