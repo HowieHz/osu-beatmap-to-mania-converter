@@ -3,7 +3,7 @@ import os
 from logger import debug
 from custom_types import HitObject
 
-# raw_hit_objects_list 现在每一项就是一个物件，对应数字解释
+# hit_objects_list 现在每一项就是一个物件，对应数字解释
 # 打击物件语法 x,  y,   时间, 物件类型, 打击音效, 物件参数, 打击音效组（默认 0:0:0:0:） （实际逗号后没空格）
 # 例          64, 192, 2345, 1,       0,                 0:0:0:0: （实际逗号后没空格）因为是mania note，所以没物件参数
 # 例          64, 192, 3116, 128,     0,                 3287:0:0:0:0:
@@ -33,18 +33,33 @@ from custom_types import HitObject
 # 0 位是最低位
 
 
-def hit_objects_parser(raw_hit_objects_list: list[str]) -> list[HitObject]:
+def hit_objects_parser(
+    osu_file_metadata: list[str], hit_objects_list: list[str]
+) -> list[HitObject]:
     """解析 [HitObjects] 下每行的数据为更易于处理的形式
 
     Args:
-        raw_hit_objects_list (list[str]): [HitObjects] 下每行的数据，例如 256,192,11000,21,2
+        osu_file_metadata (list[str]): 铺面元数据
+        hit_objects_list (list[str]): [HitObjects] 下每行的数据，例如 256,192,11000,21,2
 
     Returns:
         list[HitObject]: 一个列表，装了解析后的铺面描述
     """
     rt_list: list[HitObject] = []
+    # 基础滑条速度倍率 Base slider velocity in hundreds of osu! pixels per beat
+    BASE_SLIDER_VELOCITY: float = 0.0
 
-    for hit_object in raw_hit_objects_list:
+    for line in osu_file_metadata:
+        if line.startswith("SliderMultiplier:"):
+            # TODO: 此处值应该是 Decimal 精确小数，换高精库来算
+            BASE_SLIDER_VELOCITY = float(
+                osu_file_metadata[osu_file_metadata.index(line)]
+                .removesuffix("SliderMultiplier:")
+                .removesuffix(" ")
+            )
+            break
+
+    for hit_object in hit_objects_list:
         type: str = ""
         start_time: int = 0  # 毫秒
         end_time: int = 0
@@ -64,7 +79,15 @@ def hit_objects_parser(raw_hit_objects_list: list[str]) -> list[HitObject]:
             type = "slider"
             start_time = int(object_params[2])
             debug("slider start time", data=start_time)
-            end_time = start_time + 100  # TODO : 分析滑条结束时间
+
+            # TODO: 此处 length 值应该是 Decimal 精确小数，滑条的视觉长度。单位是 osu! 像素。换高精库来算
+            length = float(object_params[-4])
+            
+            # 计算滑条持续时间
+            # slide_time = length / (BASE_SLIDER_VELOCITY * 100 * SV) * beatLength
+            slide_time = 1000
+
+            end_time = start_time + slide_time
             debug("spinner end time", data=end_time)
         elif raw_type[-4] == "1":
             type = "spinner"

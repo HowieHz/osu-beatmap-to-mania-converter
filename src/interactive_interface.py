@@ -64,7 +64,7 @@ def main():
     debug("osu_file_metadata", data=osu_file_metadata)
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(
+    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(osu_file_metadata, 
         load_hit_objects_list(osu_file_full_path)
     )
 
