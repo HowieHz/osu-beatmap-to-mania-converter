@@ -165,3 +165,16 @@ def _slide_time_parser(
     )
 
     return slide_time
+
+
+def _x_to_key(x: int, keys: int) -> int:
+    """x 转 key 数
+
+    Args:
+        x (int): x 值
+        keys (int): 多少 key 的铺面
+
+    Returns:
+        int: 位置，从左到右第一轨是 1
+    """
+    return int(x * keys / 512 / 0.5 // 2) + 1
