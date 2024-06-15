@@ -20,13 +20,13 @@ class IndexManiaHitObject(TypedDict):
 def mania_1k_to_2k(
     hit_objects_list: list[ManiaHitObject], options: Mania2kOptions | None = None
 ) -> list[ManiaHitObject]:
-    if options == None:
+    if options is None:
         options: Mania2kOptions = mania_2k_options_default
 
     # 设置主要单戳键
     for index, _ in enumerate(hit_objects_list):
         hit_objects_list[index]["key"] = options["main_key"]
-    
+
     # 设置铺面起手键
     hit_objects_list = _set_beatmap_start_key(
         start_key=options["start_key"], hit_objects_list=hit_objects_list

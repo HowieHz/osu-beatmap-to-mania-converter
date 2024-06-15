@@ -19,7 +19,7 @@ def load_osu_file_metadata(file_full_path: str) -> list[str]:
         for line in lines:
             if line.rstrip() == "[HitObjects]":
                 append_meta_data_list_flag = False
-            
+
             if not append_meta_data_list_flag:
                 if line.strip() == "":  # 读到 \n 代表 [HitObjects] 的部分结束
                     append_meta_data_list_flag = True

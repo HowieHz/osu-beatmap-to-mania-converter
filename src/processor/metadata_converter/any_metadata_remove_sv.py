@@ -25,13 +25,13 @@ def any_metadata_remove_sv(
                 remove_line_flag = True
                 skip_line_flag = 1  # 跳过第一行红线
                 continue
-            
+
             if line.rstrip() == "" and remove_line_flag:  # 读取到 TimingPoints 末了
                 break
             
             if remove_line_flag:
                 osu_file_metadata[index] = None  # 要是这里直接 remove 会导致索引错乱，标记为 None，待会统一清理
-        
+
         osu_file_metadata = list(filter(None, osu_file_metadata))
     elif remove_sv_option == "inherited timing points":
         remove_line_flag: bool = False

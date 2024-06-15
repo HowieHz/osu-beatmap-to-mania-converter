@@ -40,7 +40,7 @@ def main():
     number_of_keys: int = 0
     raw_number_of_keys: str | None = None
     # 询问用户输出 mania 1k 还是 mania 2k 还是 4k
-    while not raw_number_of_keys in ("1", "2", "4", ""):
+    while raw_number_of_keys not in ("1", "2", "4", ""):
         raw_number_of_keys = input(
             PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA
         )
@@ -85,7 +85,7 @@ def main():
     # 询问是否移除变速
     remove_sv_option: str
     raw_remove_sv_option: str | None = None
-    while not raw_remove_sv_option in ("1", "2", "0", ""):
+    while raw_remove_sv_option not in ("1", "2", "0", ""):
         raw_remove_sv_option = input(PLEASE_INPUT_REMOVE_SV_OPTION)
     match raw_remove_sv_option:
         case "0":
