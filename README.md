@@ -110,6 +110,7 @@ For fun.
      - mode3: 多少连续音符转换为分组短纵，超过多少音符转换为交互（Long jack converted to trill, keep short jack）
 2. （TODO）防止交互头尾连起来短纵选项：前一个交互的最后一个音符和下一个交互开头的音符要是间隔小于一个值，下一个交互就从另一个轨道开始（Anti minijack between trill）
 3. （TODO）检测 ln 尾部和下一个 note 的间距，小于一个值就把这个 note 放到另一列上
+4. （TODO）允许用户调整 2k -> 4k 对应轨道映射
 
 ## 如何下载使用
 
@@ -118,7 +119,7 @@ For fun.
 ### Windows
 
 从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件。
-解压后，运行 `.exe` 为后缀即可开始运行程序，随后根据程序引导完成操作即可。
+解压后，运行 `.exe` 为后缀的程序，即可开始运行程序，随后根据程序引导完成操作即可。
 
 ### MacOS & Linux
 
