@@ -6,6 +6,7 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/HowieHz/osu-beatmap-to-mania-converter/total)
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/HowieHz/osu-beatmap-to-mania-converter/latest/total)
 ![GitHub repo size](https://img.shields.io/github/repo-size/HowieHz/osu-beatmap-to-mania-converter)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a657069d04fe47588b6c44d55883c4e1)](https://app.codacy.com/gh/HowieHz/osu-beatmap-to-mania-converter/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## 主要功能
 
@@ -54,7 +55,14 @@ For fun.
     - [MacOS \& Linux](#macos--linux)
     - [通过源码运行](#通过源码运行)
   - [程序结构](#程序结构)
+  - [软件对 .osu 文件做了什么处理](#软件对-osu-文件做了什么处理)
   - [TODO](#todo)
+    - [优先且易实现](#优先且易实现)
+    - [优先](#优先)
+    - [滞后](#滞后)
+      - [i18n](#i18n)
+      - [项目环境配置/文档](#项目环境配置文档)
+    - [后备](#后备)
   - [相关文档](#相关文档)
   - [Star History](#star-history)
   - [更新日志](#更新日志)
@@ -134,28 +142,50 @@ python ./src/main.py
 
 [读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
 
+## 软件对 .osu 文件做了什么处理
+
+> TODO: 待完成
+
 ## TODO
 
-1. 完成基本功能
-2. 创建 GUI 程序
-3. 创建 github-action 以便于在每次提交自动构建多平台二进制文件
-4. 配置自动格式化程序，在每次提交前检查
-5. 配置自动类型检查工具，在每次提交前检查
-6. README 引导开发人员创建虚拟环境
-7. 贡献文档要求强制进行类型检查
-8. 写项目单元测试
-9. 配置线上单元测试检查的软件
-10. 编写英文文档
-11. 软件支持英文
-12. cli 程序
-13. 允许用户运行完的时候输入一个值直接打开浏览器到项目页面
-14. 生成后提供直接修改游戏内铺面标题的设置
-15. 添加时间计量，每个步骤花费了多少时间
-16. 允许用户使用 json 文件配置
+### 优先且易实现
+
+1. 添加时间计量，每个步骤花费了多少时间
+
+### 优先
+
+1. cli 程序
+2. 完成其他的 mania 2k 输出选项
+   1. 生成后提供直接修改游戏内铺面标题的设置
+
+### 滞后
+
+1. 允许用户运行完的时候输入一个值直接打开浏览器到项目页面
+2. （前置任务：cli 程序）允许用户使用 json 文件配置
+3. 语言文字中的默认值从 options_default 取
+
+#### i18n
+
+1. 编写英文文档
+2. 软件支持英文
+
+#### 项目环境配置/文档
+
+1. 创建 github-action 以便于在每次提交自动构建多平台二进制文件
+2. 配置自动格式化程序，在每次提交前检查
+3. 配置自动类型检查工具，在每次提交前检查
+4. README 引导开发人员创建虚拟环境
+5. 贡献文档要求强制进行类型检查
+6. 写项目单元测试
+7. 配置线上单元测试检查的软件
+
+### 后备
+
+1. 创建 GUI 程序（肯定是基于 cli，做个 cli 的调用。用简单的 python web 框架调用 cli 是上策，用其他语言写 gui 算中策，用 pyside/pyqt 是下策）
 
 ## 相关文档
 
-1. [.osu 文件官方文档](https://osu.ppy.sh/wiki/zh/Client/File_formats/osu_%28file_format%29)
+1. [.osu 文件解释文档](https://osu.ppy.sh/wiki/zh/Client/File_formats/osu_%28file_format%29)
 
 ## Star History
 

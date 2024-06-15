@@ -6,8 +6,9 @@
 
 - logger 日志格式化输出器
 - message 存放消息的地方，程序内出现的文字都会放置在这个文件夹内
-- message/i18n 存放多国语言支持
+- message/i18n 存放多国语言文字
 - custom_types 自定义类型，用于类型标注
+- options_default 存放软件默认位置
 
 - reader 铺面数据读取器
 - processor 铺面数据处理器的文件夹
