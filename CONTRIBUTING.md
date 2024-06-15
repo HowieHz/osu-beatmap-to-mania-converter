@@ -36,3 +36,19 @@ set DEBUG_FLAG=True
 ```cmd
 echo %DEBUG_FLAG%
 ``` -->
+
+## 构建二进制文件
+
+> 使用 nuitka 库
+
+安装 nuitka 库
+
+```shell
+pip install nuitka
+```
+
+生成二进制文件
+
+```shell
+nuitka .\src\main.py --standalone --onefile
+```
