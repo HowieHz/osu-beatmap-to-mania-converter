@@ -15,7 +15,7 @@ PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = (
     "请输入转换后 Mania 铺面的键数（请输入 1，2，4 中的数值，默认值为 2）\n注：设置输出渐键数为 4，即将 4k 左边两轨当 2k 使用。这样玩家无需制作 2k 界面所用皮肤。："
 )
 PLEASE_OUTPUT_DIR: str = (
-    "请指定输出的 .osu 文件的目录，请以斜杠结尾。直接回车则为选择的 .osu 文件的同目录下："
+    "请指定输出的 .osu 文件的目录。直接回车则为选择的 .osu 文件的同目录下："
 )
 PLEASE_OUTPUT_FILENAME: str = (
     "请指定输出的 .osu 文件的文件名。直接回车则为 '原文件文件名(转换参数)'："

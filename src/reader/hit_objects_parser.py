@@ -1,37 +1,4 @@
-import os
-
-from logger import debug
 from custom_types import HitObject
-
-# hit_objects_list 现在每一项就是一个物件，对应数字解释
-# 打击物件语法 x,  y,   时间, 物件类型, 打击音效, 物件参数, 打击音效组（默认 0:0:0:0:） （实际逗号后没空格）
-# 例          64, 192, 2345, 1,       0,                 0:0:0:0: （实际逗号后没空格）因为是mania note，所以没物件参数
-# 例          64, 192, 3116, 128,     0,                 3287:0:0:0:0:
-# 滑条语法： x,y,开始时间,物件类型,打击音效,曲线类型|曲线点,滑动次数,长度,头尾音效,头尾音效组,打击音效组
-# 转盘语法： x,y,开始时间,物件类型,转盘音效,结束时间,转盘音效组
-# om长键语法： x,y,开始时间,物件类型,长键音效,结束时间,长键音效组
-# mania y 有看见固定 0，也有看见固定 192，好像无所谓，4k x有 64 192 320 448
-
-# 打击物件语法：x,y,时间,物件类型,打击音效,物件参数,打击音效组
-
-# x（整型） 和 y（整型）： 物件的位置，原点在左上角，单位是 osu! 像素。
-# 时间（整型）： 物件精确击打的时间。以谱面音频开始为原点，单位是毫秒。
-# 物件类型（整型）： 一位标记物件类型的数据。参见：类型部分。
-# 打击音效（整型）： 一位标记物件打击音效的数据。参见：音效部分。
-# 物件参数（逗号分隔的数组）： 根据物件类型不同附加的一些参数。
-# 打击音效组（冒号分隔的数组）： 击打物件时，决定具体该播放哪些音效的一些参数。与打击音效参数关系密切。参见：音效部分。如果没有设置特殊参数，则默认为 0:0:0:0:。
-
-# 类型
-# 物件类型参数是一个 8 位整数，每一位都有特殊的含义。
-# 位次序	含义
-# 0	将物件标记为圆圈 -1
-# 1	将物件标记为滑条 -2
-# 2	标记新 Combo 起始物件 -3
-# 3	将物件标记为转盘 -4
-# 4, 5, 6	一个 3 位整数，指定要跳过多少 Combo 颜色（即“跳过连击色 (Colour hax)”）。仅在物件位于新 Combo 开始时才相关。 -5 -6 -7
-# 7	将物件标记为 osu!mania 长按音符 -8
-# 0 位是最低位
-
 
 def hit_objects_parser(
     osu_file_metadata: list[str], hit_objects_list: list[str]
@@ -77,7 +44,7 @@ def hit_objects_parser(
     timing_points_list.reverse()
 
     for hit_object in hit_objects_list:
-        type: str = ""
+        object_type: str = ""
         start_time: int = 0  # 毫秒
         end_time: int = 0
 
@@ -87,10 +54,10 @@ def hit_objects_parser(
         raw_type: str = str(bin(int(object_params[3]))).removeprefix("0b").zfill(8)
 
         if raw_type[-1] == "1":
-            type = "hit circle"
+            object_type = "hit circle"
             start_time = end_time = int(object_params[2])
         elif raw_type[-2] == "1":
-            type = "slider"
+            object_type = "slider"
             start_time = int(object_params[2])
 
             # TODO: 此处 length 值应该是 Decimal 精确小数，滑条的视觉长度。单位是 osu! 像素。换高精库来算
@@ -131,17 +98,17 @@ def hit_objects_parser(
 
             end_time = start_time + slide_time
         elif raw_type[-4] == "1":
-            type = "spinner"
+            object_type = "spinner"
             start_time = int(object_params[2])
             end_time = int(object_params[5])
         elif raw_type[-8] == "1":
             # 样例数据 448,192,31331,128,8,31836:2:0:0:0:
-            type = "hold"
+            object_type = "hold"
             start_time = int(object_params[2])
             end_time = int(object_params[5].split(":")[0])
         else:
-            type = "unknown"
+            object_type = "unknown"
 
-        rt_list.append({"type": type, "start_time": start_time, "end_time": end_time})
+        rt_list.append({"type": object_type, "start_time": start_time, "end_time": end_time})
 
     return rt_list

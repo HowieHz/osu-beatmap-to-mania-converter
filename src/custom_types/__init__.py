@@ -1,4 +1,4 @@
-from typing import TypedDict, Union
+from typing import TypedDict
 
 
 class HitObject(TypedDict):

@@ -24,7 +24,7 @@ def mania_1k_to_2k(
         options: Mania2kOptions = mania_2k_options_default
 
     # 设置主要单戳键
-    for index, hit_object in enumerate(hit_objects_list):
+    for index, _ in enumerate(hit_objects_list):
         hit_objects_list[index]["key"] = options["main_key"]
     
     # 设置铺面起手键

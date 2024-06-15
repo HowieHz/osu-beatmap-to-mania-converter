@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from logger import debug, info, warning, error
+from logger import info
 from custom_types import HitObject, ManiaHitObject, Mania2kOptions
 from message import *
 
