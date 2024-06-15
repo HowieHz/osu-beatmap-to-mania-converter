@@ -4,7 +4,7 @@ PROGRAM_INFORMATION: str = f"""\
 osu!std 转 osu!mania 铺面转换器
 版本: {VERSION}
 
-开源地址: https://github.com/HowieHz/osu-beatmap-to-mania-converter
+项目主页: https://github.com/HowieHz/osu-beatmap-to-mania-converter
 下载地址: https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases
 我的博客: https://howiehz.top
 问题反馈: https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose
@@ -12,7 +12,7 @@ osu!std 转 osu!mania 铺面转换器
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，请按下回车键。"
 PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "请输入你的铺面完整路径（.osu 结尾）："
 PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = (
-    "请输入转换后 Mania 铺面的键数（1 或 2）："
+    "请输入转换后 Mania 铺面的键数（请输入 1，2，4 中的数值）\n注：设置输出渐键数为 4，即将 4k 左边两轨当 2k 使用。这样玩家无需制作 2k 界面所用皮肤。："
 )
 PLEASE_OUTPUT_DIR: str = (
     "请指定输出的 .osu 文件的目录，请以斜杠结尾。直接回车则为选择的 .osu 文件的同目录下："
@@ -33,7 +33,7 @@ WRITING_OSU_FILE: str = "铺面文件转换中，请稍等..."
 OSU_FILE_WRITTEN: str = "铺面文件已完成写入。"
 
 PLEASE_SUPPORT_THIS_PROJECT: str = (
-    "如果您还感到满意，\n请到 https://github.com/HowieHz/osu-beatmap-to-mania-converter 点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
+    "如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
 )
 
 PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"

@@ -11,9 +11,10 @@ from processor import (
     any_object_to_mania_1k,
     any_metadata_to_mania_1k,
     any_metadata_to_mania_2k,
+    any_metadata_to_mania_4k,
     mania_1k_to_2k,
 )
-from exporter import generate_mania_1k_osu_file, generate_mania_2k_osu_file
+from exporter import generate_mania_1k_osu_file, generate_mania_2k_osu_file, generate_mania_4k_osu_file
 
 
 def main():
@@ -32,8 +33,8 @@ def main():
         )
 
     number_of_keys: int = 0
-    # 询问用户输出 mania 1k 还是 mania 2k
-    while not number_of_keys in (1, 2):
+    # 询问用户输出 mania 1k 还是 mania 2k 还是 4k
+    while not number_of_keys in (1, 2, 4):
         number_of_keys = int(
             input(PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA)
         )
@@ -78,7 +79,7 @@ def main():
     mania_2k_minimum_jack_time_interval: float  # 最小叠键时间间距，单位毫秒
     mania_2k_maximum_number_of_jack_notes: int  # 最大叠键数
 
-    if number_of_keys == 2:
+    if number_of_keys == 2 or number_of_keys == 4:
         # 主要单戳纸询问
         raw_mania_2k_main_key = input(MANIA_2k_PLEASE_INPUT_MAIN_KEY)
         if raw_mania_2k_main_key == "":
@@ -165,7 +166,7 @@ def main():
         final_osu_file_content: str = generate_mania_1k_osu_file(
             osu_file_metadata, parsed_mania_1k_hit_objects_list
         )
-    elif number_of_keys == 2:
+    elif number_of_keys == 2 or number_of_keys == 4:
         # 目标产物 mania 2k
 
         # 将铺面从 1k 转换为 2k
@@ -173,15 +174,21 @@ def main():
             parsed_mania_1k_hit_objects_list, options=mania_2k_options
         )
 
-        # 将铺面元数据转换为 osu!mania 2k 元数据
-        osu_file_metadata: list[str] = any_metadata_to_mania_2k(osu_file_metadata)
-
-        # TODO: 上面要询问一些参数，然后这里进行处理
-
         ## 生成铺面
-        final_osu_file_content: str = generate_mania_2k_osu_file(
-            osu_file_metadata, parsed_mania_2k_hit_objects_list
-        )
+        if number_of_keys == 2:
+            # 将铺面元数据转换为 osu!mania 2k 元数据
+            osu_file_metadata: list[str] = any_metadata_to_mania_2k(osu_file_metadata)
+            
+            final_osu_file_content: str = generate_mania_2k_osu_file(
+                osu_file_metadata, parsed_mania_2k_hit_objects_list
+            )
+        elif number_of_keys == 4:
+            # 将铺面元数据转换为 osu!mania 4k 元数据
+            osu_file_metadata: list[str] = any_metadata_to_mania_4k(osu_file_metadata)
+            
+            final_osu_file_content: str = generate_mania_4k_osu_file(
+                osu_file_metadata, parsed_mania_2k_hit_objects_list
+            )
 
     info(BEATMAP_CONVERTED)
     info(WRITING_OSU_FILE)

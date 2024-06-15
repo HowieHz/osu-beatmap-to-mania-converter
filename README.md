@@ -23,8 +23,6 @@
     - [MacOS \& Linux](#macos--linux)
     - [通过源码运行](#通过源码运行)
   - [程序结构](#程序结构)
-    - [当目标产物为 osu!mania 1k](#当目标产物为-osumania-1k)
-    - [当目标产物为 osu!mania 2k](#当目标产物为-osumania-2k)
   - [为何创建此项目](#为何创建此项目)
   - [TODO](#todo)
   - [更新日志](#更新日志)
@@ -33,7 +31,9 @@
 
 ### 输出铺面类型
 
-osu!mania 1k, osu!mania 2k
+- osu!mania 1k
+- osu!mania 2k
+- osu!mania 4k（将 4k 左边两轨当 2k 使用，无需玩家制作 2k 界面皮肤）
 
 ### 输出规则
 
@@ -97,12 +97,6 @@ python ./src/main.py
 ```
 
 ## 程序结构
-
-### 当目标产物为 osu!mania 1k
-
-[读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
-
-### 当目标产物为 osu!mania 2k
 
 [读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
 
