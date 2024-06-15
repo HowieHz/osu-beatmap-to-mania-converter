@@ -28,7 +28,7 @@ def any_metadata_remove_sv(
 
             if line.rstrip() == "" and remove_line_flag:  # 读取到 TimingPoints 末了
                 break
-            
+
             if remove_line_flag:
                 osu_file_metadata[index] = None  # 要是这里直接 remove 会导致索引错乱，标记为 None，待会统一清理
 
