@@ -68,7 +68,7 @@ def _convert_long_jack_to_trill(
     jack_flag = False  # 这个为 False 表示现在并没有已经创建的 jack 栈
 
     # TODO: 创建配置选项 要求两叠键距离恒定才能转换
-    jack_interval: int  # 用于存储两叠键之间的间隔
+    object_interval: int  # 用于存储两键之间的间隔
 
     # 把长 jack 筛选出来
     last_hit_object: ManiaHitObject = hit_objects_list[0]
@@ -83,10 +83,9 @@ def _convert_long_jack_to_trill(
                 jack_node_stack = []  # 无意义的清空
             break
 
+        object_interval = this_hit_object["start_time"] - last_hit_object["start_time"]
         # 是否符合 jack 要求
-        if (
-            this_hit_object["start_time"] - last_hit_object["start_time"]
-        ) < minimum_jack_time_interval:
+        if object_interval < minimum_jack_time_interval:
             if index - 1 == 0:
                 jack_node_stack.append({"index": 0, "hit_object": last_hit_object})
 
@@ -115,11 +114,14 @@ def _convert_long_jack_to_trill(
         ):
             last_index_hit_object = jack_node_stack[stack_index - 1]
             debug(last_index_hit_object)
-            debug(hit_objects_list[last_index_hit_object["index"]] == last_index_hit_object["hit_object"])
+            debug(
+                hit_objects_list[last_index_hit_object["index"]]
+                == last_index_hit_object["hit_object"]
+            )
 
-            debug("last:",hit_objects_list[last_index_hit_object["index"]]["key"])
-            debug("this:",hit_objects_list[this_index_hit_object["index"]]["key"])
-            
+            debug("last:", hit_objects_list[last_index_hit_object["index"]]["key"])
+            debug("this:", hit_objects_list[this_index_hit_object["index"]]["key"])
+
             if hit_objects_list[last_index_hit_object["index"]]["key"] == 1:
                 hit_objects_list[this_index_hit_object["index"]]["key"] = 2
             else:
