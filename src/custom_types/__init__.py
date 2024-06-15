@@ -7,11 +7,12 @@ class HitObject(TypedDict):
 
     type 取值在 "hit circle", "slider",  "spinner", "hold", "unknown" 中\n
     开始时间和结束时间单位是毫秒。\n
+    要求结束是 int，实际计算滑条持续时间，会导致这个会出现 float。但是输出 float 游戏也能读，那就输出吧。
     """
 
     type: str
     start_time: int
-    end_time: int
+    end_time: int | float
 
 
 class ManiaHitObject(HitObject):
