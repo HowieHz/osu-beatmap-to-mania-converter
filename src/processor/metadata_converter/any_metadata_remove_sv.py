@@ -46,7 +46,7 @@ def any_metadata_remove_sv(
                 remove_line_flag = True
                 skip_line_flag = 1  # 跳过第一行红线
                 continue
-            
+
             if line.rstrip() == "" and remove_line_flag:  # 读取到 TimingPoints 末了
                 break
             

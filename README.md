@@ -1,6 +1,6 @@
 # osu-beatmap-to-mania-converter
 
-> Convert OSU!Standard(osu!std) to OSU!Mania
+> Convert OSU!Standard(osu!std)/OSU!Taiko to OSU!Mania
 
 ![GitHub](https://img.shields.io/github/license/HowieHz/osu-beatmap-to-mania-converter)
 ![GitHub all releases](https://img.shields.io/github/downloads/HowieHz/osu-beatmap-to-mania-converter/total)
@@ -10,7 +10,8 @@
 
 ## 主要功能
 
-将 OSU!Standard 铺面转换为 OSU!Mania 铺面。
+- 将 OSU!Standard 铺面转换为 OSU!Mania 铺面。
+- （制作中）将 OSU!Taiko 铺面转换为 OSU!Mania 铺面。
 
 如果想支持本项目就点个 star 吧，你的支持将指引我砥砺前行。
 
@@ -22,15 +23,24 @@ For fun.
 
 ## 这个软件的用途
 
+### 对于 OSU!Standard -> OSU!Mania
+
 1. 帮助萌新分配左手的两个键，而不是一直单戳
 2. OSU!Mania 铺师直接从 OSU!Standard 铺面采音用
 3. 手法分析/铺面解析
 4. 在主模式开 Autopilot mod 享受游戏（广义上，此软件生成的铺面相较于原铺，就相当于 NO SV 铺面相较于 SV 铺面）
-5. ...
+
+### 对于 OSU!Taiko -> OSU!Mania
+
+1. OSU!Mania 铺师直接从 OSU!Taiko 铺面采音用
+2. 手法分析/铺面解析
+3. ...
 
 [我有不同的见解/我想补充](https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose)
 
 ## 这个软件可以生成怎样的铺面
+
+### 对于 OSU!Standard 转 OSU!Mania
 
 1. 符合一般玩家双指分配的铺面（低密度单戳，高密度两指交替击打）
 2. 单戳练习铺生成器 （参数例：最大叠键数 1000000，最小叠键时间间距设置为 0）
@@ -42,8 +52,13 @@ For fun.
   - [主要功能](#主要功能)
   - [为何创建此项目](#为何创建此项目)
   - [这个软件的用途](#这个软件的用途)
+    - [对于 OSU!Standard -\> OSU!Mania](#对于-osustandard---osumania)
+    - [对于 OSU!Taiko -\> OSU!Mania](#对于-osutaiko---osumania)
   - [这个软件可以生成怎样的铺面](#这个软件可以生成怎样的铺面)
+    - [对于 OSU!Standard 转 OSU!Mania](#对于-osustandard-转-osumania)
     - [输出铺面类型](#输出铺面类型)
+      - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania)
+    - [OSU!Taiko 转 OSU!Mania](#osutaiko-转-osumania)
     - [输出规则](#输出规则)
     - [OSU!Mania 铺面输出可配置项](#osumania-铺面输出可配置项)
       - [基础设置](#基础设置)
@@ -74,9 +89,21 @@ For fun.
 
 ### 输出铺面类型
 
+#### OSU!Standard 转 OSU!Mania
+
 - OSU!Mania 1k
 - OSU!Mania 2k
 - OSU!Mania 4k（将 4k 左边两轨当 2k 使用，无需玩家制作 2k 界面皮肤）
+
+### OSU!Taiko 转 OSU!Mania
+
+> 咚（红色音符），咔（蓝色音符）。红色在内侧，蓝色在外侧。
+
+Taiko 长条
+
+- OSU!Mania 4k
+  - 模式 1
+  - ...
 
 ### 输出规则
 
