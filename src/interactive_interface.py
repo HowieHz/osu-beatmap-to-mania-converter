@@ -207,7 +207,7 @@ def main():
     elif number_of_keys == 2 or number_of_keys == 4:
         # 目标产物 mania 2k
 
-        # 将铺面从 1k 转换为 2k
+        # 将铺面从 1k 转换为 2k（根据配置项处理 parsed_mania_1k_hit_objects_list）
         parsed_mania_2k_hit_objects_list = mania_1k_to_2k(
             parsed_mania_1k_hit_objects_list, options=mania_2k_options
         )

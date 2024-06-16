@@ -55,7 +55,10 @@ For fun.
     - [MacOS \& Linux](#macos--linux)
     - [通过源码运行](#通过源码运行)
   - [程序结构](#程序结构)
-  - [软件对 .osu 文件做了什么处理](#软件对-osu-文件做了什么处理)
+  - [软件如何根据 .osu 文件生成 Mania 铺面](#软件如何根据-osu-文件生成-mania-铺面)
+    - [osu!std to osu!mania 1k](#osustd-to-osumania-1k)
+    - [osu!std to osu!mania 2k](#osustd-to-osumania-2k)
+    - [osu!std to osu!mania 4k](#osustd-to-osumania-4k)
   - [TODO](#todo)
     - [优先且易实现](#优先且易实现)
     - [优先](#优先)
@@ -143,9 +146,50 @@ python ./src/main.py
 
 [读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
 
-## 软件对 .osu 文件做了什么处理
+## 软件如何根据 .osu 文件生成 Mania 铺面
 
-> TODO: 待完成
+如依然有不理解的，欢迎致邮 `howie_hzgo@outlook.com`。如果你正在开发相关读取铺面文件/生成铺面的工具我会在力所能及的层面提供帮助。
+
+### osu!std to osu!mania 1k
+
+1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
+2. 读取 [HitObjects] 信息
+3. 根据 osu_file_metadata 进行预处理，命名为 parsed_hit_objects_list
+4. 将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，处理后的命名为 parsed_mania_1k_hit_objects_list
+5. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
+6. 将元数据处理为 mania 1k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 1 （设置信息为 1k）
+   - 设置 BeatmapSetID 为 -1
+7. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
+
+### osu!std to osu!mania 2k
+
+1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
+2. 读取 [HitObjects] 信息
+3. 根据 osu_file_metadata 进行预处理，命名为 parsed_hit_objects_list
+4. 将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，处理后的命名为 parsed_mania_1k_hit_objects_list
+5. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
+6. 根据配置项处理 parsed_mania_1k_hit_objects_list
+7. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 2 （设置信息为 2k）
+   - 设置 BeatmapSetID 为 -1
+8. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
+
+### osu!std to osu!mania 4k
+
+1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
+2. 读取 [HitObjects] 信息
+3. 根据 osu_file_metadata 进行预处理，命名为 parsed_hit_objects_list
+4. 将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，处理后的命名为 parsed_mania_1k_hit_objects_list
+5. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
+6. 根据配置项处理 parsed_mania_1k_hit_objects_list
+7. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 4 （设置信息为 4k）
+   - 设置 BeatmapSetID 为 -1
+8. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
 
 ## TODO
 
