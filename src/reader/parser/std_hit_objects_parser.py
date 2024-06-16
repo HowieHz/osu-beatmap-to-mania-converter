@@ -1,7 +1,7 @@
 from custom_types import HitObject
 
 
-def hit_objects_parser(
+def std_hit_objects_parser(
     osu_file_metadata: list[str], hit_objects_list: list[str]
 ) -> list[HitObject]:
     """解析 [HitObjects] 下每行的数据为更易于处理的形式
@@ -24,7 +24,7 @@ def hit_objects_parser(
 
     for hit_object in hit_objects_list:
         object_type: str = ""
-        start_time: int = 0  # 毫秒
+        start_time: int | float = 0  # 毫秒
         end_time: int | float = 0
 
         object_params: list[str] = hit_object.split(",")
@@ -165,16 +165,3 @@ def _slide_time_parser(
     )
 
     return slide_time
-
-
-def _x_to_key(x: int, keys: int) -> int:
-    """x 转 key 数
-
-    Args:
-        x (int): x 值
-        keys (int): 多少 key 的铺面
-
-    Returns:
-        int: 位置，从左到右第一轨是 1
-    """
-    return int(x * keys / 512 / 0.5 // 2) + 1

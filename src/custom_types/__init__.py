@@ -11,7 +11,7 @@ class HitObject(TypedDict):
     """
 
     type: str
-    start_time: int
+    start_time: int | float
     end_time: int | float
 
 
@@ -25,8 +25,8 @@ class ManiaHitObject(HitObject):
     """
 
     type: str
-    start_time: int
-    end_time: int
+    start_time: int | float
+    end_time: int | float
     key: int
 
 class Mania2kOptions(TypedDict):

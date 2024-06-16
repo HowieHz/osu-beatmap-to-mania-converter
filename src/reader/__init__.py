@@ -1,3 +1,4 @@
 from .load_hit_objects_list import load_hit_objects_list
-from .hit_objects_parser import hit_objects_parser
 from .load_osu_file_metadata import load_osu_file_metadata
+from .parser.std_hit_objects_parser import std_hit_objects_parser
+from .parser.mania_hit_objects_parser import mania_hit_objects_parser

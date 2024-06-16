@@ -5,7 +5,7 @@ from custom_types import HitObject, ManiaHitObject, Mania2kOptions
 from message import *
 
 from options_default import mania_2k_options_default
-from reader import load_hit_objects_list, load_osu_file_metadata, hit_objects_parser
+from reader import load_hit_objects_list, load_osu_file_metadata, std_hit_objects_parser
 from processor import (
     std_object_type_to_mania,
     any_object_to_mania_1k,
@@ -175,7 +175,7 @@ def main():
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(
+    parsed_hit_objects_list: list[HitObject] = std_hit_objects_parser(
         osu_file_metadata, load_hit_objects_list(osu_file_full_path)
     )
 
