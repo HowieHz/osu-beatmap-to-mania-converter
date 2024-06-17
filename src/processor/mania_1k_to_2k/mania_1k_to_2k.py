@@ -1,6 +1,6 @@
 from typing import TypedDict
 
-from custom_types import ManiaHitObject, Mania2kOptions
+from custom_types import Mania2kOptions, ManiaHitObject
 from logger import debug
 from options_default import mania_2k_options_default
 
@@ -109,9 +109,7 @@ def _convert_long_jack_to_trill(
     for jack_node_stack in long_jack_node_stack_list:
         hit_objects_list[jack_node_stack[0]["index"]]["key"] = trill_start_key
 
-        for stack_index, this_index_hit_object in enumerate(
-            jack_node_stack[1:], start=1
-        ):
+        for stack_index, this_index_hit_object in enumerate(jack_node_stack[1:], start=1):
             last_index_hit_object = jack_node_stack[stack_index - 1]
             debug(last_index_hit_object)
             debug(

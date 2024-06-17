@@ -2,6 +2,7 @@ from logger import debug
 
 # .osu 文件官方文档 https://osu.ppy.sh/wiki/zh/Client/File_formats/osu_%28file_format%29
 
+
 def load_hit_objects_list(file_full_path: str) -> list[str]:
     """加载 osu 格式的文件中的 HitObjects
 

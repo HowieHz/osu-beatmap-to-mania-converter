@@ -2,6 +2,7 @@ from custom_types import HitObject, ManiaHitObject
 
 # TODO: 待完成
 
+
 def taiko_object_type_to_mania_5k(hit_object: HitObject) -> ManiaHitObject:
     """将滑条，转盘转换为长条，其他的不用转换\n
     把物件添加到 mania 一轨

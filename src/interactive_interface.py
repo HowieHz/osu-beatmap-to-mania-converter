@@ -1,24 +1,23 @@
 from pathlib import Path
 
-from logger import info
-from custom_types import HitObject, ManiaHitObject, Mania2kOptions
-from message import *
-
-from options_default import mania_2k_options_default
-from reader import load_hit_objects_list, load_osu_file_metadata, std_hit_objects_parser
-from processor import (
-    std_object_type_to_mania_1k,
-    any_metadata_to_mania_1k,
-    any_metadata_to_mania_2k,
-    any_metadata_to_mania_4k,
-    any_metadata_remove_sv,
-    mania_1k_to_2k,
-)
+from custom_types import HitObject, Mania2kOptions, ManiaHitObject
 from exporter import (
     generate_mania_1k_osu_file,
     generate_mania_2k_osu_file,
     generate_mania_4k_osu_file,
 )
+from logger import info
+from message import *
+from options_default import mania_2k_options_default
+from processor import (
+    any_metadata_remove_sv,
+    any_metadata_to_mania_1k,
+    any_metadata_to_mania_2k,
+    any_metadata_to_mania_4k,
+    mania_1k_to_2k,
+    std_object_type_to_mania_1k,
+)
+from reader import load_hit_objects_list, load_osu_file_metadata, std_hit_objects_parser
 
 
 def main():
@@ -123,9 +122,7 @@ def main():
             mania_2k_start_key = mania_2k_options_default["start_key"]
 
         # 交互起手键询问
-        raw_input_mania_2k_trill_start_key = input(
-            MANIA_2K_PLEASE_INPUT_TRILL_START_KEY
-        )
+        raw_input_mania_2k_trill_start_key = input(MANIA_2K_PLEASE_INPUT_TRILL_START_KEY)
         if raw_input_mania_2k_trill_start_key == "":
             mania_2k_trill_start_key = mania_2k_start_key
         elif raw_input_mania_2k_trill_start_key in ("1", "2"):

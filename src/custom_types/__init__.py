@@ -29,6 +29,7 @@ class ManiaHitObject(HitObject):
     end_time: int | float
     key: int
 
+
 class Mania2kOptions(TypedDict):
     """_summary_
 
@@ -39,6 +40,7 @@ class Mania2kOptions(TypedDict):
         minimum_jack_time_interval (float): 最小叠键时间间距，单位毫秒。
         maximum_number_of_jack_notes (int): 最大叠键数。
     """
+
     main_key: int
     start_key: int
     trill_start_key: int

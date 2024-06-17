@@ -1,7 +1,9 @@
 from .hit_object_converter.std_object_type_to_mania_1k import std_object_type_to_mania_1k
-from .hit_object_converter.taiko_object_type_to_mania_5k import taiko_object_type_to_mania_5k
+from .hit_object_converter.taiko_object_type_to_mania_5k import (
+    taiko_object_type_to_mania_5k,
+)
+from .mania_1k_to_2k.mania_1k_to_2k import mania_1k_to_2k
+from .metadata_converter.any_metadata_remove_sv import any_metadata_remove_sv
 from .metadata_converter.any_metadata_to_mania_1k import any_metadata_to_mania_1k
 from .metadata_converter.any_metadata_to_mania_2k import any_metadata_to_mania_2k
 from .metadata_converter.any_metadata_to_mania_4k import any_metadata_to_mania_4k
-from .metadata_converter.any_metadata_remove_sv import any_metadata_remove_sv
-from .mania_1k_to_2k.mania_1k_to_2k import mania_1k_to_2k

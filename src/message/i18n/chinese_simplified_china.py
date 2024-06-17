@@ -38,7 +38,9 @@ PLEASE_SUPPORT_THIS_PROJECT: str = (
 
 PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"
 
-PLEASE_INPUT_REMOVE_SV_OPTION: str = "请输入是否移除铺面变速（0 为不移除，1 为全移除，2 为仅移除继承时间点（绿线），默认值为 1）"
+PLEASE_INPUT_REMOVE_SV_OPTION: str = (
+    "请输入是否移除铺面变速（0 为不移除，1 为全移除，2 为仅移除继承时间点（绿线），默认值为 1）"
+)
 
 # mania 2k only
 # MANIA_2K_PLEASE_INPUT_

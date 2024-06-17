@@ -2,6 +2,7 @@ from custom_types import ManiaHitObject
 
 # TODO: 待完成
 
+
 def taiko_hit_objects_parser(
     osu_file_metadata: list[str], hit_objects_list: list[str]
 ) -> list[ManiaHitObject]:

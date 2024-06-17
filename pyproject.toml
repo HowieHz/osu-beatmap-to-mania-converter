@@ -6,3 +6,18 @@ description = "Convert OSU! beatmap to OSU!Mania."
 readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["osu", "game", "windows", "rhythm", "beatmap"]
+
+[tool.black]
+line-length = 90
+
+[tool.isort]
+profile = "black"
+src_paths = ["src/*"]
+multi_line_output = 3
+verbose = true
+line_length = 90
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
