@@ -60,6 +60,8 @@ For fun.
       - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania)
     - [OSU!Taiko 转 OSU!Mania](#osutaiko-转-osumania)
     - [输出规则](#输出规则)
+      - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania-1)
+    - [OSU!Taiko 转 OSU!Mania](#osutaiko-转-osumania-1)
     - [OSU!Mania 铺面输出可配置项](#osumania-铺面输出可配置项)
       - [基础设置](#基础设置)
       - [输出目标 OSU!Mania 2k/4k 为才有的配置项](#输出目标-osumania-2k4k-为才有的配置项)
@@ -71,9 +73,11 @@ For fun.
     - [通过源码运行](#通过源码运行)
   - [程序结构](#程序结构)
   - [软件如何根据 .osu 文件生成 Mania 铺面](#软件如何根据-osu-文件生成-mania-铺面)
-    - [osu!std to osu!mania 1k](#osustd-to-osumania-1k)
-    - [osu!std to osu!mania 2k](#osustd-to-osumania-2k)
-    - [osu!std to osu!mania 4k](#osustd-to-osumania-4k)
+    - [osu!std to osu!mania](#osustd-to-osumania)
+      - [to mania!mania 1k](#to-maniamania-1k)
+      - [to osu!mania 2k](#to-osumania-2k)
+      - [to osu!mania 4k](#to-osumania-4k)
+    - [osu!taiko to osu!mania 4k](#osutaiko-to-osumania-4k)
   - [TODO](#todo)
     - [优先且易实现](#优先且易实现)
     - [优先](#优先)
@@ -107,9 +111,24 @@ Taiko 长条
 
 ### 输出规则
 
+#### OSU!Standard 转 OSU!Mania
+
 1. 主模式音符 -> mania 音符
 2. 主模式长条 -> mania 长条
 3. 主模式转盘 -> mania 长条
+
+### OSU!Taiko 转 OSU!Mania
+
+1. 红圈, 蓝圈 -> mania 音符
+2. 大红圈，大蓝圈 -> mania 音符，但是同时生成在两个轨道上，形成双押（可以设置为转换为单键）
+3. 长黄条（滚动条） -> mania 长条
+4. 大的长黄条 -> mania 长条
+5. 拨浪鼓（转盘） -> mania 长条
+
+注：
+
+1. 长黄条/大的长黄条的转换是不完美的。因为实际上你游玩 taiko 铺面的时候，不论是大黄条还是小黄条，应按照黄条上面的白点的节奏击打任意一个键，而不是作为一个长条来按。
+2. 拨浪鼓（转盘）的转换是不完美的。因为实际上你游玩 taiko 铺面的时候，你应该交替击打红蓝键来完成转盘。
 
 ### OSU!Mania 铺面输出可配置项
 
@@ -177,43 +196,61 @@ python ./src/main.py
 
 如依然有不理解的，欢迎致邮 `howie_hzgo@outlook.com`。如果你正在开发相关读取铺面文件/生成铺面的工具我会在力所能及的层面提供帮助。
 
-### osu!std to osu!mania 1k
+### osu!std to osu!mania
+
+共同的步骤
 
 1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
-2. 读取 [HitObjects] 信息，根据 osu_file_metadata 进行预处理，命名为 parsed_hit_objects_list
-3. 将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，处理后的命名为 parsed_mania_1k_hit_objects_list
+2. 读取 [HitObjects] 信息，根据 osu_file_metadata 使用 std_hit_objects_parser 函数进行预处理，命名为 parsed_hit_objects_list
+3. 使用 std_object_type_to_mania_1k 函数将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，并且放到 1 轨，处理后的命名为 parsed_mania_1k_hit_objects_list
 4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
-5. 将元数据处理为 mania 1k 的元数据（处理 osu_file_metadata）
+
+#### to mania!mania 1k
+
+1. 将元数据处理为 mania 1k 的元数据（处理 osu_file_metadata）
    - 设置 Mode 为 3 （设置铺面模式为 Mania）
    - 设置 CircleSize 为 1 （设置信息为 1k）
    - 设置 BeatmapSetID 为 -1
-6. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
+2. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
 
-### osu!std to osu!mania 2k
+#### to osu!mania 2k
 
-1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
-2. 读取 [HitObjects] 信息，根据 osu_file_metadata 进行预处理，命名为 parsed_hit_objects_list
-3. 将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，处理后的命名为 parsed_mania_1k_hit_objects_list
-4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
-5. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
-6. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
+1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
+2. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
    - 设置 Mode 为 3 （设置铺面模式为 Mania）
    - 设置 CircleSize 为 2 （设置信息为 2k）
    - 设置 BeatmapSetID 为 -1
-7. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
+3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
 
-### osu!std to osu!mania 4k
+#### to osu!mania 4k
 
-1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
-2. 读取 [HitObjects] 信息，根据 osu_file_metadata 进行预处理，命名为 parsed_hit_objects_list
-3. 将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，处理后的命名为 parsed_mania_1k_hit_objects_list
-4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
-5. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
-6. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
+1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
+2. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
    - 设置 Mode 为 3 （设置铺面模式为 Mania）
    - 设置 CircleSize 为 4 （设置信息为 4k）
    - 设置 BeatmapSetID 为 -1
-7. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
+3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
+
+### osu!taiko to osu!mania 4k
+
+1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
+2. 读取 [HitObjects] 信息，根据 osu_file_metadata 使用 taiko_hit_objects_parser 函数进行预处理，命名为 parsed_hit_objects_list
+   - 预处理分类了大黄条，小黄条，大红圈，小红圈，大蓝圈，小篮圈，拨浪鼓（转盘）
+   - 按照英文官网 wiki 起的类型名：large slider, slider, large red notes, red notes, large blue note, blue note, spinner
+3. 用 taiko_object_type_to_mania_5k 函数将 parsed_hit_objects_list 中类型为大小黄条和拨浪鼓（转盘）的转换为 Mania 长音符，处理后的命名为 parsed_mania_5k_hit_objects_list
+   - 从左到右依次是 1-5 轨道
+   - 1 轨道放小红圈转换后的音符
+   - 2 轨道放大红圈转换后的音符
+   - 3 轨道放小蓝圈转换后的音符
+   - 4 轨道放大篮圈转换后的音符
+   - 5 轨道放大/小黄条和拨浪鼓转换后的长音符
+4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
+5. 根据配置项处理 parsed_mania_5k_hit_objects_list，处理后的命名为 parsed_mania_4k_hit_objects_list
+6. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 4 （设置信息为 4k）
+   - 设置 BeatmapSetID 为 -1
+7. 根据 osu_file_metadata 和 parsed_mania_4k_hit_objects_list 生成铺面
 
 ## TODO
 

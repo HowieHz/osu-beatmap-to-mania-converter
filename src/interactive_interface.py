@@ -7,8 +7,7 @@ from message import *
 from options_default import mania_2k_options_default
 from reader import load_hit_objects_list, load_osu_file_metadata, std_hit_objects_parser
 from processor import (
-    std_object_type_to_mania,
-    any_object_to_mania_1k,
+    std_object_type_to_mania_1k,
     any_metadata_to_mania_1k,
     any_metadata_to_mania_2k,
     any_metadata_to_mania_4k,
@@ -181,10 +180,7 @@ def main():
 
     # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
     parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
-        map(
-            any_object_to_mania_1k,
-            map(std_object_type_to_mania, parsed_hit_objects_list),
-        )
+        map(std_object_type_to_mania_1k, parsed_hit_objects_list)
     )
 
     info(OSU_FILE_LOADED)
