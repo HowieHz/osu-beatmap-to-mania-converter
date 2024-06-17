@@ -11,7 +11,7 @@
 ## 主要功能
 
 - 将 OSU!Standard 铺面转换为 OSU!Mania 铺面。
-- （制作中）将 OSU!Taiko 铺面转换为 OSU!Mania 铺面。
+- （！制作中）将 OSU!Taiko 铺面转换为 OSU!Mania 铺面。
 
 如果想支持本项目就点个 star 吧，你的支持将指引我砥砺前行。
 
@@ -23,14 +23,14 @@ For fun.
 
 ## 这个软件的用途
 
-### 对于 OSU!Standard -> OSU!Mania
+### 对于 OSU!Standard 转 OSU!Mania
 
 1. 帮助萌新分配左手的两个键，而不是一直单戳
 2. OSU!Mania 铺师直接从 OSU!Standard 铺面采音用
 3. 手法分析/铺面解析
 4. 在主模式开 Autopilot mod 享受游戏（广义上，此软件生成的铺面相较于原铺，就相当于 NO SV 铺面相较于 SV 铺面）
 
-### 对于 OSU!Taiko -> OSU!Mania
+### 对于 OSU!Taiko 转 OSU!Mania
 
 1. OSU!Mania 铺师直接从 OSU!Taiko 铺面采音用
 2. 手法分析/铺面解析
@@ -46,54 +46,67 @@ For fun.
 2. 单戳练习铺生成器 （参数例：最大叠键数 1000000，最小叠键时间间距设置为 0）
 3. 强双练习铺生成器 （参数例：最大叠键数 1，最小叠键时间间隔 1000000）
 
+### 对于 OSU!Taiko 转 OSU!Mania
+
+1. 符合一般玩家手指分配音符的铺面
+2. 小红圈和小蓝圈单戳的铺面（参数例：红圈列/蓝圈列最大叠键数 1000000，红圈列/蓝圈列最小叠键时间间距设置为 0）
+3. 小红圈和小蓝圈强制两指交换击打的铺面（参数例：红圈列/蓝圈列最大叠键数 1，红圈列/蓝圈列最小叠键时间间距设置为 1000000）
+
 ---
 
 - [osu-beatmap-to-mania-converter](#osu-beatmap-to-mania-converter)
   - [主要功能](#主要功能)
   - [为何创建此项目](#为何创建此项目)
   - [这个软件的用途](#这个软件的用途)
-    - [对于 OSU!Standard -\> OSU!Mania](#对于-osustandard---osumania)
-    - [对于 OSU!Taiko -\> OSU!Mania](#对于-osutaiko---osumania)
-  - [这个软件可以生成怎样的铺面](#这个软件可以生成怎样的铺面)
     - [对于 OSU!Standard 转 OSU!Mania](#对于-osustandard-转-osumania)
-    - [输出铺面类型](#输出铺面类型)
-      - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania)
+    - [对于 OSU!Taiko 转 OSU!Mania](#对于-osutaiko-转-osumania)
+  - [这个软件可以生成怎样的铺面](#这个软件可以生成怎样的铺面)
+    - [对于 OSU!Standard 转 OSU!Mania](#对于-osustandard-转-osumania-1)
+    - [对于 OSU!Taiko 转 OSU!Mania](#对于-osutaiko-转-osumania-1)
+  - [物件转换规则，可生成的铺面类型](#物件转换规则可生成的铺面类型)
+    - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania)
     - [OSU!Taiko 转 OSU!Mania](#osutaiko-转-osumania)
-    - [输出规则](#输出规则)
-      - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania-1)
-    - [OSU!Taiko 转 OSU!Mania](#osutaiko-转-osumania-1)
-    - [OSU!Mania 铺面输出可配置项](#osumania-铺面输出可配置项)
+  - [软件可配置项说明](#软件可配置项说明)
+    - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania-1)
       - [基础设置](#基础设置)
       - [输出目标 OSU!Mania 2k/4k 为才有的配置项](#输出目标-osumania-2k4k-为才有的配置项)
-      - [未完成的功能（TODO）](#未完成的功能todo)
   - [如何下载使用](#如何下载使用)
     - [通过二进制文件运行](#通过二进制文件运行)
-    - [Windows](#windows)
-    - [MacOS \& Linux](#macos--linux)
+      - [Windows](#windows)
+      - [MacOS \& Linux](#macos--linux)
     - [通过源码运行](#通过源码运行)
-  - [程序结构](#程序结构)
-  - [软件如何根据 .osu 文件生成 Mania 铺面](#软件如何根据-osu-文件生成-mania-铺面)
-    - [osu!std to osu!mania](#osustd-to-osumania)
-      - [to mania!mania 1k](#to-maniamania-1k)
-      - [to osu!mania 2k](#to-osumania-2k)
-      - [to osu!mania 4k](#to-osumania-4k)
-    - [osu!taiko to osu!mania 4k](#osutaiko-to-osumania-4k)
+  - [软件原理解释](#软件原理解释)
+    - [程序结构](#程序结构)
+    - [软件如何根据 .osu 文件生成 Mania 铺面](#软件如何根据-osu-文件生成-mania-铺面)
+      - [osu!std to osu!mania](#osustd-to-osumania)
+        - [to mania!mania 1k](#to-maniamania-1k)
+        - [to osu!mania 2k](#to-osumania-2k)
+        - [to osu!mania 4k](#to-osumania-4k)
+      - [osu!taiko to osu!mania 4k](#osutaiko-to-osumania-4k)
   - [TODO](#todo)
     - [优先且易实现](#优先且易实现)
     - [优先](#优先)
+      - [其他的 mania 2k 输出选项](#其他的-mania-2k-输出选项)
     - [滞后](#滞后)
       - [i18n](#i18n)
       - [项目环境配置/文档](#项目环境配置文档)
     - [后备](#后备)
-  - [相关文档](#相关文档)
-  - [Star History](#star-history)
+  - [开发指南](#开发指南)
   - [更新日志](#更新日志)
+  - [项目数据统计](#项目数据统计)
+    - [Star History](#star-history)
 
 ---
 
-### 输出铺面类型
+## 物件转换规则，可生成的铺面类型
 
-#### OSU!Standard 转 OSU!Mania
+### OSU!Standard 转 OSU!Mania
+
+1. 主模式音符 -> mania 音符
+2. 主模式长条 -> mania 长条
+3. 主模式转盘 -> mania 长条
+
+可生成铺面有：
 
 - OSU!Mania 1k
 - OSU!Mania 2k
@@ -101,36 +114,40 @@ For fun.
 
 ### OSU!Taiko 转 OSU!Mania
 
-> 咚（红色音符），咔（蓝色音符）。红色在内侧，蓝色在外侧。
+> 红色在内侧，蓝色在外侧。
 
-Taiko 长条
-
-- OSU!Mania 4k
-  - 模式 1
-  - ...
-
-### 输出规则
-
-#### OSU!Standard 转 OSU!Mania
-
-1. 主模式音符 -> mania 音符
-2. 主模式长条 -> mania 长条
-3. 主模式转盘 -> mania 长条
-
-### OSU!Taiko 转 OSU!Mania
-
-1. 红圈, 蓝圈 -> mania 音符
-2. 大红圈，大蓝圈 -> mania 音符，但是同时生成在两个轨道上，形成双押（可以设置为转换为单键）
-3. 长黄条（滚动条） -> mania 长条
-4. 大的长黄条 -> mania 长条
-5. 拨浪鼓（转盘） -> mania 长条
+1. 小红圈（别名 d（咚）） -> mania 音符
+2. 小蓝圈（别名 k（咔）） -> mania 音符
+3. 大红圈（别名 D/O） -> mania 音符
+4. 大蓝圈（别名 K/X） -> mania 音符
+5. 长黄条（滚动条） -> mania 长条
+6. 大的长黄条 -> mania 长条
+7. 拨浪鼓（转盘） -> mania 长条
 
 注：
 
 1. 长黄条/大的长黄条的转换是不完美的。因为实际上你游玩 taiko 铺面的时候，不论是大黄条还是小黄条，应按照黄条上面的白点的节奏击打任意一个键，而不是作为一个长条来按。
 2. 拨浪鼓（转盘）的转换是不完美的。因为实际上你游玩 taiko 铺面的时候，你应该交替击打红蓝键来完成转盘。
 
-### OSU!Mania 铺面输出可配置项
+- OSU!Mania 4k
+  - 按照手法设置对应从左到右 1 到 4 轨。手法设置用字母 d 和 k 来表示如何分配四个键的位置，如：kddk（直观手法）, ddkk/kkdd（硬抗手法）, dkdk/kdkd/dkkd（少见的手法）。
+  - 小红圈就在其中一个 d 轨生成一个音符
+  - 大红圈就在两个 d 轨都生成音符，形成双押（可配置将大红圈视为小红圈）
+  - 小蓝圈就在其中一个 k 轨生成一个音符
+  - 大蓝圈就在两个 k 轨都生成音符，形成双押（可配置将大蓝圈视为小蓝圈）
+  - 大/小黄条和拨浪鼓转换后的长音符在某个轨道上生成
+  - （具体有关“其中一个 x 轨”，“某个轨道” 具体是其中的哪个轨道，则由具体生成时的软件设置来决定）
+- OSU!Mania 5k
+  - 从左到右依次是 1-5 轨道
+  - 1 轨道放小红圈转换后的音符
+  - 2 轨道放大红圈转换后的音符
+  - 3 轨道放大/小黄条和拨浪鼓转换后的长音符
+  - 4 轨道放小蓝圈转换后的音符
+  - 5 轨道放大蓝圈转换后的音符
+
+## 软件可配置项说明
+
+### OSU!Standard 转 OSU!Mania
 
 #### 基础设置
 
@@ -144,7 +161,116 @@ Taiko 长条
 2. 纵连两键间距小于多少毫秒开始转交互（Minimum Jack Time Interval）
 3. 几个纵开始转交互（Maximum number of jack notes）
 
-#### 未完成的功能（TODO）
+## 如何下载使用
+
+### 通过二进制文件运行
+
+#### Windows
+
+从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件。
+解压后，运行 `.exe` 为后缀的程序，即可开始运行程序，随后根据程序引导完成操作即可。
+
+#### MacOS & Linux
+
+请看[通过源码运行](#通过源码运行)
+
+### 通过源码运行
+
+下载项目源码，然后进入到项目根目录。
+在本地部署 Python3.12 环境后，运行以下指令。
+即可从源码运行此项目。
+
+```bash
+python ./src/main.py
+```
+
+## 软件原理解释
+
+<details><summary>点我展开查看</summary>
+
+### 程序结构
+
+[读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器（生成可以直接写入文件的文本）](./src/lib/exporter/)
+
+### 软件如何根据 .osu 文件生成 Mania 铺面
+
+.osu 文件解析：[官方 wiki：.osu 文件解释文档](https://osu.ppy.sh/wiki/zh/Client/File_formats/osu_%28file_format%29)
+
+如依然有不理解的，欢迎致邮 `howie_hzgo@outlook.com`。如果你正在开发相关读取铺面文件/生成铺面的工具我会在力所能及的层面提供帮助。
+
+#### osu!std to osu!mania
+
+共同的步骤
+
+1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
+2. 读取 [HitObjects] 信息，根据 osu_file_metadata 使用 std_hit_objects_parser 函数进行预处理，命名为 parsed_hit_objects_list
+3. 使用 std_object_type_to_mania_1k 函数将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，并且放到 1 轨，处理后的命名为 parsed_mania_1k_hit_objects_list
+4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
+
+##### to mania!mania 1k
+
+1. 将元数据处理为 mania 1k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 1 （设置信息为 1k）
+   - 设置 BeatmapSetID 为 -1
+2. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
+
+##### to osu!mania 2k
+
+1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
+2. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 2 （设置信息为 2k）
+   - 设置 BeatmapSetID 为 -1
+3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
+
+##### to osu!mania 4k
+
+1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
+2. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 4 （设置信息为 4k）
+   - 设置 BeatmapSetID 为 -1
+3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
+
+#### osu!taiko to osu!mania 4k
+
+1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
+2. 读取 [HitObjects] 信息，根据 osu_file_metadata 使用 taiko_hit_objects_parser 函数进行预处理，命名为 parsed_hit_objects_list
+   - 预处理分类了大黄条，小黄条，大红圈，小红圈，大蓝圈，小蓝圈，拨浪鼓（转盘）
+   - 按照英文官网 wiki 起的类型名：large slider, slider, large red notes, red notes, large blue note, blue note, spinner
+3. 用 taiko_object_type_to_mania_5k 函数将 parsed_hit_objects_list 中类型为大小黄条和拨浪鼓（转盘）的转换为 Mania 长音符，处理后的命名为 parsed_mania_5k_hit_objects_list
+   - 从左到右依次是 1-5 轨道
+   - 1 轨道放小红圈转换后的音符
+   - 2 轨道放大红圈转换后的音符
+   - 3 轨道放小蓝圈转换后的音符
+   - 4 轨道放大蓝圈转换后的音符
+   - 5 轨道放大/小黄条和拨浪鼓转换后的长音符
+4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
+5. 根据配置项处理 parsed_mania_5k_hit_objects_list，处理后的命名为 parsed_mania_4k_hit_objects_list
+6. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
+   - 设置 Mode 为 3 （设置铺面模式为 Mania）
+   - 设置 CircleSize 为 4 （设置信息为 4k）
+   - 设置 BeatmapSetID 为 -1
+7. 根据 osu_file_metadata 和 parsed_mania_4k_hit_objects_list 生成铺面
+
+</details>
+
+## TODO
+
+<details><summary>点我展开查看</summary>
+
+### 优先且易实现
+
+1. 添加时间计量，每个步骤花费了多少时间
+
+### 优先
+
+1. cli 程序
+2. 完成其他的 mania 2k 输出选项
+   1. 生成后提供直接修改游戏内铺面标题的设置
+
+#### 其他的 mania 2k 输出选项
 
 1. 长纵转交互：生成成 1k 的时候会出现大量的纵连，此时根据这个规则开始转换
    - （TODO）两音符击打时间间距小于一个值（Anti long jack）
@@ -160,109 +286,6 @@ Taiko 长条
 2. （TODO）防止交互头尾连起来短纵选项：前一个交互的最后一个音符和下一个交互开头的音符要是间隔小于一个值，下一个交互就从另一个轨道开始（Anti minijack between trill）
 3. （TODO）检测 ln 尾部和下一个 note 的间距，小于一个值就把这个 note 放到另一列上
 4. （TODO）允许用户调整 2k -> 4k 对应轨道映射
-
-## 如何下载使用
-
-### 通过二进制文件运行
-
-### Windows
-
-从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件。
-解压后，运行 `.exe` 为后缀的程序，即可开始运行程序，随后根据程序引导完成操作即可。
-
-### MacOS & Linux
-
-请看[通过源码运行](#通过源码运行)
-
-### 通过源码运行
-
-下载项目源码，然后进入到项目根目录。  
-在本地部署 Python 环境后，运行以下指令。
-即可从源码运行此项目。
-
-```bash
-pip install -r requirements.txt
-```
-
-```bash
-python ./src/main.py
-```
-
-## 程序结构
-
-[读取器（包括预处理）](./src/lib/reader/) -> [处理器（数据转换）](./src/lib/processor/) -> [生成器](./src/lib/exporter/)
-
-## 软件如何根据 .osu 文件生成 Mania 铺面
-
-如依然有不理解的，欢迎致邮 `howie_hzgo@outlook.com`。如果你正在开发相关读取铺面文件/生成铺面的工具我会在力所能及的层面提供帮助。
-
-### osu!std to osu!mania
-
-共同的步骤
-
-1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
-2. 读取 [HitObjects] 信息，根据 osu_file_metadata 使用 std_hit_objects_parser 函数进行预处理，命名为 parsed_hit_objects_list
-3. 使用 std_object_type_to_mania_1k 函数将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，并且放到 1 轨，处理后的命名为 parsed_mania_1k_hit_objects_list
-4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
-
-#### to mania!mania 1k
-
-1. 将元数据处理为 mania 1k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 1 （设置信息为 1k）
-   - 设置 BeatmapSetID 为 -1
-2. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
-
-#### to osu!mania 2k
-
-1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
-2. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 2 （设置信息为 2k）
-   - 设置 BeatmapSetID 为 -1
-3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
-
-#### to osu!mania 4k
-
-1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
-2. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 4 （设置信息为 4k）
-   - 设置 BeatmapSetID 为 -1
-3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
-
-### osu!taiko to osu!mania 4k
-
-1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
-2. 读取 [HitObjects] 信息，根据 osu_file_metadata 使用 taiko_hit_objects_parser 函数进行预处理，命名为 parsed_hit_objects_list
-   - 预处理分类了大黄条，小黄条，大红圈，小红圈，大蓝圈，小篮圈，拨浪鼓（转盘）
-   - 按照英文官网 wiki 起的类型名：large slider, slider, large red notes, red notes, large blue note, blue note, spinner
-3. 用 taiko_object_type_to_mania_5k 函数将 parsed_hit_objects_list 中类型为大小黄条和拨浪鼓（转盘）的转换为 Mania 长音符，处理后的命名为 parsed_mania_5k_hit_objects_list
-   - 从左到右依次是 1-5 轨道
-   - 1 轨道放小红圈转换后的音符
-   - 2 轨道放大红圈转换后的音符
-   - 3 轨道放小蓝圈转换后的音符
-   - 4 轨道放大篮圈转换后的音符
-   - 5 轨道放大/小黄条和拨浪鼓转换后的长音符
-4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
-5. 根据配置项处理 parsed_mania_5k_hit_objects_list，处理后的命名为 parsed_mania_4k_hit_objects_list
-6. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 4 （设置信息为 4k）
-   - 设置 BeatmapSetID 为 -1
-7. 根据 osu_file_metadata 和 parsed_mania_4k_hit_objects_list 生成铺面
-
-## TODO
-
-### 优先且易实现
-
-1. 添加时间计量，每个步骤花费了多少时间
-
-### 优先
-
-1. cli 程序
-2. 完成其他的 mania 2k 输出选项
-   1. 生成后提供直接修改游戏内铺面标题的设置
 
 ### 滞后
 
@@ -289,11 +312,19 @@ python ./src/main.py
 
 1. 创建 GUI 程序（肯定是基于 cli，做个 cli 的调用。用简单的 python web 框架调用 cli 是上策，用其他语言写 gui 算中策，用 pyside/pyqt 是下策）
 
-## 相关文档
+</details>
 
-1. [.osu 文件解释文档](https://osu.ppy.sh/wiki/zh/Client/File_formats/osu_%28file_format%29)
+## 开发指南
 
-## Star History
+见 [CONTRIBUTING](./CONTRIBUTING)
+
+## 更新日志
+
+见 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases)
+
+## 项目数据统计
+
+### Star History
 
 <a href="https://star-history.com/#HowieHz/osu-beatmap-to-mania-converter&Date">
  <picture>
@@ -302,7 +333,3 @@ python ./src/main.py
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=HowieHz/osu-beatmap-to-mania-converter&type=Date" loading="lazy" />
  </picture>
 </a>
-
-## 更新日志
-
-见 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases)
