@@ -17,6 +17,8 @@
 
 如在使用中遇到 Bug，想提出新功能，对现有功能不满，想提出建议，想问问题，想进行讨论。欢迎前来[提出新的 Issue](https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose)。
 
+在我的博客上阅读：[点我跳转](https://howiehz.top/archives/osu-beatmap-to-mania-converter-readme)
+
 ## 为何创建此项目
 
 For fun.
@@ -65,7 +67,11 @@ For fun.
     - [对于 OSU!Taiko 转 OSU!Mania](#对于-osutaiko-转-osumania-1)
   - [物件转换规则，可生成的铺面类型](#物件转换规则可生成的铺面类型)
     - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania)
+      - [物件转换规则](#物件转换规则)
+      - [可生成铺面](#可生成铺面)
     - [OSU!Taiko 转 OSU!Mania](#osutaiko-转-osumania)
+      - [物件转换规则](#物件转换规则-1)
+      - [可生成铺面](#可生成铺面-1)
   - [软件可配置项说明](#软件可配置项说明)
     - [OSU!Standard 转 OSU!Mania](#osustandard-转-osumania-1)
       - [基础设置](#基础设置)
@@ -102,17 +108,21 @@ For fun.
 
 ### OSU!Standard 转 OSU!Mania
 
+#### 物件转换规则
+
 1. 主模式音符 -> mania 音符
 2. 主模式长条 -> mania 长条
 3. 主模式转盘 -> mania 长条
 
-可生成铺面有：
+#### 可生成铺面
 
 - OSU!Mania 1k
 - OSU!Mania 2k
 - OSU!Mania 4k（将 4k 左边两轨当 2k 使用，无需玩家制作 2k 界面皮肤）
 
 ### OSU!Taiko 转 OSU!Mania
+
+#### 物件转换规则
 
 > 红色在内侧，蓝色在外侧。
 
@@ -128,6 +138,8 @@ For fun.
 
 1. 长黄条/大的长黄条的转换是不完美的。因为实际上你游玩 taiko 铺面的时候，不论是大黄条还是小黄条，应按照黄条上面的白点的节奏击打任意一个键，而不是作为一个长条来按。
 2. 拨浪鼓（转盘）的转换是不完美的。因为实际上你游玩 taiko 铺面的时候，你应该交替击打红蓝键来完成转盘。
+
+#### 可生成铺面
 
 - OSU!Mania 4k
   - 按照手法设置对应从左到右 1 到 4 轨。手法设置用字母 d 和 k 来表示如何分配四个键的位置，如：kddk（直观手法）, ddkk/kkdd（硬抗手法）, dkdk/kdkd/dkkd（少见的手法）。
