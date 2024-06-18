@@ -127,7 +127,7 @@ def _slide_time_parser(
     """
     start_time = int(object_params[2])
     # TODO: 此处 length 值应该是 Decimal 精确小数，滑条的视觉长度。单位是 osu! 像素。换高精库来算
-    length = float(object_params[-4])
+    length = float(object_params[7])
     beat_length: float = -1.0
 
     # 找出当前 beat length，也就是找最接近的一根红线
