@@ -1,5 +1,5 @@
 from custom_types import ManiaHitObject
-from logger import debug
+from logger import debug, warning
 
 
 def generate_mania_2k_osu_file(
@@ -17,7 +17,12 @@ def generate_mania_2k_osu_file(
     # 生成 .osu 文件 [HitObjects] 这一段数据
     raw_hit_objects_list = "[HitObjects]\n"
     for hit_object in hit_objects_list:
+        # 越界检测
+        if hit_object["key"] not in (1, 2):
+            warning(f"{hit_object["key"]} is not in (1, 2)")
+
         x = 128 if hit_object["key"] == 1 else 384
+
         if hit_object["type"] == "hit circle":
             # x,y,时间,物件类型,打击音效,物件参数,打击音效组（默认 0:0:0:0:）
             raw_hit_objects_list += f"{x},192,{hit_object['start_time']},1,0,0:0:0:0:\n"  # TODO 要能把打击音效和打击音效组继承过来

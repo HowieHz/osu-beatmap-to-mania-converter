@@ -1,5 +1,5 @@
 from custom_types import ManiaHitObject
-from logger import debug
+from logger import debug, warning
 
 
 def generate_mania_4k_osu_file(
@@ -23,6 +23,10 @@ def generate_mania_4k_osu_file(
     # 生成 .osu 文件 [HitObjects] 这一段数据
     raw_hit_objects_list = "[HitObjects]\n"
     for hit_object in hit_objects_list:
+        # 越界检测
+        if hit_object["key"] not in (1, 2, 3, 4):
+            warning(f"{hit_object["key"]} is not in (1, 2, 3, 4)")
+
         match hit_object["key"]:
             case 1:
                 x = 64
@@ -31,6 +35,8 @@ def generate_mania_4k_osu_file(
             case 3:
                 x = 320
             case 4:
+                x = 448
+            case _:
                 x = 448
 
         if hit_object["type"] == "hit circle":
