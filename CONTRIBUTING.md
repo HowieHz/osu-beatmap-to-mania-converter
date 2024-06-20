@@ -8,8 +8,38 @@
 
 1. 在本地部署 Python3.12 环境后
 2. 下载项目源码，然后进入到项目根目录
-3. 创建虚拟环境后
-4. 运行以下指令
+
+```bash
+git clone https://github.com/HowieHz/osu-beatmap-to-mania-converter && cd osu-beatmap-to-mania-converter/
+```
+
+3. 创建虚拟环境
+
+```bash
+python -m venv .venv
+```
+
+4. 进入虚拟环境
+
+在 Windows 环境下
+
+```powershell
+./.venv/Scripts/activate
+```
+
+在 Bash
+
+```bash
+source ENV_DIR/bin/activate
+```
+
+附：退出虚拟环境的指令
+
+```bash
+deactivate
+```
+
+5. 运行以下指令安装项目所需库
 
 ```bash
 pip install -r requirements.txt
@@ -20,6 +50,12 @@ pip install -r requirements.txt
 ```bash
 pre-commit install
 ```
+
+<!-- 附：导出当前虚拟环境中的库
+
+```bash
+pip freeze > requirements.txt
+``` -->
 
 ## 怎么打开 DEBUG 模式
 
