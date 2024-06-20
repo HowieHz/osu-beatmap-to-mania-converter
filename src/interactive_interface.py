@@ -8,7 +8,7 @@ from exporter import (
 )
 from logger import info
 from message import *
-from options_default import mania_2k_options_default
+from options_default import mania_2k_options_default, options_default
 from processor import (
     any_metadata_remove_sv,
     any_metadata_to_mania_1k,
@@ -17,7 +17,9 @@ from processor import (
     mania_1k_to_2k,
     std_object_type_to_mania_1k,
 )
-from reader import load_hit_objects_list, load_osu_file_metadata, std_hit_objects_parser
+from reader import hit_objects_parser, load_hit_objects_list, load_osu_file_metadata
+
+print(CLI_LOGO)
 
 
 def main():
@@ -43,7 +45,7 @@ def main():
             PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA
         )
     if raw_number_of_keys == "":
-        number_of_keys = 2
+        number_of_keys = options_default["standard_converter_output_number_of_keys"]
     else:
         number_of_keys = int(raw_number_of_keys)
 
@@ -171,7 +173,7 @@ def main():
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[HitObject] = std_hit_objects_parser(
+    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(
         osu_file_metadata, load_hit_objects_list(osu_file_full_path)
     )
 

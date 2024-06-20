@@ -83,4 +83,4 @@ def _read_key_info_from_metadata(osu_file_metadata: list[str]) -> int:
     """
     for line in osu_file_metadata:
         if line.startswith("CircleSize:"):
-            return int(line.removesuffix("CircleSize:").strip())
+            return int(line.removeprefix("CircleSize:").strip())
