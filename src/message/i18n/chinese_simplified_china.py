@@ -45,7 +45,7 @@ PLEASE_SUPPORT_THIS_PROJECT: str = (
 PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"
 
 PLEASE_INPUT_REMOVE_SV_OPTION: str = (
-    "输入是否移除铺面变速（0 为不移除，1 为全移除，2 为仅移除继承时间点（绿线），默认值为 1）"
+    f"输入是否移除铺面变速（0 为不移除，1 为全移除，2 为仅移除继承时间点（绿线），默认值为 {options_default['remove_sv_mode']}）"
 )
 
 # mania 2k only

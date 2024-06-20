@@ -66,7 +66,7 @@ def main():
         else:
             output_dir += "/"
 
-    info(f"{OUTPUT_DIR_IS}{output_dir}")
+    info(f"{OUTPUT_DIR_IS} {output_dir}")
 
     output_filename: str = ""
     # 询问输出文件名
