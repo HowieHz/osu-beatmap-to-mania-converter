@@ -38,7 +38,7 @@ def _key_to_x(key: int, keys: int) -> int:
     """key 位置转 x 值
 
     Args:
-        key (int): key 位置
+        key (int): key 位置，从左到右第一轨是 1
         keys (int): 多少 key 的铺面
 
     Returns:
