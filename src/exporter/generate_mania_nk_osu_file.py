@@ -2,8 +2,8 @@ from custom_types import ManiaHitObject
 from logger import debug, warning
 
 
-def generate_mania_4k_osu_file(
-    file_metadata: list[str], hit_objects_list: list[ManiaHitObject]
+def generate_mania_nk_osu_file(
+    file_metadata: list[str], hit_objects_list: list[ManiaHitObject], keys: int
 ) -> str:
     debug("file_metadata", data=file_metadata)
     debug("hit_objects_list", data=hit_objects_list)
@@ -13,22 +13,13 @@ def generate_mania_4k_osu_file(
 
     # 生成 .osu 文件 [HitObjects] 这一段数据
     raw_hit_objects_list: str = "[HitObjects]\n"
+    valid_value_list: list[int] = list(range(1, keys + 1))
     for hit_object in hit_objects_list:
         # 越界检测
-        if hit_object["key"] not in (1, 2, 3, 4):
-            warning(f"{hit_object['key']} is not in (1, 2, 3, 4)")
+        if hit_object["key"] not in valid_value_list:
+            warning(f"{hit_object['key']} is not in list(range(1, {keys}+1))")
 
-        match hit_object["key"]:
-            case 1:
-                x = 64
-            case 2:
-                x = 192
-            case 3:
-                x = 320
-            case 4:
-                x = 448
-            case _:
-                x = 448
+        x: int = _key_to_x(hit_object["key"], keys)
 
         if hit_object["type"] == "hit circle":
             # x,y,时间,物件类型,打击音效,物件参数,打击音效组（默认 0:0:0:0:）
@@ -41,3 +32,17 @@ def generate_mania_4k_osu_file(
 
     # 文件末不用加空行，因为上面每行末尾都有\n，保持和制铺器生成的一致
     return raw_file_metadata + raw_hit_objects_list
+
+
+def _key_to_x(x: int, keys: int) -> int:
+    """x 转 key 数
+
+    Args:
+        x (int): x 值
+        keys (int): 多少 key 的铺面
+
+    Returns:
+        int: 位置，从左到右第一轨是 1
+    """
+    # TODO: how to finish this func 1-18k
+    return 256

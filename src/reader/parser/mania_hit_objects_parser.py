@@ -69,7 +69,7 @@ def _x_to_key(x: int, keys: int) -> int:
     Returns:
         int: 位置，从左到右第一轨是 1
     """
-    return int(x * keys / 512 / 0.5 // 2) + 1
+    return int(x * keys // 512) + 1
 
 
 def _read_key_info_from_metadata(osu_file_metadata: list[str]) -> int:

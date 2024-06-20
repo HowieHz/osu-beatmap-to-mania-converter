@@ -1,3 +1,7 @@
 from .generate_mania_1k_osu_file import generate_mania_1k_osu_file
 from .generate_mania_2k_osu_file import generate_mania_2k_osu_file
+from .generate_mania_3k_osu_file import generate_mania_3k_osu_file
 from .generate_mania_4k_osu_file import generate_mania_4k_osu_file
+from .generate_mania_5k_osu_file import generate_mania_5k_osu_file
+from .generate_mania_6k_osu_file import generate_mania_6k_osu_file
+from .generate_mania_nk_osu_file import generate_mania_nk_osu_file

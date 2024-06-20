@@ -9,13 +9,10 @@ def generate_mania_2k_osu_file(
     debug("hit_objects_list", data=hit_objects_list)
 
     # 生成元数据
-    raw_file_metadata = "".join(file_metadata)
-
-    # 米例：256,192,83,1,0,0:0:0:0:
-    # 面例：256,192,505,128,0,1347:0:0:0:0:
+    raw_file_metadata: str = "".join(file_metadata)
 
     # 生成 .osu 文件 [HitObjects] 这一段数据
-    raw_hit_objects_list = "[HitObjects]\n"
+    raw_hit_objects_list: str = "[HitObjects]\n"
     for hit_object in hit_objects_list:
         # 越界检测
         if hit_object["key"] not in (1, 2):
