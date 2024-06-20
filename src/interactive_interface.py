@@ -19,8 +19,6 @@ from processor import (
 )
 from reader import hit_objects_parser, load_hit_objects_list, load_osu_file_metadata
 
-print(CLI_LOGO)
-
 
 def main():
     print(PROGRAM_INFORMATION)
@@ -40,12 +38,12 @@ def main():
     number_of_keys: int = 0
     raw_number_of_keys: str | None = None
     # 询问用户输出 mania 1k 还是 mania 2k 还是 4k
-    while raw_number_of_keys not in ("1", "2", "4", ""):
+    while raw_number_of_keys not in ("1", "2", "4", "5", ""):
         raw_number_of_keys = input(
             PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA
         )
     if raw_number_of_keys == "":
-        number_of_keys = options_default["standard_converter_output_number_of_keys"]
+        number_of_keys = options_default["converter_output_number_of_keys"]
     else:
         number_of_keys = int(raw_number_of_keys)
 

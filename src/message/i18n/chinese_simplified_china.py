@@ -1,20 +1,24 @@
 from options_default import options_default
 
+from ..cli_logo import CLI_LOGO
 from ..version import VERSION
 
+DESCRIPTION: str = f"osu!std/osu!taiko 转 osu!mania 铺面转换器 {VERSION}"
+
 PROGRAM_INFORMATION: str = f"""\
-osu!std 转 osu!mania 铺面转换器
-版本: {VERSION}
+{CLI_LOGO}
+{DESCRIPTION}
 
 项目主页: https://github.com/HowieHz/osu-beatmap-to-mania-converter
 下载地址: https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases
 我的博客: https://howiehz.top
+文档镜像: https://howiehz.top/archives/osu-beatmap-to-mania-converter-readme
 问题反馈: https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose
 """
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，按下回车键。"
 PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "输入铺面完整路径（.osu 结尾）"
 PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = (
-    f"输入转换后 Mania 铺面的键数（如读取的是主模式铺面，输入 1，2，4 中的数值；如读取的是 Taiko 模式的铺面，输入 4，5 中的数值，主模式转换默认值为 {options_default["standard_converter_output_number_of_keys"]}， Taiko 模式转换默认值为 {options_default["taiko_converter_output_number_of_keys"]}）\n注：设置输出键数为 4，即将 4k 左边两轨当 2k 使用。这样玩家无需制作 2k 界面所用皮肤。"
+    f"输入转换后 Mania 铺面的键数 (如读取的是主模式铺面，输入 1, 2, 4 中的数值；如读取的是 Taiko 模式的铺面，输入 4, 5 中的数值，默认值为 {options_default['converter_output_number_of_keys']})。注：读取主模式铺面时，如设置输出键数为 4 ，即将 4k 左边两轨当 2k 使用。"
 )
 PLEASE_OUTPUT_DIR: str = (
     "指定输出的 .osu 文件的目录。直接回车则为选择的 .osu 文件的同目录下"
@@ -63,5 +67,6 @@ MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES: str = (
 
 # cli help
 
+CLI_HELP_MESSAGE = "显示此帮助信息并退出程序"
 CLI_HELP_LOG_VERBOSITY = "修改输出详细程度"  # change output verbosity
 CLI_HELP_VERSION = "输出软件版本信息"
