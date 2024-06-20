@@ -60,7 +60,7 @@ def mania_hit_objects_parser(
 
 
 def _x_to_key(x: int, keys: int) -> int:
-    """x 转 key 数
+    """x 值转 key 位置
 
     Args:
         x (int): x 值

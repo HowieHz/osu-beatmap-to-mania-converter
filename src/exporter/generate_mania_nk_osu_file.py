@@ -34,15 +34,14 @@ def generate_mania_nk_osu_file(
     return raw_file_metadata + raw_hit_objects_list
 
 
-def _key_to_x(x: int, keys: int) -> int:
-    """x 转 key 数
+def _key_to_x(key: int, keys: int) -> int:
+    """key 位置转 x 值
 
     Args:
-        x (int): x 值
+        key (int): key 位置
         keys (int): 多少 key 的铺面
 
     Returns:
-        int: 位置，从左到右第一轨是 1
+        int: x 值
     """
-    # TODO: how to finish this func 1-18k
-    return 256
+    return int((key-0.5)*512/keys)
