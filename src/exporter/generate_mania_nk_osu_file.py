@@ -44,4 +44,4 @@ def _key_to_x(key: int, keys: int) -> int:
     Returns:
         int: x 值
     """
-    return int((key-0.5)*512/keys)
+    return int((key - 0.5) * 512 / keys)
