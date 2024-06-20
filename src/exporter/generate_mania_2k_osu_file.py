@@ -19,7 +19,7 @@ def generate_mania_2k_osu_file(
     for hit_object in hit_objects_list:
         # 越界检测
         if hit_object["key"] not in (1, 2):
-            warning(f"{hit_object["key"]} is not in (1, 2)")
+            warning(f"{hit_object['key']} is not in (1, 2)")
 
         x = 128 if hit_object["key"] == 1 else 384
 

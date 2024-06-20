@@ -25,7 +25,7 @@ def generate_mania_4k_osu_file(
     for hit_object in hit_objects_list:
         # 越界检测
         if hit_object["key"] not in (1, 2, 3, 4):
-            warning(f"{hit_object["key"]} is not in (1, 2, 3, 4)")
+            warning(f"{hit_object['key']} is not in (1, 2, 3, 4)")
 
         match hit_object["key"]:
             case 1:

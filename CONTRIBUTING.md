@@ -6,20 +6,23 @@
 
 ## 部署开发环境
 
-1. 在本地部署 Python3.12 环境后
-2. 下载项目源码，然后进入到项目根目录
+### 在本地部署 Python3.12 环境
+
+[Download Python](https://www.python.org/downloads/)
+
+### 下载项目源码，并进入到项目根目录
 
 ```bash
 git clone https://github.com/HowieHz/osu-beatmap-to-mania-converter && cd osu-beatmap-to-mania-converter/
 ```
 
-3. 创建虚拟环境
+### 创建虚拟环境
 
 ```bash
 python -m venv .venv
 ```
 
-4. 进入虚拟环境
+### 进入虚拟环境
 
 在 Windows 环境下
 
@@ -39,7 +42,7 @@ source ENV_DIR/bin/activate
 deactivate
 ```
 
-5. 运行以下指令安装项目所需库
+### 安装项目所需库
 
 ```bash
 pip install -r requirements.txt

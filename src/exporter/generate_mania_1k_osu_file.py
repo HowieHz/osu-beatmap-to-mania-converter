@@ -19,7 +19,7 @@ def generate_mania_1k_osu_file(
     for hit_object in hit_objects_list:
         # 越界检测
         if hit_object["key"] not in (1):
-            warning(f"{hit_object["key"]} is not in (1)")
+            warning(f"{hit_object['key']} is not in (1)")
 
         if hit_object["type"] == "hit circle":
             # x,y,时间,物件类型,打击音效,物件参数,打击音效组（默认 0:0:0:0:）

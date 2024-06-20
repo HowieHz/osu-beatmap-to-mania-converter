@@ -3,6 +3,7 @@
         "BEATMAP",
         "isort",
         "minijack",
+        "nuitka",
         "Taiko",
         "venv"
     ]
