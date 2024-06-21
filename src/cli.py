@@ -2,20 +2,12 @@ import argparse
 from pathlib import Path
 
 from custom_types import HitObject, Mania2kOptions, ManiaHitObject
-from exporter import (
-    generate_mania_1k_osu_file,
-    generate_mania_2k_osu_file,
-    generate_mania_4k_osu_file,
-    generate_mania_nk_osu_file,
-)
-from logger import error, info
+from exporter import generate_mania_nk_osu_file
+from logger import debug, error, info
 from message import *
 from options_default import mania_2k_options_default
 from processor import (
     any_metadata_remove_sv,
-    any_metadata_to_mania_1k,
-    any_metadata_to_mania_2k,
-    any_metadata_to_mania_4k,
     any_metadata_to_mania_nk,
     mania_1k_to_2k,
     std_object_type_to_mania_1k,
@@ -27,8 +19,6 @@ from reader import (
     load_osu_file_metadata,
     osu_file_metadata_mode_parser,
 )
-
-from .cui import cui_main
 
 
 def arg_parse() -> None | str:
@@ -124,22 +114,22 @@ def arg_parse() -> None | str:
     # 返回来自指定选项的某些数据
     args = parser.parse_args()
 
-    print(args)
+    debug(message="args", data=args)
 
     # 输出版本信息
     if args.version:
         print(PROGRAM_INFORMATION)
-        return
+        return "stop"
 
     # 进入 cui 程序
     if args.command_user_interface:
-        print(PROGRAM_INFORMATION)
-        return "CUI"
+        return "enter-cui"
 
-    # 缺失必要参数
+    # 缺失必要参数，进入cui 模式
     if args.osu_file_full_path is None:
-        print(CLI_OSU_FILE_FULL_PATH_ARGUMENT_IS_REQUIRED)
-        return
+        # print(CLI_OSU_FILE_FULL_PATH_ARGUMENT_IS_REQUIRED)
+        # return "stop"
+        return "enter-cui"
 
     # 获取 osu 文件路径，去除两头的单双引号
     raw_osu_file_full_path: str = args.osu_file_full_path
@@ -261,7 +251,7 @@ def arg_parse() -> None | str:
             )
         case "osu!catch":
             error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
-            return
+            return "stop"
         case "osu!mania":
             # TODO: mania 转 1k\2k
             ...
@@ -316,7 +306,7 @@ def arg_parse() -> None | str:
             )
         case "osu!catch":
             error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
-            return
+            return "stop"
         case "osu!mania":
             # TODO: mania 转 1k\2k
             ...
@@ -331,3 +321,5 @@ def arg_parse() -> None | str:
     info(OSU_FILE_WRITTEN)
     info(PLEASE_SUPPORT_THIS_PROJECT)
     info(PRESS_ENTER_EXIT_SOFTWARE)
+
+    return "stop"
