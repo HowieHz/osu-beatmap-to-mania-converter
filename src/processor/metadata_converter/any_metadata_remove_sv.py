@@ -4,7 +4,7 @@ def any_metadata_remove_sv(
     """移除元数据中的变速
 
     Args:
-        remove_sv_option (str): 是否移除铺面变速（可选项：全移除 - all，不移除 - none，仅移除继承时间点（绿线） - inherited timing points）
+        remove_sv_option (str): 是否移除铺面变速（可选项：全移除 - all，不移除 - none，仅移除继承时间点（绿线） - inherited_timing_points）
         osu_file_metadata (list[str]): 未被转换的元数据列，每行应有换行符（"\\n"）
 
     Returns:
@@ -35,7 +35,7 @@ def any_metadata_remove_sv(
                 )
 
         osu_file_metadata = list(filter(None, osu_file_metadata))
-    elif remove_sv_option == "inherited timing points":
+    elif remove_sv_option == "inherited_timing_points":
         remove_line_flag: bool = False
         skip_line_flag: int = 0
 

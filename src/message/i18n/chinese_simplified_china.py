@@ -1,4 +1,4 @@
-from options_default import options_default
+from options_default import mania_2k_options_default, options_default
 
 from ..cli_logo import CLI_LOGO
 from ..version import VERSION
@@ -11,12 +11,11 @@ PROGRAM_INFORMATION: str = f"""\
 
 项目主页: https://github.com/HowieHz/osu-beatmap-to-mania-converter
 下载地址: https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases
-我的博客: https://howiehz.top
 文档镜像: https://howiehz.top/archives/osu-beatmap-to-mania-converter-readme
 问题反馈: https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose
 """
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，按下回车键。"
-PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "输入铺面完整路径（.osu 结尾）"
+PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "输入被转换铺面的完整路径（.osu 结尾）"
 PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = (
     f"输入转换后 Mania 铺面的键数 (如读取的是主模式铺面，输入 1, 2, 4 中的数值；如读取的是 Taiko 模式的铺面，输入 4, 5 中的数值，默认值为 {options_default['converter_output_number_of_keys']})。注：读取主模式铺面时，如设置输出键数为 4 ，即将 4k 左边两轨当 2k 使用。"
 )
@@ -52,17 +51,19 @@ PLEASE_INPUT_REMOVE_SV_OPTION: str = (
 # MANIA_2K_PLEASE_INPUT_
 
 MANIA_2k_PLEASE_INPUT_MAIN_KEY: str = (
-    "输入惯用单戳指所在的轨道，物件将优先生成在这个轨道上（1 为左，2 为右，默认值为 1）"
+    f"输入惯用单戳指所在的轨道，物件将优先生成在这个轨道上（1 为左，2 为右，默认值为 {mania_2k_options_default['main_key']}）"
 )
-MANIA_2K_PLEASE_INPUT_START_KEY: str = "输入铺面生成起始轨（1 为左，2 为右，默认值为 1）"
+MANIA_2K_PLEASE_INPUT_START_KEY: str = (
+    f"输入铺面生成起始轨（1 为左，2 为右，默认值为 {mania_2k_options_default["start_key"]}）"
+)
 MANIA_2K_PLEASE_INPUT_TRILL_START_KEY: str = (
-    "输入交互起始轨（1 为左，2 为右，默认值为取铺面生成起始轨的值）"
+    f"输入交互起始轨（1 为左，2 为右，默认值为 {mania_2k_options_default['trill_start_key']}）"
 )
 MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL: str = (
-    "输入最小叠键时间间距，两键间距小于这个值的才有可能被转换为切。可为整数或小数，单位毫秒（默认值为 200.0）"
+    f"输入最小叠键时间间距，两键间距小于这个值的才有可能被转换为切。可为整数或小数，单位毫秒（默认值为 {mania_2k_options_default['minimum_jack_time_interval']}）"
 )
 MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES: str = (
-    "输入最大叠键数，值类型为整数（默认值为 1）"
+    f"输入最大叠键数，值类型为整数（默认值为 {mania_2k_options_default['maximum_number_of_jack_notes']}）"
 )
 
 # cli help
@@ -70,3 +71,13 @@ MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES: str = (
 CLI_HELP_MESSAGE = "显示此帮助信息并退出程序"
 CLI_HELP_LOG_VERBOSITY = "修改输出详细程度"  # change output verbosity
 CLI_HELP_VERSION = "输出软件版本信息"
+
+# cli help prefix
+
+CLI_STD_TO_MANIA_2K_PREFIX = "（适用于 std 转 mania 2k/4k 铺面的选项）"
+
+# cli error
+
+CLI_OSU_FILE_FULL_PATH_ARGUMENT_IS_REQUIRED = (
+    "“被转换铺面的完整路径（.osu 结尾）”是必要的参数，请添加“-i 被转换铺面的完整路径”参数"
+)

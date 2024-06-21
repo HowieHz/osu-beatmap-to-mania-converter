@@ -91,7 +91,7 @@ def main():
         case "1":
             remove_sv_option = "all"
         case "2":
-            remove_sv_option = "inherited timing points"
+            remove_sv_option = "inherited_timing_points"
         case _:
             remove_sv_option = "all"
 
