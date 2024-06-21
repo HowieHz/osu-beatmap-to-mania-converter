@@ -5,6 +5,16 @@ from logger import debug, warning
 def generate_mania_nk_osu_file(
     file_metadata: list[str], hit_objects_list: list[ManiaHitObject], keys: int
 ) -> str:
+    """生成最终的 mania .osu 文件数据
+
+    Args:
+        file_metadata (list[str]): 铺面元数据
+        hit_objects_list (list[ManiaHitObject]): 铺面物件数据
+        keys (int): 铺面键数
+
+    Returns:
+        str: 文件数据，可直接写入 .osu 文件
+    """
     debug("file_metadata", data=file_metadata)
     debug("hit_objects_list", data=hit_objects_list)
 
