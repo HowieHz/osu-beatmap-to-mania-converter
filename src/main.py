@@ -1,4 +1,8 @@
-from interactive_interface import main
+from .cli import arg_parse
+from .cui import cui_main
 
 if __name__ == "__main__":
-    main()
+    ret: None | str = arg_parse()
+    if ret == "CUI":
+        cui_main()
+    cui_main()

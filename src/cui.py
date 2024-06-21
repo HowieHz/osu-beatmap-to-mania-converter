@@ -20,7 +20,7 @@ from processor import (
 from reader import hit_objects_parser, load_hit_objects_list, load_osu_file_metadata
 
 
-def main():
+def cui_main():
     print(PROGRAM_INFORMATION)
     print(PLEASE_PRESS_ENTER_AFTER_INPUT)
 

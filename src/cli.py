@@ -28,9 +28,17 @@ from reader import (
     osu_file_metadata_mode_parser,
 )
 
+from .cui import cui_main
 
-def arg_parse() -> None:
+
+def arg_parse() -> None | str:
+    # command-line interface main program
+
     parser = argparse.ArgumentParser(description=DESCRIPTION)
+
+    parser.add_argument(
+        "-cui", "--command-user-interface", action="store_true", help=CLI_HELP_CUI
+    )
 
     parser.add_argument(
         "-i", "--osu-file-full-path", help=PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH, type=str
@@ -122,6 +130,11 @@ def arg_parse() -> None:
     if args.version:
         print(PROGRAM_INFORMATION)
         return
+
+    # 进入 cui 程序
+    if args.command_user_interface:
+        print(PROGRAM_INFORMATION)
+        return "CUI"
 
     # 缺失必要参数
     if args.osu_file_full_path is None:
@@ -318,7 +331,3 @@ def arg_parse() -> None:
     info(OSU_FILE_WRITTEN)
     info(PLEASE_SUPPORT_THIS_PROJECT)
     info(PRESS_ENTER_EXIT_SOFTWARE)
-
-
-if __name__ == "__main__":
-    arg_parse()
