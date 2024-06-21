@@ -81,3 +81,4 @@ CLI_STD_TO_MANIA_2K_PREFIX = "（适用于 std 转 mania 2k/4k 铺面的选项�
 CLI_OSU_FILE_FULL_PATH_ARGUMENT_IS_REQUIRED = (
     "“被转换铺面的完整路径（.osu 结尾）”是必要的参数，请添加“-i 被转换铺面的完整路径”参数"
 )
+CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP = "程序不支持 osu!catch 模式的铺面输入！"

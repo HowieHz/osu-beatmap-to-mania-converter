@@ -1,5 +1,6 @@
 from custom_types import HitObject
 from logger import error
+from message import CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP
 
 from ._mania_hit_objects_parser import mania_hit_objects_parser
 from ._std_hit_objects_parser import std_hit_objects_parser
@@ -29,7 +30,7 @@ def hit_objects_parser(
                 osu_file_metadata=osu_file_metadata, hit_objects_list=hit_objects_list
             )
         case "osu!catch":
-            error("程序不支持 osu!catch 模式的铺面输入！")
+            error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
             ...
         case "osu!mania":
             return mania_hit_objects_parser(

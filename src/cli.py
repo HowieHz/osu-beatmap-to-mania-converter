@@ -6,8 +6,9 @@ from exporter import (
     generate_mania_1k_osu_file,
     generate_mania_2k_osu_file,
     generate_mania_4k_osu_file,
+    generate_mania_nk_osu_file,
 )
-from logger import info
+from logger import error, info
 from message import *
 from options_default import mania_2k_options_default
 from processor import (
@@ -17,8 +18,14 @@ from processor import (
     any_metadata_to_mania_4k,
     mania_1k_to_2k,
     std_object_type_to_mania_1k,
+    taiko_object_type_to_mania_5k,
 )
-from reader import hit_objects_parser, load_hit_objects_list, load_osu_file_metadata
+from reader import (
+    hit_objects_parser,
+    load_hit_objects_list,
+    load_osu_file_metadata,
+    osu_file_metadata_mode_parser,
+)
 
 
 def arg_parse() -> None:
@@ -228,10 +235,22 @@ def arg_parse() -> None:
         osu_file_metadata, load_hit_objects_list(osu_file_full_path)
     )
 
-    # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
-    parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
-        map(std_object_type_to_mania_1k, parsed_hit_objects_list)
-    )
+    match osu_file_metadata_mode_parser(osu_file_metadata):
+        case "osu!":
+            # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
+            parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
+                map(std_object_type_to_mania_1k, parsed_hit_objects_list)
+            )
+        case "osu!taiko":
+            parsed_mania_5k_hit_objects_list: list[ManiaHitObject] = list(
+                map(taiko_object_type_to_mania_5k, parsed_hit_objects_list)
+            )
+        case "osu!catch":
+            error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
+            return
+        case "osu!mania":
+            # TODO: mania 转 1k\2k
+            ...
 
     info(OSU_FILE_LOADED)
     info(CONVERTING_BEATMAP)
@@ -241,38 +260,62 @@ def arg_parse() -> None:
         remove_sv_option=remove_sv_option, osu_file_metadata=osu_file_metadata
     )
 
-    if number_of_keys == 1:
-        # 目标产物 mania 1k
-        # 将铺面元数据转换为 osu!mania 1k 元数据
-        osu_file_metadata: list[str] = any_metadata_to_mania_1k(osu_file_metadata)
+    # 最后写入文件的内容
+    final_osu_file_content: str
 
-        ## 生成铺面
-        final_osu_file_content: str = generate_mania_1k_osu_file(
-            osu_file_metadata, parsed_mania_1k_hit_objects_list
-        )
-    elif number_of_keys == 2 or number_of_keys == 4:
-        # 目标产物 mania 2k
-
-        # 将铺面从 1k 转换为 2k（根据配置项处理 parsed_mania_1k_hit_objects_list）
-        parsed_mania_2k_hit_objects_list = mania_1k_to_2k(
-            parsed_mania_1k_hit_objects_list, options=mania_2k_options
-        )
-
-        ## 生成铺面
-        if number_of_keys == 2:
-            # 将铺面元数据转换为 osu!mania 2k 元数据
-            osu_file_metadata: list[str] = any_metadata_to_mania_2k(osu_file_metadata)
-
-            final_osu_file_content: str = generate_mania_2k_osu_file(
-                osu_file_metadata, parsed_mania_2k_hit_objects_list
+    match osu_file_metadata_mode_parser(osu_file_metadata):
+        case "osu!":
+            # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
+            parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
+                map(std_object_type_to_mania_1k, parsed_hit_objects_list)
             )
-        elif number_of_keys == 4:
-            # 将铺面元数据转换为 osu!mania 4k 元数据
-            osu_file_metadata: list[str] = any_metadata_to_mania_4k(osu_file_metadata)
 
-            final_osu_file_content: str = generate_mania_4k_osu_file(
-                osu_file_metadata, parsed_mania_2k_hit_objects_list
+            if number_of_keys == 1:
+                # 目标产物 mania 1k
+                # 将铺面元数据转换为 osu!mania 1k 元数据
+                osu_file_metadata: list[str] = any_metadata_to_mania_1k(osu_file_metadata)
+
+                ## 生成铺面
+                final_osu_file_content = generate_mania_1k_osu_file(
+                    osu_file_metadata, parsed_mania_1k_hit_objects_list
+                )
+            elif number_of_keys == 2 or number_of_keys == 4:
+                # 目标产物 mania 2k
+
+                # 将铺面从 1k 转换为 2k（根据配置项处理 parsed_mania_1k_hit_objects_list）
+                parsed_mania_2k_hit_objects_list = mania_1k_to_2k(
+                    parsed_mania_1k_hit_objects_list, options=mania_2k_options
+                )
+
+                ## 生成铺面
+                if number_of_keys == 2:
+                    # 将铺面元数据转换为 osu!mania 2k 元数据
+                    osu_file_metadata: list[str] = any_metadata_to_mania_2k(
+                        osu_file_metadata
+                    )
+
+                    final_osu_file_content = generate_mania_2k_osu_file(
+                        osu_file_metadata, parsed_mania_2k_hit_objects_list
+                    )
+                elif number_of_keys == 4:
+                    # 将铺面元数据转换为 osu!mania 4k 元数据
+                    osu_file_metadata: list[str] = any_metadata_to_mania_4k(
+                        osu_file_metadata
+                    )
+
+                    final_osu_file_content = generate_mania_4k_osu_file(
+                        osu_file_metadata, parsed_mania_2k_hit_objects_list
+                    )
+        case "osu!taiko":
+            parsed_mania_5k_hit_objects_list: list[ManiaHitObject] = list(
+                map(taiko_object_type_to_mania_5k, parsed_hit_objects_list)
             )
+        case "osu!catch":
+            error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
+            return
+        case "osu!mania":
+            # TODO: mania 转 1k\2k
+            ...
 
     info(BEATMAP_CONVERTED)
     info(WRITING_OSU_FILE)
