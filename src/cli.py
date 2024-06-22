@@ -326,8 +326,7 @@ def arg_parse(args: argparse.Namespace) -> str:
     end_time = time.perf_counter()
     info(OSU_FILE_WRITTEN)
     info(RUNTIME_IS.format(end_time - start_time))
-    info(PLEASE_SUPPORT_THIS_PROJECT)
-    info(PRESS_ENTER_EXIT_SOFTWARE)
+    info(PROGRAM_HAS_BEEN_COMPLETED)
 
     return "stop"
 

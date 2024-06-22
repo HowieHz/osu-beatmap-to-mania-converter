@@ -1,6 +1,6 @@
 from cli import cli_main
 
-from logger import debug
+from logger import debug, info
 from message import *
 from reader import load_osu_file_metadata, osu_file_metadata_mode_parser
 
@@ -56,9 +56,11 @@ def cui_main():
 
     # 读取 osu 文件除去去 [HitObjects] 的信息
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
+    debug("osu_file_game_mode", data=osu_file_metadata_mode_parser(osu_file_metadata))
     if osu_file_metadata_mode_parser(osu_file_metadata) == "osu!" and number_of_keys in (
         "2",
         "4",
+        "",  # 取默认值的、不输入的、直接回车的
     ):
         # 主要单戳纸询问
         while std_to_mania_2k_main_key not in ("1", "2", ""):
@@ -106,3 +108,6 @@ def cui_main():
     debug(message="args_list", data=args_list)
     # 发送到指令解析/实际逻辑运行
     cli_main(args_list)
+
+    info(PLEASE_SUPPORT_THIS_PROJECT)
+    input(PRESS_ENTER_EXIT_SOFTWARE)

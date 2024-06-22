@@ -38,10 +38,12 @@ BEATMAP_CONVERTED: str = "铺面文件转换完成。"
 WRITING_OSU_FILE: str = "铺面文件转换中，请稍等..."
 OSU_FILE_WRITTEN: str = "铺面文件已完成写入。"
 
+PROGRAM_HAS_BEEN_COMPLETED: str = "程序已完成转换。"
+
 RUNTIME_IS: str = "上一阶段运行花费了 {:.6f} 秒"
 
 PLEASE_SUPPORT_THIS_PROJECT: str = (
-    "如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
+    "\n如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
 )
 
 PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"
