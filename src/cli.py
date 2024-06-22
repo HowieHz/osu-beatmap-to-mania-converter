@@ -8,7 +8,7 @@ from message import *
 from options_default import mania_2k_options_default
 from processor import (
     any_metadata_remove_sv,
-    any_metadata_to_mania_nk,
+    any_metadata_to_mania,
     mania_1k_to_2k,
     std_object_type_to_mania_1k,
     taiko_object_type_to_mania_5k,
@@ -267,7 +267,7 @@ def arg_parse(args: argparse.Namespace) -> str:
     match osu_file_metadata_mode_parser(osu_file_metadata):
         case "osu!":
             # 将铺面元数据转换为 osu!mania nk 元数据
-            osu_file_metadata: list[str] = any_metadata_to_mania_nk(
+            osu_file_metadata: list[str] = any_metadata_to_mania(
                 osu_file_metadata, keys=number_of_keys
             )
             parsed_mania_hit_objects_list: list[ManiaHitObject]
