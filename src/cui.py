@@ -96,12 +96,13 @@ def cui_main():
         "-smnjn": std_to_mania_2k_maximum_number_of_jack_notes,
     }
 
-    raw_args: str = ""
+    args_list: list[str] = []
 
     for arg in cli_arg_to_variable_dict.keys():
-        if cli_arg_to_variable_dict[arg] in ("", None):
-            raw_args += f"{arg} {cli_arg_to_variable_dict[arg]} "
+        if cli_arg_to_variable_dict[arg] not in ("", None):
+            args_list.append(arg)
+            args_list.append(cli_arg_to_variable_dict[arg])
 
-    debug(message="raw_args", data=raw_args)
+    debug(message="args_list", data=args_list)
     # 发送到指令解析/实际逻辑运行
-    cli_main(raw_args)
+    cli_main(args_list)

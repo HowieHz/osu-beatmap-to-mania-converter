@@ -322,20 +322,20 @@ def arg_parse(args: argparse.Namespace) -> str:
     return "stop"
 
 
-def cli_main(raw_args: str | None = None) -> str:
+def cli_main(args_list: list[str] | None = None) -> str:
     """command-line interface main program
 
     Args:
-        raw_args (str | None, optional): 输入值为 str 即为原始参数输入，如 "-i 1.osu -o ./ -k 4"，默认值为 None。如为 None，即为选择解析运行程序时输入命令行的指令。
+        raw_args (list[str] | None, optional): 输入值为 list[str] 即为列表参数输入，如 ["-i", "1.osu", "-o", "./"]，默认值为 None。如为 None，即为选择解析运行程序时输入命令行的指令。
 
     Returns:
         str: "enter-cui" or "stop"
     """
     parser: argparse.ArgumentParser = create_parser()
 
-    if raw_args is None:
+    if args_list is None:
         # parser.parse_args() 无参数即为解析程序运行命令行
         return arg_parse(parser.parse_args())
 
-    return arg_parse(create_parser().parse_args(raw_args.split()))
+    return arg_parse(create_parser().parse_args(args_list))
     # ret value: "enter-cui" "stop"
