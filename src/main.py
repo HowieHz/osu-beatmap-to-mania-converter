@@ -1,7 +1,7 @@
-from cli import arg_parse
+from cli import cli_main
 from cui import cui_main
 
 if __name__ == "__main__":
-    ret: None | str = arg_parse()
-    if ret == "enter-cui" or ret != "stop":
+    ret: str = cli_main()
+    if ret == "enter-cui":
         cui_main()

@@ -21,9 +21,7 @@ from reader import (
 )
 
 
-def arg_parse() -> None | str:
-    # command-line interface main program
-
+def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=DESCRIPTION)
 
     parser.add_argument(
@@ -111,9 +109,10 @@ def arg_parse() -> None | str:
         type=int,
     )
 
-    # 返回来自指定选项的某些数据
-    args = parser.parse_args()
+    return parser
 
+
+def arg_parse(args: argparse.Namespace) -> str:
     debug(message="args", data=args)
 
     # 输出版本信息
@@ -190,7 +189,6 @@ def arg_parse() -> None | str:
     )
     info(f"{OUTPUT_FILENAME_IS} {final_osu_file_name}")
 
-    # TODO: # std -> mania 2/4k 生成参数询问部分
     # 主要单戳指设置
     raw_std_to_mania_2k_main_key: int = args.std_to_mania_2k_main_key
     mania_2k_main_key: int = raw_std_to_mania_2k_main_key
@@ -219,7 +217,6 @@ def arg_parse() -> None | str:
         raw_std_to_mania_2k_maximum_number_of_jack_notes
     )
 
-    # TODO 主逻辑部分
     # 生成配置
     mania_2k_options: Mania2kOptions = {
         "main_key": mania_2k_main_key,
@@ -323,3 +320,22 @@ def arg_parse() -> None | str:
     info(PRESS_ENTER_EXIT_SOFTWARE)
 
     return "stop"
+
+
+def cli_main(raw_args: str | None = None) -> str:
+    """command-line interface main program
+
+    Args:
+        raw_args (str | None, optional): 输入值为 str 即为原始参数输入，如 "-i 1.osu -o ./ -k 4"，默认值为 None。如为 None，即为选择解析运行程序时输入命令行的指令。
+
+    Returns:
+        str: "enter-cui" or "stop"
+    """
+    parser: argparse.ArgumentParser = create_parser()
+
+    if raw_args is None:
+        # parser.parse_args() 无参数即为解析程序运行命令行
+        return arg_parse(parser.parse_args())
+
+    return arg_parse(create_parser().parse_args(raw_args.split()))
+    # ret value: "enter-cui" "stop"

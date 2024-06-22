@@ -1,32 +1,18 @@
-from pathlib import Path
+from cli import cli_main
 
-from custom_types import HitObject, Mania2kOptions, ManiaHitObject
-from exporter import (
-    generate_mania_1k_osu_file,
-    generate_mania_2k_osu_file,
-    generate_mania_4k_osu_file,
-)
-from logger import info
+from logger import debug
 from message import *
-from options_default import mania_2k_options_default, options_default
-from processor import (
-    any_metadata_remove_sv,
-    any_metadata_to_mania_1k,
-    any_metadata_to_mania_2k,
-    any_metadata_to_mania_4k,
-    mania_1k_to_2k,
-    std_object_type_to_mania_1k,
-)
-from reader import hit_objects_parser, load_hit_objects_list, load_osu_file_metadata
+from reader import load_osu_file_metadata, osu_file_metadata_mode_parser
 
 
 def cui_main():
+    """Interactive cui main program"""
     print(PROGRAM_INFORMATION)
     print(PLEASE_PRESS_ENTER_AFTER_INPUT)
 
-    osu_file_full_path: str = ""
+    osu_file_full_path: str | None = None
     # 获取 osu 文件路径，去除两头的单双引号
-    while osu_file_full_path == "":
+    while osu_file_full_path in ("", None):
         osu_file_full_path: str = (
             input(PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH)
             .removeprefix('"')
@@ -35,19 +21,7 @@ def cui_main():
             .removesuffix("'")
         )
 
-    number_of_keys: int = 0
-    raw_number_of_keys: str | None = None
-    # 询问用户输出 mania 1k 还是 mania 2k 还是 4k
-    while raw_number_of_keys not in ("1", "2", "4", "5", ""):
-        raw_number_of_keys = input(
-            PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA
-        )
-    if raw_number_of_keys == "":
-        number_of_keys = options_default["converter_output_number_of_keys"]
-    else:
-        number_of_keys = int(raw_number_of_keys)
-
-    output_dir: str = ""
+    output_dir: str | None = None
     # 询问输出目录，去除两头的单双引号
     output_dir = (
         input(PLEASE_OUTPUT_DIR)
@@ -56,178 +30,75 @@ def cui_main():
         .removesuffix('"')
         .removesuffix("'")
     )
-    if output_dir == "":
-        output_dir = str(Path(osu_file_full_path).parent)
 
-    if not output_dir.endswith(("\\", "/")):
-        # 如果尾部没斜杠，就在末尾加斜杠。先检测前面是哪种斜杠，然后在尾部加一样的
-        if "\\" in output_dir:
-            output_dir += "\\"
-        else:
-            output_dir += "/"
-
-    info(f"{OUTPUT_DIR_IS} {output_dir}")
-
-    output_filename: str = ""
+    output_file_name: str | None = None
     # 询问输出文件名
-    output_filename = input(PLEASE_OUTPUT_FILENAME)
-    if output_filename == "":
-        output_filename = str(
-            Path(osu_file_full_path).stem
-        )  # 注意这里是 stem 不是 name 所以是没有后缀的
+    output_file_name = input(PLEASE_OUTPUT_FILENAME)
 
-    # 生成最后的文件名
-    final_osu_file_name: str = f"{output_filename}({number_of_keys}k).osu"
-    info(f"{OUTPUT_FILENAME_IS}{final_osu_file_name}")
+    number_of_keys: str | None = None
+    # 询问用户输出 mania 1k 还是 mania 2k 还是 4k
+    while number_of_keys not in ("1", "2", "4", "5", ""):
+        number_of_keys = input(PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA)
 
     # 询问是否移除变速
-    remove_sv_option: str
-    raw_remove_sv_option: str | None = None
-    while raw_remove_sv_option not in ("1", "2", "0", ""):
-        raw_remove_sv_option = input(PLEASE_INPUT_REMOVE_SV_OPTION)
-    match raw_remove_sv_option:
-        case "0":
-            remove_sv_option = "none"
-        case "1":
-            remove_sv_option = "all"
-        case "2":
-            remove_sv_option = "inherited_timing_points"
-        case _:
-            remove_sv_option = "all"
+    remove_sv_option: str | None = None
+    while remove_sv_option not in ("1", "2", "0", ""):
+        remove_sv_option = input(PLEASE_INPUT_REMOVE_SV_OPTION)
 
-    # mania 2k 生成参数询问部分
-    mania_2k_main_key: int  # 主要单戳指设置
-    mania_2k_start_key: int  # 铺面起手键位置
-    mania_2k_trill_start_key: int  # 交互起手键位置
-    mania_2k_minimum_jack_time_interval: float  # 最小叠键时间间距，单位毫秒
-    mania_2k_maximum_number_of_jack_notes: int  # 最大叠键数
-
-    if number_of_keys == 2 or number_of_keys == 4:
-        # 主要单戳纸询问
-        raw_mania_2k_main_key = input(MANIA_2k_PLEASE_INPUT_MAIN_KEY)
-        if raw_mania_2k_main_key == "":
-            mania_2k_main_key = mania_2k_options_default["main_key"]
-        elif raw_mania_2k_main_key in ("1", "2"):
-            mania_2k_main_key: int = int(raw_mania_2k_main_key)
-        else:  # 输入值非法，取默认值
-            mania_2k_main_key = mania_2k_options_default["main_key"]
-
-        # 起手键询问
-        raw_input_mania_2k_start_key = input(MANIA_2K_PLEASE_INPUT_START_KEY)
-        if raw_input_mania_2k_start_key == "":
-            mania_2k_start_key = mania_2k_options_default["start_key"]
-        elif raw_input_mania_2k_start_key in ("1", "2"):
-            mania_2k_start_key: int = int(raw_input_mania_2k_start_key)
-        else:  # 输入值非法，取默认值
-            mania_2k_start_key = mania_2k_options_default["start_key"]
-
-        # 交互起手键询问
-        raw_input_mania_2k_trill_start_key = input(MANIA_2K_PLEASE_INPUT_TRILL_START_KEY)
-        if raw_input_mania_2k_trill_start_key == "":
-            mania_2k_trill_start_key = mania_2k_start_key
-        elif raw_input_mania_2k_trill_start_key in ("1", "2"):
-            mania_2k_trill_start_key: int = int(raw_input_mania_2k_trill_start_key)
-        else:  # 输入值非法，取默认值
-            mania_2k_trill_start_key = mania_2k_options_default["trill_start_key"]
-
-        # 最小叠键时间间距询问
-        raw_input_mania_2k_minimum_jack_time_interval = input(
-            MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL
-        )
-        if raw_input_mania_2k_minimum_jack_time_interval == "":
-            mania_2k_minimum_jack_time_interval = mania_2k_options_default[
-                "minimum_jack_time_interval"
-            ]
-        else:
-            mania_2k_minimum_jack_time_interval = float(
-                raw_input_mania_2k_minimum_jack_time_interval
-            )
-
-        # 最大叠键数询问
-        raw_input_maximum_number_of_jack_notes = input(
-            MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES
-        )
-        if raw_input_maximum_number_of_jack_notes == "":
-            mania_2k_maximum_number_of_jack_notes = mania_2k_options_default[
-                "maximum_number_of_jack_notes"
-            ]
-        else:
-            mania_2k_maximum_number_of_jack_notes = int(
-                raw_input_maximum_number_of_jack_notes
-            )
-
-        # 生成配置
-        mania_2k_options: Mania2kOptions = {
-            "main_key": mania_2k_main_key,
-            "start_key": mania_2k_start_key,
-            "trill_start_key": mania_2k_trill_start_key,
-            "minimum_jack_time_interval": mania_2k_minimum_jack_time_interval,
-            "maximum_number_of_jack_notes": mania_2k_maximum_number_of_jack_notes,
-        }
-
-    info(LOADING_OSU_FILE)
+    # std to mania 2k 生成参数询问部分
+    std_to_mania_2k_main_key: str | None = None
+    std_to_mania_2k_start_key: str | None = None  # 铺面起手键位置
+    std_to_mania_2k_trill_start_key: str | None = None  # 交互起手键位置
+    std_to_mania_2k_minimum_jack_time_interval: str | None = (
+        None  # 最小叠键时间间距，单位毫秒
+    )
+    std_to_mania_2k_maximum_number_of_jack_notes: str | None = None  # 最大叠键数
 
     # 读取 osu 文件除去去 [HitObjects] 的信息
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
+    if osu_file_metadata_mode_parser(osu_file_metadata)=="osu!"  and number_of_keys in ("2", "4"):
+        # 主要单戳纸询问
+        while std_to_mania_2k_main_key not in ("1", "2", ""):
+            std_to_mania_2k_main_key = input(MANIA_2k_PLEASE_INPUT_MAIN_KEY)
 
-    # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(
-        osu_file_metadata, load_hit_objects_list(osu_file_full_path)
-    )
+        # 起手键询问
+        while std_to_mania_2k_start_key not in ("1", "2", ""):
+            std_to_mania_2k_start_key = input(MANIA_2K_PLEASE_INPUT_START_KEY)
 
-    # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
-    parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
-        map(std_object_type_to_mania_1k, parsed_hit_objects_list)
-    )
+        # 交互起手键询问
+        while std_to_mania_2k_start_key not in ("1", "2", ""):
+            std_to_mania_2k_trill_start_key = input(MANIA_2K_PLEASE_INPUT_TRILL_START_KEY)
 
-    info(OSU_FILE_LOADED)
-    info(CONVERTING_BEATMAP)
-
-    # 根据配置值去除 sv
-    osu_file_metadata: list[str] = any_metadata_remove_sv(
-        remove_sv_option=remove_sv_option, osu_file_metadata=osu_file_metadata
-    )
-
-    if number_of_keys == 1:
-        # 目标产物 mania 1k
-        # 将铺面元数据转换为 osu!mania 1k 元数据
-        osu_file_metadata: list[str] = any_metadata_to_mania_1k(osu_file_metadata)
-
-        ## 生成铺面
-        final_osu_file_content: str = generate_mania_1k_osu_file(
-            osu_file_metadata, parsed_mania_1k_hit_objects_list
-        )
-    elif number_of_keys == 2 or number_of_keys == 4:
-        # 目标产物 mania 2k
-
-        # 将铺面从 1k 转换为 2k（根据配置项处理 parsed_mania_1k_hit_objects_list）
-        parsed_mania_2k_hit_objects_list = mania_1k_to_2k(
-            parsed_mania_1k_hit_objects_list, options=mania_2k_options
+        # 最小叠键时间间距询问
+        std_to_mania_2k_minimum_jack_time_interval = input(
+            MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL
         )
 
-        ## 生成铺面
-        if number_of_keys == 2:
-            # 将铺面元数据转换为 osu!mania 2k 元数据
-            osu_file_metadata: list[str] = any_metadata_to_mania_2k(osu_file_metadata)
+        # 最大叠键数询问
+        std_to_mania_2k_maximum_number_of_jack_notes = input(
+            MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES
+        )
 
-            final_osu_file_content: str = generate_mania_2k_osu_file(
-                osu_file_metadata, parsed_mania_2k_hit_objects_list
-            )
-        elif number_of_keys == 4:
-            # 将铺面元数据转换为 osu!mania 4k 元数据
-            osu_file_metadata: list[str] = any_metadata_to_mania_4k(osu_file_metadata)
+    # 构建命令行参数
+    cli_arg_to_variable_dict: dict[str, str] = {
+        "-i": osu_file_full_path,
+        "-k": number_of_keys,
+        "-o": output_dir,
+        "-f": output_file_name,
+        "-r": remove_sv_option,
+        "-smk": std_to_mania_2k_main_key,
+        "-ssk": std_to_mania_2k_start_key,
+        "-stsk": std_to_mania_2k_trill_start_key,
+        "-smjti": std_to_mania_2k_minimum_jack_time_interval,
+        "-smnjn": std_to_mania_2k_maximum_number_of_jack_notes,
+    }
 
-            final_osu_file_content: str = generate_mania_4k_osu_file(
-                osu_file_metadata, parsed_mania_2k_hit_objects_list
-            )
+    raw_args: str = ""
 
-    info(BEATMAP_CONVERTED)
-    info(WRITING_OSU_FILE)
+    for arg in cli_arg_to_variable_dict.keys():
+        if cli_arg_to_variable_dict[arg] in ("", None):
+            raw_args += f"{arg} {cli_arg_to_variable_dict[arg]} "
 
-    # 写入文件
-    with open(f"{output_dir}{final_osu_file_name}", mode="w+", encoding="utf-8") as f:
-        f.write(final_osu_file_content)
-
-    info(OSU_FILE_WRITTEN)
-    info(PLEASE_SUPPORT_THIS_PROJECT)
-    input(PRESS_ENTER_EXIT_SOFTWARE)
+    debug(message="raw_args", data=raw_args)
+    # 发送到指令解析/实际逻辑运行
+    cli_main(raw_args)
