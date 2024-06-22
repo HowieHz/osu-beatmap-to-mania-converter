@@ -75,7 +75,7 @@ MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES: str = (
 
 CLI_HELP_MESSAGE = "显示此帮助信息并退出程序"
 CLI_HELP_QUIET = "使程序减少输出。--quiet 或 --quiet True 均可启用此选项"
-CLI_HELP_CONFIG = f"配置文件路径。如仅添加 --config 不带参数，则为在 {options_default['config_file_full_path']} 创建配置文件并退出程序"
+CLI_HELP_CONFIG = f"配置文件路径。如仅添加 --config 不带参数，则为在 {options_default['config_file_path_root_and_stem']}.{options_default['config_file_type']} 创建配置文件并退出程序。如添加 --config yaml 则为初始化一个 yaml 格式的配置文件；--config json 则为初始化一个 json 格式的配置文件；--config toml 则为初始化一个 toml 格式的配置文件。注：json 和 toml 中路径出现的 \\ 字符要改成 \\\\，而 yaml 中字符串只能用单引号 \' 而不能用双引号 \" 标注。"
 CLI_HELP_CONFIG_TYPE = "配置文件类型"
 CLI_HELP_CUI = "进入交互式命令提示程序"
 CLI_HELP_WEBUI = "进入网络界面"

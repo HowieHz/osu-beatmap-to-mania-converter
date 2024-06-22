@@ -140,10 +140,19 @@ def arg_parse(args: argparse.Namespace) -> str:
         os.environ["QUIET_FLAG"] = "True"
 
     # 初始化配置文件
-    if args.config == INIT_CONFIG_FLAG:
-        settings_file_instance: hpysettings.SettingsFileObject = (
-            get_settings_file_instance(options_default["config_file_full_path"])
-        )
+    if args.config == INIT_CONFIG_FLAG or args.config in ("yaml", "json", "toml"):
+        if args.config == INIT_CONFIG_FLAG:
+            settings_file_instance: hpysettings.SettingsFileObject = (
+                get_settings_file_instance(
+                    f"{options_default['config_file_path_root_and_stem']}.{options_default['config_file_type']}"
+                )
+            )
+        elif args.config in ("yaml", "json", "toml"):
+            settings_file_instance: hpysettings.SettingsFileObject = (
+                get_settings_file_instance(
+                    f"{options_default['config_file_path_root_and_stem']}.{args.config}"
+                )
+            )
 
         settings_file_instance.add("--quiet", False).add("--osu-file-full-path", "").add(
             "--output-dir", ""
