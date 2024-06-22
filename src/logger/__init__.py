@@ -1,9 +1,8 @@
 import os
 import pprint
 
-DEBUG_FLAG: bool = bool(
-    os.getenv("DEBUG_FLAG")
-)  # 有文字都会转换成 true，所以不用担心报错
+# 有文字都会转换成 true，所以不用担心报错
+DEBUG_FLAG: bool = bool(os.getenv("DEBUG_FLAG"))
 
 if DEBUG_FLAG:
     log_stream = open("debug.log", mode="a+", encoding="utf-8")
@@ -18,7 +17,10 @@ def debug(message: str, data: any = "", end: str | None = "\n") -> None:
 
 
 def info(message: str) -> None:
-    print(f"[info/信息]: {message}")
+    quiet_flag: bool = bool(os.getenv("QUIET_FLAG"))
+
+    if not quiet_flag:
+        print(f"[info/信息]: {message}")
 
 
 def warning(message: str) -> None:

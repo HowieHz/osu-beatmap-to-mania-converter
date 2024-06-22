@@ -72,9 +72,10 @@ MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES: str = (
 # cli help
 
 CLI_HELP_MESSAGE = "显示此帮助信息并退出程序"
+CLI_HELP_QUIET = "使程序减少输出"
 CLI_HELP_CUI = "进入交互式命令提示程序"
 CLI_HELP_LOG_VERBOSITY = "修改输出详细程度"  # change output verbosity
-CLI_HELP_VERSION = "输出软件版本信息"
+CLI_HELP_VERSION = "输出软件版本信息并退出程序"
 
 # cli help prefix
 

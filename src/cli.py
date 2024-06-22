@@ -1,4 +1,5 @@
 import argparse
+import os
 import time
 from pathlib import Path
 
@@ -29,21 +30,15 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-cui", "--command-user-interface", action="store_true", help=CLI_HELP_CUI
     )
+    parser.add_argument("-v", "--version", action="store_true", help=CLI_HELP_VERSION)
+    parser.add_argument("-q", "--quiet", action="store_true", help=CLI_HELP_QUIET)
 
     parser.add_argument(
         "-i", "--osu-file-full-path", help=PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH, type=str
     )
 
-    parser.add_argument("-v", "--version", action="store_true", help=CLI_HELP_VERSION)
-
-    # parser.add_argument(
-    #     "-l",
-    #     "--log-verbosity",
-    #     help=CLI_HELP_LOG_VERBOSITY,
-    #     type=str,
-    #     choices=["info", "debug"],
-    #     default="info",
-    # )
+    parser.add_argument("-o", "--output-dir", help=PLEASE_OUTPUT_DIR, type=str)
+    parser.add_argument("-f", "--output-file-name", help=PLEASE_OUTPUT_FILENAME, type=str)
 
     parser.add_argument(
         "-k",
@@ -53,9 +48,6 @@ def create_parser() -> argparse.ArgumentParser:
         type=int,
         choices=[1, 2, 4, 5],
     )
-
-    parser.add_argument("-o", "--output-dir", help=PLEASE_OUTPUT_DIR, type=str)
-    parser.add_argument("-f", "--output-file-name", help=PLEASE_OUTPUT_FILENAME, type=str)
 
     parser.add_argument(
         "-r",
@@ -119,8 +111,12 @@ def arg_parse(args: argparse.Namespace) -> str:
 
     # 输出版本信息
     if args.version:
-        print(PROGRAM_INFORMATION)
+        info(PROGRAM_INFORMATION)
         return "stop"
+
+    # 安静模式
+    if args.quiet:
+        os.environ["QUIET_FLAG"] = "True"
 
     # 进入 cui 程序
     if args.command_user_interface:
