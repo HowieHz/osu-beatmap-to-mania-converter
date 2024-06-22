@@ -33,7 +33,7 @@ python -m venv .venv
 在 Bash
 
 ```bash
-source ENV_DIR/bin/activate
+source ./.venv/bin/activate
 ```
 
 附：退出虚拟环境的指令
