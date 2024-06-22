@@ -52,8 +52,7 @@ def create_parser() -> argparse.ArgumentParser:
         help=CLI_HELP_QUIET,
         type=str,
         nargs="?",
-        const="True", # 参数仅添加 -q 后没更参数
-        default=options_default["cli_quiet_option"],  # 参数没添加 -q
+        const="True",  # 参数仅添加 -q 后没更参数
     )
 
     parser.add_argument(
@@ -146,9 +145,9 @@ def arg_parse(args: argparse.Namespace) -> str:
             get_settings_file_instance(options_default["config_file_full_path"])
         )
 
-        settings_file_instance.add("--quiet", options_default["cli_quiet_option"]).add(
-            "--osu-file-full-path", ""
-        ).add("--output-dir", "").add("--output-file-name", "").add(
+        settings_file_instance.add("--quiet", False).add("--osu-file-full-path", "").add(
+            "--output-dir", ""
+        ).add("--output-file-name", "").add(
             "--keys", options_default["converter_output_number_of_keys"]
         ).add(
             "--remove-sv-mode", options_default["remove_sv_mode"]
