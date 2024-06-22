@@ -30,7 +30,20 @@ INIT_CONFIG_FLAG = "init"
 
 
 def create_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
+    prefix_chars: str = "-"
+    parser = argparse.ArgumentParser(
+        description=DESCRIPTION, add_help=False, prefix_chars=prefix_chars
+    )
+
+    # 从 argparse 库复制的 help 参数添加，为了翻译帮助信息
+    default_prefix = "-" if "-" in prefix_chars else prefix_chars[0]
+    parser.add_argument(
+        default_prefix + "h",
+        default_prefix * 2 + "help",
+        action="help",
+        default="==SUPPRESS==",
+        help=CLI_HELP_MESSAGE,
+    )
 
     # 不能加入配置文件的项
     parser.add_argument(
@@ -53,6 +66,7 @@ def create_parser() -> argparse.ArgumentParser:
         type=str,
         nargs="?",
         const="True",  # 参数仅添加 -q 后没更参数
+        metavar="True",
     )
 
     parser.add_argument(
