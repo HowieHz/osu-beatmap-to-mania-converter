@@ -1,8 +1,8 @@
 from custom_types import ManiaHitObject
-from logger import debug, warning
+from logger import warning
 
 
-def generate_mania_nk_osu_file(
+def generate_mania_osu_file(
     file_metadata: list[str], hit_objects_list: list[ManiaHitObject], keys: int
 ) -> str:
     """生成最终的 mania .osu 文件数据
@@ -15,8 +15,6 @@ def generate_mania_nk_osu_file(
     Returns:
         str: 文件数据，可直接写入 .osu 文件
     """
-    debug("file_metadata", data=file_metadata)
-    debug("hit_objects_list", data=hit_objects_list)
 
     # 生成元数据
     raw_file_metadata: str = "".join(file_metadata)

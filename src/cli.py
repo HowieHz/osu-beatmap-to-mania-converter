@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 from custom_types import HitObject, Mania2kOptions, ManiaHitObject
-from exporter import generate_mania_nk_osu_file
+from exporter import generate_mania_osu_file
 from logger import debug, error, info
 from message import *
 from options_default import mania_2k_options_default
@@ -283,7 +283,7 @@ def arg_parse(args: argparse.Namespace) -> str:
                 )
 
             ## 生成铺面数据
-            final_osu_file_content = generate_mania_nk_osu_file(
+            final_osu_file_content = generate_mania_osu_file(
                 file_metadata=osu_file_metadata,
                 hit_objects_list=parsed_mania_hit_objects_list,
                 keys=number_of_keys,
@@ -296,7 +296,7 @@ def arg_parse(args: argparse.Namespace) -> str:
             # TODO: 5k -> 4k 转换
 
             ## 生成铺面数据
-            final_osu_file_content = generate_mania_nk_osu_file(
+            final_osu_file_content = generate_mania_osu_file(
                 file_metadata=osu_file_metadata,
                 hit_objects_list=parsed_mania_hit_objects_list,
                 keys=number_of_keys,
