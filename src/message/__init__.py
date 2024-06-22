@@ -1,6 +1,6 @@
 import locale
 
-from .cli_logo import CLI_LOGO
+from .cli_banner import CLI_BANNER
 from .version import VERSION
 
 _lang: str = locale.getlocale()[0]

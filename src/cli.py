@@ -146,7 +146,7 @@ def arg_parse(args: argparse.Namespace) -> str:
 
     # 输出版本信息
     if args.version:
-        info(PROGRAM_INFORMATION)
+        print(PROGRAM_INFORMATION)
         return "stop"
 
     # 安静模式

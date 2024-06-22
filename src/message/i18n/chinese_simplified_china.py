@@ -1,13 +1,13 @@
 from options_default import mania_2k_options_default, options_default
 
-from ..cli_logo import CLI_LOGO
+from ..cli_banner import CLI_BANNER
 from ..version import VERSION
 
 # TODO: 制作中
 DESCRIPTION: str = f"osu!std/osu!taiko(制作中) 转 osu!mania 铺面转换器 {VERSION}"
 
 PROGRAM_INFORMATION: str = f"""\
-{CLI_LOGO}
+{CLI_BANNER}
 {DESCRIPTION}
 
 项目主页: https://github.com/HowieHz/osu-beatmap-to-mania-converter
