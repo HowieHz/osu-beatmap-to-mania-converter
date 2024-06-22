@@ -38,6 +38,8 @@ BEATMAP_CONVERTED: str = "铺面文件转换完成。"
 WRITING_OSU_FILE: str = "铺面文件转换中，请稍等..."
 OSU_FILE_WRITTEN: str = "铺面文件已完成写入。"
 
+RUNTIME_IS: str = "上一阶段运行花费了 {:.6f} 秒"
+
 PLEASE_SUPPORT_THIS_PROJECT: str = (
     "如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
 )

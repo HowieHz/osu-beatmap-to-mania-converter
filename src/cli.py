@@ -1,4 +1,5 @@
 import argparse
+import time
 from pathlib import Path
 
 from custom_types import HitObject, Mania2kOptions, ManiaHitObject
@@ -228,6 +229,7 @@ def arg_parse(args: argparse.Namespace) -> str:
     }
 
     info(LOADING_OSU_FILE)
+    start_time: float = time.perf_counter()
 
     # 读取 osu 文件除去去 [HitObjects] 的信息
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
@@ -260,8 +262,11 @@ def arg_parse(args: argparse.Namespace) -> str:
                 map(mania_object_to_mania_1k, parsed_hit_objects_list)
             )
 
+    end_time: float = time.perf_counter()
     info(OSU_FILE_LOADED)
+    info(RUNTIME_IS.format(end_time - start_time))
     info(CONVERTING_BEATMAP)
+    start_time = time.perf_counter()
 
     # 根据配置值去除 sv
     osu_file_metadata: list[str] = any_metadata_remove_sv(
@@ -312,14 +317,19 @@ def arg_parse(args: argparse.Namespace) -> str:
             # TODO: mania 转 1k\2k
             ...
 
+    end_time = time.perf_counter()
     info(BEATMAP_CONVERTED)
+    info(RUNTIME_IS.format(end_time - start_time))
     info(WRITING_OSU_FILE)
+    start_time = time.perf_counter()
 
     # 写入文件
     with open(f"{output_dir}{final_osu_file_name}", mode="w+", encoding="utf-8") as f:
         f.write(final_osu_file_content)
 
+    end_time = time.perf_counter()
     info(OSU_FILE_WRITTEN)
+    info(RUNTIME_IS.format(end_time - start_time))
     info(PLEASE_SUPPORT_THIS_PROJECT)
     info(PRESS_ENTER_EXIT_SOFTWARE)
 
