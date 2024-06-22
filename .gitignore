@@ -164,3 +164,6 @@ cython_debug/
 /main.dist
 main.exe
 osu-beatmap-to-mania-converter.exe
+config.toml
+config.json
+config.yaml

@@ -74,8 +74,11 @@ MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES: str = (
 # cli help
 
 CLI_HELP_MESSAGE = "显示此帮助信息并退出程序"
-CLI_HELP_QUIET = "使程序减少输出"
+CLI_HELP_QUIET = "使程序减少输出。--quiet 或 --quiet True 均可启用此选项"
+CLI_HELP_CONFIG = f"配置文件路径。如仅添加 --config 不带参数，则为在 {options_default['config_file_full_path']} 创建配置文件并退出程序"
+CLI_HELP_CONFIG_TYPE = "配置文件类型"
 CLI_HELP_CUI = "进入交互式命令提示程序"
+CLI_HELP_WEBUI = "进入网络界面"
 CLI_HELP_LOG_VERBOSITY = "修改输出详细程度"  # change output verbosity
 CLI_HELP_VERSION = "输出软件版本信息并退出程序"
 

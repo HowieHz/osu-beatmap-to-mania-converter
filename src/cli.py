@@ -3,6 +3,9 @@ import os
 import time
 from pathlib import Path
 
+from hpyculator import hpysettings
+
+from config import get_settings_file_instance
 from custom_types import HitObject, Mania2kOptions, ManiaHitObject
 from exporter import generate_mania_osu_file
 from logger import debug, error, info
@@ -23,20 +26,39 @@ from reader import (
     osu_file_metadata_mode_parser,
 )
 
+INIT_CONFIG_FLAG = "init"
+
 
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=DESCRIPTION)
 
+    # 不能加入配置文件的项
     parser.add_argument(
         "-cui", "--command-user-interface", action="store_true", help=CLI_HELP_CUI
     )
     parser.add_argument("-v", "--version", action="store_true", help=CLI_HELP_VERSION)
-    parser.add_argument("-q", "--quiet", action="store_true", help=CLI_HELP_QUIET)
+    parser.add_argument(
+        "-c",
+        "--config",
+        help=CLI_HELP_CONFIG,
+        type=str,
+        nargs="?",
+        const=INIT_CONFIG_FLAG,
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quiet",
+        help=CLI_HELP_QUIET,
+        type=str,
+        nargs="?",
+        const="True", # 参数仅添加 -q 后没更参数
+        default=options_default["cli_quiet_option"],  # 参数没添加 -q
+    )
 
     parser.add_argument(
         "-i", "--osu-file-full-path", help=PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH, type=str
     )
-
     parser.add_argument("-o", "--output-dir", help=PLEASE_OUTPUT_DIR, type=str)
     parser.add_argument("-f", "--output-file-name", help=PLEASE_OUTPUT_FILENAME, type=str)
 
@@ -115,8 +137,57 @@ def arg_parse(args: argparse.Namespace) -> str:
         return "stop"
 
     # 安静模式
-    if args.quiet:
+    if args.quiet in ("true", "True"):
         os.environ["QUIET_FLAG"] = "True"
+
+    # 初始化配置文件
+    if args.config == INIT_CONFIG_FLAG:
+        settings_file_instance: hpysettings.SettingsFileObject = (
+            get_settings_file_instance(options_default["config_file_full_path"])
+        )
+
+        settings_file_instance.add("--quiet", options_default["cli_quiet_option"]).add(
+            "--osu-file-full-path", ""
+        ).add("--output-dir", "").add("--output-file-name", "").add(
+            "--keys", options_default["converter_output_number_of_keys"]
+        ).add(
+            "--remove-sv-mode", options_default["remove_sv_mode"]
+        ).add(
+            "--std-to-mania-2k-main-key", mania_2k_options_default["main_key"]
+        ).add(
+            "--std-to-mania-2k-start-key", mania_2k_options_default["start_key"]
+        ).add(
+            "--std-to-mania-2k-trill-start-key",
+            mania_2k_options_default["trill_start_key"],
+        ).add(
+            "--std-to-mania-2k-minimum-jack-time-interval",
+            mania_2k_options_default["minimum_jack_time_interval"],
+        ).add(
+            "--std-to-mania-2k-maximum-number-of-jack-notes",
+            mania_2k_options_default["maximum_number_of_jack_notes"],
+        )
+        return "stop"
+
+    # 通过 config 操作
+    if args.config is not None:
+        settings_file_instance: hpysettings.SettingsFileObject = (
+            get_settings_file_instance(args.config)
+        )
+
+        cli_arg_to_variable_dict: dict = settings_file_instance.readAll()
+
+        args_list: list[str] = []
+
+        for arg in cli_arg_to_variable_dict.keys():
+            if cli_arg_to_variable_dict[arg] not in ("", None):
+                args_list.append(arg)
+                # 必须加上 str 转换，因为要求是 arg_list 每项都是字符串
+                args_list.append(str(cli_arg_to_variable_dict[arg]))
+
+        debug(message="args_list_read_config", data=args_list)
+        # 发送到指令解析/实际逻辑运行
+        cli_main(args_list)
+        return "stop"
 
     # 进入 cui 程序
     if args.command_user_interface:

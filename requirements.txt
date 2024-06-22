@@ -4,3 +4,4 @@ isort
 pytest
 nuitka
 pre-commit
+hpyculator
