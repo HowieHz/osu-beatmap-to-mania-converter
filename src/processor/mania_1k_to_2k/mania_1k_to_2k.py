@@ -111,14 +111,8 @@ def _convert_long_jack_to_trill(
 
         for stack_index, this_index_hit_object in enumerate(jack_node_stack[1:], start=1):
             last_index_hit_object = jack_node_stack[stack_index - 1]
-            debug(last_index_hit_object)
-            debug(
-                hit_objects_list[last_index_hit_object["index"]]
-                == last_index_hit_object["hit_object"]
-            )
-
-            debug("last:", hit_objects_list[last_index_hit_object["index"]]["key"])
-            debug("this:", hit_objects_list[this_index_hit_object["index"]]["key"])
+            # hit_objects_list[last_index_hit_object["index"]] 等于 last_index_hit_object["hit_object"]
+            # TODO: 看似 last_index_hit_object["hit_object"] 能不能优化下，就是 90-96行那边 jack_node_stack.append 只要 index 加入就好、last_index_hit_object 变成 last_index_note
 
             if hit_objects_list[last_index_hit_object["index"]]["key"] == 1:
                 hit_objects_list[this_index_hit_object["index"]]["key"] = 2
