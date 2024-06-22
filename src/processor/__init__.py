@@ -1,3 +1,4 @@
+from .hit_object_converter.mania_object_to_mania_1k import mania_object_to_mania_1k
 from .hit_object_converter.std_object_type_to_mania_1k import std_object_type_to_mania_1k
 from .hit_object_converter.taiko_object_type_to_mania_5k import (
     taiko_object_type_to_mania_5k,

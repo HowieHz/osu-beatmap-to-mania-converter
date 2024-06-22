@@ -3,7 +3,8 @@ from options_default import mania_2k_options_default, options_default
 from ..cli_logo import CLI_LOGO
 from ..version import VERSION
 
-DESCRIPTION: str = f"osu!std/osu!taiko 转 osu!mania 铺面转换器 {VERSION}"
+# TODO: 制作中
+DESCRIPTION: str = f"osu!std/osu!taiko(制作中) 转 osu!mania 铺面转换器 {VERSION}"
 
 PROGRAM_INFORMATION: str = f"""\
 {CLI_LOGO}
@@ -83,3 +84,4 @@ CLI_OSU_FILE_FULL_PATH_ARGUMENT_IS_REQUIRED = (
     "“被转换铺面的完整路径（.osu 结尾）”是必要的参数，请添加“-i 被转换铺面的完整路径”参数"
 )
 CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP = "程序不支持 osu!catch 模式的铺面输入！"
+CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP = "程序不支持 osu!taiko 模式的铺面输入！"

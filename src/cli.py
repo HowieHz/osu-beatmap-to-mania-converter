@@ -10,6 +10,7 @@ from processor import (
     any_metadata_remove_sv,
     any_metadata_to_mania,
     mania_1k_to_2k,
+    mania_object_to_mania_1k,
     std_object_type_to_mania_1k,
     taiko_object_type_to_mania_5k,
 )
@@ -243,6 +244,10 @@ def arg_parse(args: argparse.Namespace) -> str:
                 map(std_object_type_to_mania_1k, parsed_hit_objects_list)
             )
         case "osu!taiko":
+            error(CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP)
+            return "stop"
+            # TODO: CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP
+
             parsed_mania_5k_hit_objects_list: list[ManiaHitObject] = list(
                 map(taiko_object_type_to_mania_5k, parsed_hit_objects_list)
             )
@@ -250,8 +255,10 @@ def arg_parse(args: argparse.Namespace) -> str:
             error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
             return "stop"
         case "osu!mania":
-            # TODO: mania 转 1k\2k
-            ...
+            # mania 转 1k
+            parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
+                map(mania_object_to_mania_1k, parsed_hit_objects_list)
+            )
 
     info(OSU_FILE_LOADED)
     info(CONVERTING_BEATMAP)
@@ -301,9 +308,6 @@ def arg_parse(args: argparse.Namespace) -> str:
                 hit_objects_list=parsed_mania_hit_objects_list,
                 keys=number_of_keys,
             )
-        case "osu!catch":
-            error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
-            return "stop"
         case "osu!mania":
             # TODO: mania 转 1k\2k
             ...
