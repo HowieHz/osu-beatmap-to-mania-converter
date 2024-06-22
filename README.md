@@ -208,8 +208,13 @@ python ./src/main.py
 #### Windows 平台
 
 从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件。
-在下载文件所在目录启动终端程序（如 CMD\PowerShell\...）。
-随后执行 `osu-beatmap-to-mania-converter.exe -h`（或 `.\osu-beatmap-to-mania-converter.exe -h`）即可看到相关帮助
+在下载文件所在目录的资源管理器的地址栏，输入 cmd 之后回车，在随后弹出的命令行窗口中输入以下指令
+
+```bash
+osu-beatmap-to-mania-converter.exe -h
+```
+
+即可看到相关帮助
 
 #### MacOS & Linux 平台
 
