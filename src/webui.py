@@ -3,7 +3,7 @@ from multiprocessing import Process
 import webview
 from cli import cli_main
 from pywebio import start_server
-from pywebio.input import FLOAT, input
+from pywebio.input import input, input_group
 from pywebio.output import put_markdown, put_text
 
 from logger import debug
@@ -12,48 +12,85 @@ from reader import load_osu_file_metadata, osu_file_metadata_mode_parser
 
 
 def webui():
-    """webui main program"""
+    """webui main program\n
+    输入引导 webui\n
+    输入值效验 webui\\cli\n
+    参数列构建 webui\n
+    """
+
     put_text(PROGRAM_INFORMATION)
     put_text(PLEASE_PRESS_SUBMIT_BUTTON_AFTER_INPUT)
     put_markdown("---")
 
     while True:
-        osu_file_full_path: str | None = None
-        # 获取 osu 文件路径，去除两头的单双引号
-        while osu_file_full_path in ("", None):
-            osu_file_full_path: str = (
-                input(PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH)
-                .removeprefix('"')
-                .removeprefix("'")
-                .removesuffix('"')
-                .removesuffix("'")
-            )
 
-        output_dir: str | None = None
-        # 询问输出目录，去除两头的单双引号
-        output_dir = (
-            input(PLEASE_OUTPUT_DIR)
+        def check_osu_file_full_path(osu_file_full_path: str) -> str | None:
+            if osu_file_full_path in (
+                "",
+                None,
+            ):  # 如果为空，此处值为 ""。None 是来自 cui 的残留代码。
+                return THE_OPTION_CANNOT_BE_EMPTY
+            return None
+
+        def check_number_of_keys(number_of_keys: str) -> str | None:
+            if number_of_keys not in ("1", "2", "4", "5", ""):
+                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+            return None
+
+        def check_remove_sv_option(remove_sv_option: str) -> str | None:
+            if remove_sv_option not in ("1", "2", "0", ""):
+                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+            return None
+
+        basic_data: dict[str, str] = input_group(
+            BASIC_INFO,
+            [
+                input(
+                    PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH,
+                    name="osu_file_full_path",
+                    validate=check_osu_file_full_path,
+                ),
+                input(PLEASE_OUTPUT_DIR, name="output_dir"),
+                input(PLEASE_OUTPUT_FILENAME, name="output_file_name"),
+                input(
+                    PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA,
+                    name="number_of_keys",
+                    validate=check_number_of_keys,
+                ),
+                input(
+                    PLEASE_INPUT_REMOVE_SV_OPTION,
+                    name="remove_sv_option",
+                    validate=check_remove_sv_option,
+                ),
+            ],
+        )
+
+        # 获取 osu 文件路径，去除两头的单双引号
+        osu_file_full_path: str = (
+            basic_data["osu_file_full_path"]
             .removeprefix('"')
             .removeprefix("'")
             .removesuffix('"')
             .removesuffix("'")
         )
 
-        output_file_name: str | None = None
-        # 询问输出文件名
-        output_file_name = input(PLEASE_OUTPUT_FILENAME)
+        # 获取输出目录，去除两头的单双引号
+        output_dir: str = (
+            basic_data["output_dir"]
+            .removeprefix('"')
+            .removeprefix("'")
+            .removesuffix('"')
+            .removesuffix("'")
+        )
 
-        number_of_keys: str | None = None
-        # 询问用户输出 mania 1k 还是 mania 2k 还是 4k
-        while number_of_keys not in ("1", "2", "4", "5", ""):
-            number_of_keys = input(
-                PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA
-            )
+        # 获取输出文件名
+        output_file_name: str = basic_data["output_file_name"]
+
+        # 询问用户输出 mania ?k
+        number_of_keys: str = basic_data["number_of_keys"]
 
         # 询问是否移除变速
-        remove_sv_option: str | None = None
-        while remove_sv_option not in ("1", "2", "0", ""):
-            remove_sv_option = input(PLEASE_INPUT_REMOVE_SV_OPTION)
+        remove_sv_option: str = basic_data["remove_sv_option"]
 
         # std to mania 2k 生成参数询问部分
         std_to_mania_2k_main_key: str | None = None
@@ -136,7 +173,10 @@ def webui_process(port: int = 8099):
 def window_process(port: int = 8099):
     PORT: int = port
     webview.create_window(
-        f"osu-beatmap-to-mania-converter {VERSION}", f"http://127.0.0.1:{PORT}", width=1200, height=1000,
+        f"osu-beatmap-to-mania-converter {VERSION}",
+        f"http://127.0.0.1:{PORT}",
+        width=1200,
+        height=1000,
     )
     webview.start()
 

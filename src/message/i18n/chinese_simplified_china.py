@@ -24,6 +24,13 @@ PLEASE_SUPPORT_THIS_PROJECT: str = (
 # webui 使用指导
 PLEASE_PRESS_SUBMIT_BUTTON_AFTER_INPUT: str = "每条信息输入完成后，按下提交按钮。"
 
+# webui 提示文字
+BASIC_INFO: str = "基础信息"
+
+# webui 效验数据，返回的错误信息
+THE_OPTION_CANNOT_BE_EMPTY: str = "此项不能为空"
+THIS_IS_NOT_A_LEGAL_INPUT_VALUE: str = "这不是一个有效的输入值"
+
 # cui 使用指导
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，按下回车键。"
 PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "输入被转换铺面的完整路径（.osu 结尾）"
