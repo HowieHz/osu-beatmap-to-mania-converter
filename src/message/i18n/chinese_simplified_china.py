@@ -1,6 +1,7 @@
 from options_default import mania_2k_options_default, options_default
 
 from ..cli_banner import CLI_BANNER
+from ..const_url import *
 from ..version import VERSION
 
 # TODO: 制作中
@@ -10,13 +11,19 @@ DESCRIPTION: str = f"osu!std/osu!taiko(制作中) 转 osu!mania 铺面转换器 
 
 PROGRAM_INFORMATION: str = f"""\
 {CLI_BANNER}
+
 {DESCRIPTION}
 
-项目主页: https://github.com/HowieHz/osu-beatmap-to-mania-converter
-下载地址: https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases
-文档镜像: https://howiehz.top/archives/osu-beatmap-to-mania-converter-readme
-问题反馈: https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose
+{PROJECT_HOME_PAGE}: {PROJECT_HOME_PAGE_URL}
+{DOWNLOAD_PAGE}: {DOWNLOAD_PAGE_URL}
+{DOCUMENT_MIRROR_PAGE}: {DOCUMENT_MIRROR_PAGE_URL}
+{ISSUE_FEEDBACK_PAGE}: {ISSUE_FEEDBACK_PAGE_URL}
 """
+SHORT_PROGRAM_INFORMATION = f"""\
+{CLI_BANNER}
+
+{DESCRIPTION}"""
+
 PLEASE_SUPPORT_THIS_PROJECT: str = (
     "\n如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
 )

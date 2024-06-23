@@ -1,10 +1,11 @@
+import webbrowser
 from multiprocessing import Process
 
 import webview
 from cli import cli_main
 from pywebio import start_server
 from pywebio.input import input, input_group
-from pywebio.output import put_markdown, put_text
+from pywebio.output import put_buttons, put_code, put_markdown, put_text
 
 from logger import debug
 from message import *
@@ -18,7 +19,25 @@ def webui():
     参数列构建 webui\n
     """
 
-    put_text(PROGRAM_INFORMATION)
+    def open_page(choice: str) -> None:
+        target_url: str
+        if choice == PROJECT_HOME_PAGE:
+            target_url = PROJECT_HOME_PAGE_URL
+        elif choice == DOWNLOAD_PAGE:
+            target_url = DOWNLOAD_PAGE_URL
+        elif choice == DOCUMENT_MIRROR_PAGE:
+            target_url = DOCUMENT_MIRROR_PAGE_URL
+        elif choice == ISSUE_FEEDBACK_PAGE:
+            target_url = ISSUE_FEEDBACK_PAGE_URL
+        elif choice == ENTER_QQ_GROUP:
+            target_url = QQ_GROUP_LINK
+        webbrowser.open(target_url)
+
+    put_code(SHORT_PROGRAM_INFORMATION)
+    put_buttons(
+        [PROJECT_HOME_PAGE, DOWNLOAD_PAGE, DOCUMENT_MIRROR_PAGE, ISSUE_FEEDBACK_PAGE, ENTER_QQ_GROUP],
+        onclick=open_page,
+    )
     put_text(PLEASE_PRESS_SUBMIT_BUTTON_AFTER_INPUT)
     put_markdown("---")
 
