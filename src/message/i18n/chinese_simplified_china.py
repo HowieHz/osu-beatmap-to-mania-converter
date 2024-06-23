@@ -25,7 +25,7 @@ SHORT_PROGRAM_INFORMATION = f"""\
 {DESCRIPTION}"""
 
 PLEASE_SUPPORT_THIS_PROJECT: str = (
-    "\n如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
+    "如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
 )
 
 # webui 使用指导（最开头输出的信息）

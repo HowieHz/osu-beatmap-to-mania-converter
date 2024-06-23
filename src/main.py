@@ -12,4 +12,4 @@ if __name__ == "__main__":
         cui_main()
     elif ret == "enter-webui":
         os.environ["WEBUI_FLAG"] = "True"
-        webui_main()
+        webui_main(port=28099)

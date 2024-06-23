@@ -5,7 +5,7 @@ import webview
 from cli import cli_main
 from pywebio import start_server
 from pywebio.input import input, input_group
-from pywebio.output import put_buttons, put_code, put_markdown, put_text
+from pywebio.output import put_buttons, put_code, put_markdown, put_text, put_warning
 
 from logger import debug
 from message import *
@@ -227,16 +227,16 @@ def webui():
         # 发送到指令解析/实际逻辑运行
         cli_main(args_list)
 
-        put_text(PLEASE_SUPPORT_THIS_PROJECT)
+        put_warning(PLEASE_SUPPORT_THIS_PROJECT)
         put_markdown("---")
 
 
-def webui_process(port: int = 8099):
+def webui_process(port: int):
     PORT: int = port
     start_server(webui, port=PORT)
 
 
-def window_process(port: int = 8099):
+def window_process(port: int):
     PORT: int = port
     webview.create_window(
         f"osu-beatmap-to-mania-converter {VERSION}",
@@ -247,7 +247,7 @@ def window_process(port: int = 8099):
     webview.start()
 
 
-def webui_main(port: int = 8099):
+def webui_main(port: int):
     PORT: int = port
 
     webui_process_instance = Process(target=webui_process, args=(PORT,))
@@ -260,4 +260,4 @@ def webui_main(port: int = 8099):
 
 
 if __name__ == "__main__":
-    webui_main()
+    webui_main(28099)
