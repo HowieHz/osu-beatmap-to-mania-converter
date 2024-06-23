@@ -74,7 +74,7 @@ def cui_main():
             std_to_mania_2k_start_key = input(MANIA_2K_PLEASE_INPUT_START_KEY)
 
         # 交互起手键询问
-        while std_to_mania_2k_start_key not in ("1", "2", ""):
+        while std_to_mania_2k_trill_start_key not in ("1", "2", ""):
             std_to_mania_2k_trill_start_key = input(MANIA_2K_PLEASE_INPUT_TRILL_START_KEY)
 
         # 最小叠键时间间距询问

@@ -28,11 +28,12 @@ PLEASE_SUPPORT_THIS_PROJECT: str = (
     "\n如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
 )
 
-# webui 使用指导
+# webui 使用指导（最开头输出的信息）
 PLEASE_PRESS_SUBMIT_BUTTON_AFTER_INPUT: str = "每条信息输入完成后，按下提交按钮。"
 
-# webui 提示文字
+# webui 提示文字（一组输入框的标题）
 BASIC_INFO: str = "基础信息"
+STD_TO_MANIA_2k_4k: str = "osu!std 转 osu!mania 2k/4k 选项"
 
 # webui 效验数据，返回的错误信息
 THE_OPTION_CANNOT_BE_EMPTY: str = "此项不能为空"

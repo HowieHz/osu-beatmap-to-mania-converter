@@ -35,7 +35,13 @@ def webui():
 
     put_code(SHORT_PROGRAM_INFORMATION)
     put_buttons(
-        [PROJECT_HOME_PAGE, DOWNLOAD_PAGE, DOCUMENT_MIRROR_PAGE, ISSUE_FEEDBACK_PAGE, ENTER_QQ_GROUP],
+        [
+            PROJECT_HOME_PAGE,
+            DOWNLOAD_PAGE,
+            DOCUMENT_MIRROR_PAGE,
+            ISSUE_FEEDBACK_PAGE,
+            ENTER_QQ_GROUP,
+        ],
         onclick=open_page,
     )
     put_text(PLEASE_PRESS_SUBMIT_BUTTON_AFTER_INPUT)
@@ -92,7 +98,6 @@ def webui():
             .removesuffix('"')
             .removesuffix("'")
         )
-
         # 获取输出目录，去除两头的单双引号
         output_dir: str = (
             basic_data["output_dir"]
@@ -101,13 +106,10 @@ def webui():
             .removesuffix('"')
             .removesuffix("'")
         )
-
         # 获取输出文件名
         output_file_name: str = basic_data["output_file_name"]
-
         # 询问用户输出 mania ?k
         number_of_keys: str = basic_data["number_of_keys"]
-
         # 询问是否移除变速
         remove_sv_option: str = basic_data["remove_sv_option"]
 
@@ -123,6 +125,24 @@ def webui():
         # 读取 osu 文件除去去 [HitObjects] 的信息
         osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
         debug("osu_file_game_mode", data=osu_file_metadata_mode_parser(osu_file_metadata))
+
+        def check_std_to_mania_2k_main_key(std_to_mania_2k_main_key: str) -> str | None:
+            if std_to_mania_2k_main_key not in ("1", "2", ""):
+                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+            return None
+
+        def check_std_to_mania_2k_start_key(std_to_mania_2k_start_key: str) -> str | None:
+            if std_to_mania_2k_start_key not in ("1", "2", ""):
+                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+            return None
+
+        def check_std_to_mania_2k_trill_start_key(
+            std_to_mania_2k_trill_start_key: str,
+        ) -> str | None:
+            if std_to_mania_2k_trill_start_key not in ("1", "2", ""):
+                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+            return None
+
         if osu_file_metadata_mode_parser(
             osu_file_metadata
         ) == "osu!" and number_of_keys in (
@@ -130,28 +150,56 @@ def webui():
             "4",
             "",  # 取默认值的、不输入的、直接回车的
         ):
-            # 主要单戳纸询问
-            while std_to_mania_2k_main_key not in ("1", "2", ""):
-                std_to_mania_2k_main_key = input(MANIA_2k_PLEASE_INPUT_MAIN_KEY)
-
-            # 起手键询问
-            while std_to_mania_2k_start_key not in ("1", "2", ""):
-                std_to_mania_2k_start_key = input(MANIA_2K_PLEASE_INPUT_START_KEY)
-
-            # 交互起手键询问
-            while std_to_mania_2k_start_key not in ("1", "2", ""):
-                std_to_mania_2k_trill_start_key = input(
-                    MANIA_2K_PLEASE_INPUT_TRILL_START_KEY
-                )
-
-            # 最小叠键时间间距询问
-            std_to_mania_2k_minimum_jack_time_interval = input(
-                MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL
+            std_to_mania_2k_options_data: dict[str, str] = input_group(
+                STD_TO_MANIA_2k_4k,
+                [
+                    input(
+                        MANIA_2k_PLEASE_INPUT_MAIN_KEY,
+                        name="std_to_mania_2k_main_key",
+                        validate=check_std_to_mania_2k_main_key,
+                    ),
+                    input(
+                        MANIA_2K_PLEASE_INPUT_START_KEY,
+                        name="std_to_mania_2k_start_key",
+                        validate=check_std_to_mania_2k_start_key,
+                    ),
+                    input(
+                        MANIA_2K_PLEASE_INPUT_TRILL_START_KEY,
+                        name="std_to_mania_2k_trill_start_key",
+                        validate=check_std_to_mania_2k_trill_start_key,
+                    ),
+                    input(
+                        MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL,
+                        name="std_to_mania_2k_minimum_jack_time_interval",
+                    ),
+                    input(
+                        MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES,
+                        name="std_to_mania_2k_maximum_number_of_jack_notes",
+                    ),
+                ],
             )
 
+            # 主要单戳纸询问
+            std_to_mania_2k_main_key: str = std_to_mania_2k_options_data[
+                "std_to_mania_2k_main_key"
+            ]
+            # 起手键询问
+            std_to_mania_2k_start_key: str = std_to_mania_2k_options_data[
+                "std_to_mania_2k_start_key"
+            ]
+            # 交互起手键询问
+            std_to_mania_2k_trill_start_key: str = std_to_mania_2k_options_data[
+                "std_to_mania_2k_trill_start_key"
+            ]
+            # 最小叠键时间间距询问，单位毫秒
+            std_to_mania_2k_minimum_jack_time_interval: str = (
+                std_to_mania_2k_options_data["std_to_mania_2k_minimum_jack_time_interval"]
+            )
             # 最大叠键数询问
-            std_to_mania_2k_maximum_number_of_jack_notes = input(
-                MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES
+            std_to_mania_2k_maximum_number_of_jack_notes: str = (
+                std_to_mania_2k_options_data[
+                    "std_to_mania_2k_maximum_number_of_jack_notes"
+                ]
             )
 
         # 构建命令行参数
