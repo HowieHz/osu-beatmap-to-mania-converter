@@ -6,7 +6,10 @@ from reader import load_osu_file_metadata, osu_file_metadata_mode_parser
 
 
 def cui_main():
-    """Interactive cui main program"""
+    """Interactive cui main program
+    参数采集，指令构建 -> cui\n
+    参数效验 -> cli
+    """
     print(PROGRAM_INFORMATION)
     print(PLEASE_PRESS_ENTER_AFTER_INPUT)
 

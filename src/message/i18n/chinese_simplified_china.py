@@ -4,6 +4,8 @@ from ..cli_banner import CLI_BANNER
 from ..version import VERSION
 
 # TODO: 制作中
+
+# 共用介绍
 DESCRIPTION: str = f"osu!std/osu!taiko(制作中) 转 osu!mania 铺面转换器 {VERSION}"
 
 PROGRAM_INFORMATION: str = f"""\
@@ -15,39 +17,26 @@ PROGRAM_INFORMATION: str = f"""\
 文档镜像: https://howiehz.top/archives/osu-beatmap-to-mania-converter-readme
 问题反馈: https://github.com/HowieHz/osu-beatmap-to-mania-converter/issues/new/choose
 """
+PLEASE_SUPPORT_THIS_PROJECT: str = (
+    "\n如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
+)
+
+# webui 使用指导
+PLEASE_PRESS_SUBMIT_BUTTON_AFTER_INPUT: str = "每条信息输入完成后，按下提交按钮。"
+
+# cui 使用指导
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，按下回车键。"
 PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "输入被转换铺面的完整路径（.osu 结尾）"
 PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = (
     f"输入转换后 Mania 铺面的键数 (如读取的是主模式铺面，输入 1, 2, 4 中的数值；如读取的是 Taiko 模式的铺面，输入 4, 5 中的数值，默认值为 {options_default['converter_output_number_of_keys']})。注：读取主模式铺面时，如设置输出键数为 4 ，即将 4k 左边两轨当 2k 使用。"
 )
 PLEASE_OUTPUT_DIR: str = (
-    "指定输出的 .osu 文件的目录。直接回车则为选择的 .osu 文件的同目录下"
+    "指定输出的 .osu 文件的目录。输入为空则设定为 .osu 文件的同目录下"
 )
 PLEASE_OUTPUT_FILENAME: str = (
-    "指定输出的 .osu 文件的文件名。直接回车则为 '原文件文件名(转换参数)'"
+    "指定输出的 .osu 文件的文件名。输入为空则设定为 '原文件文件名(转换参数)'"
 )
-OUTPUT_DIR_IS: str = "输出目录为"
-OUTPUT_FILENAME_IS: str = "输出文件名为"
-
-LOADING_OSU_FILE: str = "读取文件中，请稍等..."
-OSU_FILE_LOADED: str = "读取完成。"
-
-CONVERTING_BEATMAP: str = "铺面文件转换中，请稍等..."
-BEATMAP_CONVERTED: str = "铺面文件转换完成。"
-
-WRITING_OSU_FILE: str = "铺面文件转换中，请稍等..."
-OSU_FILE_WRITTEN: str = "铺面文件已完成写入。"
-
-PROGRAM_HAS_BEEN_COMPLETED: str = "程序已完成转换。"
-
-RUNTIME_IS: str = "上一阶段运行花费了 {:.6f} 秒"
-
-PLEASE_SUPPORT_THIS_PROJECT: str = (
-    "\n如果您还感到满意，\n请到项目主页点个 star 吧支持本项目吧，\n您的支持将指引我砥砺前行！"
-)
-
 PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"
-
 PLEASE_INPUT_REMOVE_SV_OPTION: str = (
     f"输入是否移除铺面变速（0 为不移除，1 为全移除，2 为仅移除继承时间点（绿线），默认值为 {options_default['remove_sv_mode']}）"
 )
@@ -71,25 +60,42 @@ MANIA_2K_PLEASE_INPUT_MAXIMUM_NUMBER_OF_JACK_NOTES: str = (
     f"输入最大叠键数，值类型为整数（默认值为 {mania_2k_options_default['maximum_number_of_jack_notes']}）"
 )
 
-# cli help
+# cli 运行输出
+OUTPUT_DIR_IS: str = "输出目录为"
+OUTPUT_FILENAME_IS: str = "输出文件名为"
+
+LOADING_OSU_FILE: str = "读取文件中，请稍等..."
+OSU_FILE_LOADED: str = "读取完成。"
+
+CONVERTING_BEATMAP: str = "铺面文件转换中，请稍等..."
+BEATMAP_CONVERTED: str = "铺面文件转换完成。"
+
+WRITING_OSU_FILE: str = "铺面文件转换中，请稍等..."
+OSU_FILE_WRITTEN: str = "铺面文件已完成写入。"
+
+PROGRAM_HAS_BEEN_COMPLETED: str = "铺面已完成转换。"
+
+RUNTIME_IS: str = "上一阶段运行花费了 {:.6f} 秒"
+
+# cli 帮助文字
 
 CLI_HELP_MESSAGE = "显示此帮助信息并退出程序"
 CLI_HELP_QUIET = "使程序减少输出。--quiet 或 --quiet True 均可启用此选项"
 CLI_HELP_CONFIG = f"配置文件路径。如仅添加 --config 不带参数，则为在 {options_default['config_file_path_root_and_stem']}.{options_default['config_file_type']} 创建配置文件并退出程序。如添加 --config yaml 则为初始化一个 yaml 格式的配置文件；--config json 则为初始化一个 json 格式的配置文件；--config toml 则为初始化一个 toml 格式的配置文件。注：json 和 toml 中路径出现的 \\ 字符要改成 \\\\，而 yaml 中字符串只能用单引号 ' 而不能用双引号 \" 标注。"
 CLI_HELP_CONFIG_TYPE = "配置文件类型"
 CLI_HELP_CUI = "进入交互式命令提示程序"
-CLI_HELP_WEBUI = "进入网络界面"
+CLI_HELP_WEBUI = "进入 WebUI"
 CLI_HELP_LOG_VERBOSITY = "修改输出详细程度"  # change output verbosity
 CLI_HELP_VERSION = "输出软件版本信息并退出程序"
 
-# cli help prefix
+# cli 帮助文字前缀
 
 CLI_STD_TO_MANIA_2K_PREFIX = "（适用于 std 转 mania 2k/4k 铺面的选项）"
 
-# cli error
+# cli 程序报错设置
 
 CLI_OSU_FILE_FULL_PATH_ARGUMENT_IS_REQUIRED = (
     "“被转换铺面的完整路径（.osu 结尾）”是必要的参数，请添加“-i 被转换铺面的完整路径”参数"
 )
 CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP = "程序不支持 osu!catch 模式的铺面输入！"
-CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP = "程序不支持 osu!taiko 模式的铺面输入！"
+CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP = "程序暂不支持 osu!taiko 模式的铺面输入！"
