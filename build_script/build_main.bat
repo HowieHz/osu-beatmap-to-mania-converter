@@ -1,1 +1,1 @@
-nuitka .\src\main.py --standalone --onefile
+pyinstaller .\src\main.py --onefile
