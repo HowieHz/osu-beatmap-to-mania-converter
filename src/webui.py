@@ -227,7 +227,6 @@ def webui():
         # 发送到指令解析/实际逻辑运行
         cli_main(args_list)
 
-        put_markdown("*" + PROGRAM_HAS_BEEN_COMPLETED + "*")
         put_text(PLEASE_SUPPORT_THIS_PROJECT)
         put_markdown("---")
 

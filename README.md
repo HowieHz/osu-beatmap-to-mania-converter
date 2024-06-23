@@ -328,6 +328,8 @@ python ./src/main.py -h
 
 1. 完成其他的 mania 2k 输出选项
    1. 生成后提供直接修改游戏内铺面标题的设置
+2. webui 夜间模式支持
+3. dotenv 来读取 env 而不用手动设置 debug flag
 
 #### 其他的 mania 2k 输出选项
 

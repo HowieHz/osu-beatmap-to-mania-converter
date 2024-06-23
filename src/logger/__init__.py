@@ -1,6 +1,8 @@
 import os
 import pprint
 
+from pywebio.output import put_info
+
 # 有文字都会转换成 true，所以不用担心报错
 DEBUG_FLAG: bool = bool(os.getenv("DEBUG_FLAG"))
 
@@ -18,9 +20,16 @@ def debug(message: str, data: any = "", end: str | None = "\n") -> None:
 
 def info(message: str) -> None:
     quiet_flag: bool = bool(os.getenv("QUIET_FLAG"))
+    webui_flag: bool = bool(os.getenv("WEBUI_FLAG"))
 
-    if not quiet_flag:
-        print(f"[info/信息]: {message}")
+    if quiet_flag:
+        return
+
+    if webui_flag:
+        put_info(message)
+        return
+
+    print(f"[info/信息]: {message}")
 
 
 def warning(message: str) -> None:
