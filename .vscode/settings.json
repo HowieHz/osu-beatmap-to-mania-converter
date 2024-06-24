@@ -6,6 +6,7 @@
         "isort",
         "minijack",
         "nuitka",
+        "obmc",
         "pywebio",
         "smjti",
         "smnjn",

@@ -77,15 +77,19 @@ For fun.
       - [基础设置](#基础设置)
       - [输出目标 OSU!Mania 2k/4k 为才有的配置项](#输出目标-osumania-2k4k-为才有的配置项)
   - [如何下载使用](#如何下载使用)
-    - [通过二进制文件运行交互式命令行程序](#通过二进制文件运行交互式命令行程序)
-      - [Windows](#windows)
-      - [MacOS \& Linux](#macos--linux)
-    - [通过源码运行交互式命令行程序](#通过源码运行交互式命令行程序)
+    - [通过二进制文件运行图形用户界面](#通过二进制文件运行图形用户界面)
+      - [在 Windows 平台](#在-windows-平台)
+      - [在 MacOS \& Linux 平台](#在-macos--linux-平台)
+    - [通过源码运行图形用户界面](#通过源码运行图形用户界面)
     - [通过二进制文件运行命令行程序](#通过二进制文件运行命令行程序)
       - [Windows 平台](#windows-平台)
       - [MacOS \& Linux 平台](#macos--linux-平台)
     - [通过源码运行命令行程序](#通过源码运行命令行程序)
-  - [开发中的雷](#开发中的雷)
+    - [通过二进制文件运行交互式命令行程序](#通过二进制文件运行交互式命令行程序)
+      - [Windows](#windows)
+      - [MacOS \& Linux](#macos--linux)
+    - [通过源码运行交互式命令行程序](#通过源码运行交互式命令行程序)
+  - [开发中遇到的雷](#开发中遇到的雷)
     - [读取主模式铺面](#读取主模式铺面)
     - [输出 Mania 模式铺面](#输出-mania-模式铺面)
   - [软件原理解释](#软件原理解释)
@@ -182,18 +186,18 @@ For fun.
 
 ## 如何下载使用
 
-### 通过二进制文件运行交互式命令行程序
+### 通过二进制文件运行图形用户界面
 
-#### Windows
+#### 在 Windows 平台
 
 从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件。
-运行 `.exe` 为后缀的程序，即可开始运行交互式命令行程序，随后根据引导完成操作即可。
+运行 `obmc-latest-noconsole.exe` 为后缀的程序，即可开始运行图形用户界面，随后根据引导完成操作即可。
 
-#### MacOS & Linux
+#### 在 MacOS & Linux 平台
 
-请看[通过源码运行交互式命令行程序](#通过源码运行交互式命令行程序)
+请看[通过源码运行图形用户界面](#通过源码运行图形用户界面)
 
-### 通过源码运行交互式命令行程序
+### 通过源码运行图形用户界面
 
 下载项目源码，然后进入到项目根目录。
 在本地部署 Python3.12 环境后，运行以下指令。
@@ -207,11 +211,12 @@ python ./src/main.py
 
 #### Windows 平台
 
-从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件。
+从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件 `obmc-latest.exe
+`。
 在下载文件所在目录的资源管理器的地址栏，输入 cmd 之后回车，在随后弹出的命令行窗口中输入以下指令
 
 ```bash
-osu-beatmap-to-mania-converter.exe -h
+obmc-latest.exe -h
 ```
 
 即可看到相关帮助
@@ -230,7 +235,34 @@ osu-beatmap-to-mania-converter.exe -h
 python ./src/main.py -h
 ```
 
-## 开发中的雷
+### 通过二进制文件运行交互式命令行程序
+
+#### Windows
+
+从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件 `obmc-latest.exe`。
+在下载文件所在目录的资源管理器的地址栏，输入 cmd 之后回车，在随后弹出的命令行窗口中输入以下指令
+
+```bash
+obmc-latest.exe -cui
+```
+
+即可进入交互式命令行程序
+
+#### MacOS & Linux
+
+请看[通过源码运行交互式命令行程序](#通过源码运行交互式命令行程序)
+
+### 通过源码运行交互式命令行程序
+
+下载项目源码，然后进入到项目根目录。
+在本地部署 Python3.12 环境后，运行以下指令。
+即可从源码运行此项目。
+
+```bash
+python ./src/main.py -cui
+```
+
+## 开发中遇到的雷
 
 ### 读取主模式铺面
 
