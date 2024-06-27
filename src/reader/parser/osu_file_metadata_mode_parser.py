@@ -21,3 +21,5 @@ def osu_file_metadata_mode_parser(osu_file_metadata: list[str]) -> str:
                     return "osu!mania"
                 case _:
                     return "osu!"
+
+    return "osu!"

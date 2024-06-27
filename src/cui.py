@@ -16,7 +16,7 @@ def cui_main():
     osu_file_full_path: str | None = None
     # 获取 osu 文件路径，去除两头的单双引号
     while osu_file_full_path in ("", None):
-        osu_file_full_path: str = (
+        osu_file_full_path = (
             input(PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH)
             .removeprefix('"')
             .removeprefix("'")
