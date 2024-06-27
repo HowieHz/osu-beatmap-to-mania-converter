@@ -5,6 +5,7 @@
         "hpysettings",
         "isort",
         "minijack",
+        "mypy",
         "nuitka",
         "obmc",
         "pywebio",

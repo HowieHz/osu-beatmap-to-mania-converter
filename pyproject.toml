@@ -21,3 +21,15 @@ line_length = 90
 python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true
+files = "**/*.py"
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "hpyculator",
+    "webview",
+    "pywebio",
+    "pywebio.output",
+    "pywebio.input"
+]
+ignore_missing_imports = true
