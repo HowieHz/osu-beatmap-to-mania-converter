@@ -1,5 +1,6 @@
 import os
 import pprint
+from typing import Any
 
 from pywebio.output import put_error, put_info, put_warning
 
@@ -10,7 +11,7 @@ if DEBUG_FLAG:
     log_stream = open("debug.log", mode="a+", encoding="utf-8")
 
 
-def debug(message: str, data: any = "", end: str | None = "\n") -> None:
+def debug(message: str, data: Any = "", end: str | None = "\n") -> None:
     if DEBUG_FLAG:
         log_stream.write(f"[debug/开发分析]: {message}\n")
         log_stream.write(

@@ -114,13 +114,11 @@ def webui():
         remove_sv_option: str = basic_data["remove_sv_option"]
 
         # std to mania 2k 生成参数询问部分
-        std_to_mania_2k_main_key: str | None = None
-        std_to_mania_2k_start_key: str | None = None  # 铺面起手键位置
-        std_to_mania_2k_trill_start_key: str | None = None  # 交互起手键位置
-        std_to_mania_2k_minimum_jack_time_interval: str | None = (
-            None  # 最小叠键时间间距，单位毫秒
-        )
-        std_to_mania_2k_maximum_number_of_jack_notes: str | None = None  # 最大叠键数
+        std_to_mania_2k_main_key: str = ""
+        std_to_mania_2k_start_key: str = ""  # 铺面起手键位置
+        std_to_mania_2k_trill_start_key: str = ""  # 交互起手键位置
+        std_to_mania_2k_minimum_jack_time_interval: str = ""  # 最小叠键时间间距，单位毫秒
+        std_to_mania_2k_maximum_number_of_jack_notes: str = ""  # 最大叠键数
 
         # 读取 osu 文件除去去 [HitObjects] 的信息
         osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
@@ -180,23 +178,23 @@ def webui():
             )
 
             # 主要单戳纸询问
-            std_to_mania_2k_main_key: str = std_to_mania_2k_options_data[
+            std_to_mania_2k_main_key = std_to_mania_2k_options_data[
                 "std_to_mania_2k_main_key"
             ]
             # 起手键询问
-            std_to_mania_2k_start_key: str = std_to_mania_2k_options_data[
+            std_to_mania_2k_start_key = std_to_mania_2k_options_data[
                 "std_to_mania_2k_start_key"
             ]
             # 交互起手键询问
-            std_to_mania_2k_trill_start_key: str = std_to_mania_2k_options_data[
+            std_to_mania_2k_trill_start_key = std_to_mania_2k_options_data[
                 "std_to_mania_2k_trill_start_key"
             ]
             # 最小叠键时间间距询问，单位毫秒
-            std_to_mania_2k_minimum_jack_time_interval: str = (
+            std_to_mania_2k_minimum_jack_time_interval = (
                 std_to_mania_2k_options_data["std_to_mania_2k_minimum_jack_time_interval"]
             )
             # 最大叠键数询问
-            std_to_mania_2k_maximum_number_of_jack_notes: str = (
+            std_to_mania_2k_maximum_number_of_jack_notes = (
                 std_to_mania_2k_options_data[
                     "std_to_mania_2k_maximum_number_of_jack_notes"
                 ]

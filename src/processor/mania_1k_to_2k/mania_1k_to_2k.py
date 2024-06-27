@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import TypedDict, cast
 
 from custom_types import Mania2kOptions, ManiaHitObject
 from options_default import mania_2k_options_default
@@ -17,11 +17,8 @@ class IndexManiaHitObject(TypedDict):
 
 
 def mania_1k_to_2k(
-    hit_objects_list: list[ManiaHitObject], options: Mania2kOptions | None = None
+    hit_objects_list: list[ManiaHitObject], options: Mania2kOptions
 ) -> list[ManiaHitObject]:
-    if options is None:
-        options: Mania2kOptions = mania_2k_options_default
-
     # 设置主要单戳键
     for index, _ in enumerate(hit_objects_list):
         hit_objects_list[index]["key"] = options["main_key"]
@@ -67,12 +64,14 @@ def _convert_long_jack_to_trill(
     jack_flag = False  # 这个为 False 表示现在并没有已经创建的 jack 栈
 
     # TODO: 创建配置选项 要求两叠键距离恒定才能转换
-    object_interval: int  # 用于存储两键之间的间隔
+    object_interval: int|float  # 用于存储两键之间的间隔
 
     # 把长 jack 筛选出来
     last_hit_object: ManiaHitObject = hit_objects_list[0]
     for index, hit_object in enumerate(
-        hit_objects_list[1:] + [{"type": "end sign"}], start=1
+        hit_objects_list[1:]
+        + [{"type": "end sign", "start_time": 0, "end_time": 0, "key": -1}],
+        start=1,
     ):
         this_hit_object: ManiaHitObject = hit_object
 

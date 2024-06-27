@@ -1,3 +1,6 @@
+from typing import cast
+
+
 def any_metadata_remove_sv(
     remove_sv_option: str, osu_file_metadata: list[str]
 ) -> list[str]:
@@ -11,11 +14,16 @@ def any_metadata_remove_sv(
         list[str]: 转换后的元数据列，每行应有换行符（"\\n"）
     """
     if remove_sv_option == "none":
-        pass
-    elif remove_sv_option == "all":
-        remove_line_flag: bool = False
-        skip_line_flag: int = 0
+        return osu_file_metadata
 
+    marked_osu_file_metadata = cast(
+        list[str | None], osu_file_metadata
+    )  # None 是被标记要被移除的行
+    remove_line_flag: bool = False
+    skip_line_flag: int = 0
+    ret_osu_file_metadata: list[str]
+
+    if remove_sv_option == "all":
         for index, line in enumerate(osu_file_metadata):
             if skip_line_flag > 0:
                 skip_line_flag -= 1
@@ -30,15 +38,12 @@ def any_metadata_remove_sv(
                 break
 
             if remove_line_flag:
-                osu_file_metadata[index] = (
+                marked_osu_file_metadata[index] = (
                     None  # 要是这里直接 remove 会导致索引错乱，标记为 None，待会统一清理
                 )
 
-        osu_file_metadata = list(filter(None, osu_file_metadata))
+        ret_osu_file_metadata = list(filter(None, marked_osu_file_metadata))
     elif remove_sv_option == "inherited_timing_points":
-        remove_line_flag: bool = False
-        skip_line_flag: int = 0
-
         for index, line in enumerate(osu_file_metadata):
             if skip_line_flag > 0:
                 skip_line_flag -= 1
@@ -53,10 +58,10 @@ def any_metadata_remove_sv(
                 break
 
             if remove_line_flag and line.rstrip().split(",")[-2] == "0":
-                osu_file_metadata[index] = (
+                marked_osu_file_metadata[index] = (
                     None  # 要是这里直接 remove 会导致索引错乱，标记为 None，待会统一清理
                 )
 
-        osu_file_metadata = list(filter(None, osu_file_metadata))
+        ret_osu_file_metadata = list(filter(None, marked_osu_file_metadata))
 
-    return osu_file_metadata
+    return ret_osu_file_metadata

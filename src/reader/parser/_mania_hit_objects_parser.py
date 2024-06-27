@@ -73,7 +73,7 @@ def _x_to_key(x: int, keys: int) -> int:
 
 
 def _read_key_info_from_metadata(osu_file_metadata: list[str]) -> int:
-    """读取元数据中标识铺面是几 k
+    """读取元数据中标识铺面是几 k，没读到就返回 1
 
     Args:
         osu_file_metadata (list[str]): 元数据列表
@@ -84,3 +84,5 @@ def _read_key_info_from_metadata(osu_file_metadata: list[str]) -> int:
     for line in osu_file_metadata:
         if line.startswith("CircleSize:"):
             return int(line.removeprefix("CircleSize:").strip())
+
+    return 1

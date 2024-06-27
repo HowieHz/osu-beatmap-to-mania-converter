@@ -296,7 +296,7 @@ python ./src/main.py -cui
 
 1. 读取除 [HitObjects] 以外的信息，命名为 osu_file_metadata
 2. 读取 [HitObjects] 信息，根据 osu_file_metadata 使用 std_hit_objects_parser 函数进行预处理，命名为 parsed_hit_objects_list
-3. 使用 std_object_type_to_mania_1k 函数将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，并且放到 1 轨，处理后的命名为 parsed_mania_1k_hit_objects_list
+3. 使用 any_object_type_to_mania_1k 函数将 parsed_hit_objects_list 中类型为主模式滑条和主模式转盘的转换为 Mania 长音符，并且放到 1 轨，处理后的命名为 parsed_mania_1k_hit_objects_list
 4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
 
 ##### to mania!mania 1k

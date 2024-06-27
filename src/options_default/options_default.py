@@ -2,7 +2,7 @@ from typing import TypedDict
 
 
 class OptionsDefaultDict(TypedDict):
-    converter_output_number_of_keys: str
+    converter_output_number_of_keys: int
     remove_sv_mode: int
     config_file_path_root_and_stem: str
     config_file_type: str

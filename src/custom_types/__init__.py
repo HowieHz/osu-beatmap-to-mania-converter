@@ -24,9 +24,6 @@ class ManiaHitObject(HitObject):
     key 从左到右计数，最左边是 1。\n
     """
 
-    type: str
-    start_time: int | float
-    end_time: int | float
     key: int
 
 

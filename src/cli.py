@@ -15,8 +15,7 @@ from processor import (
     any_metadata_remove_sv,
     any_metadata_to_mania,
     mania_1k_to_2k,
-    mania_object_to_mania_1k,
-    std_object_type_to_mania_1k,
+    any_object_type_to_mania_1k,
     taiko_object_type_to_mania_5k,
 )
 from reader import (
@@ -157,15 +156,16 @@ def arg_parse(args: argparse.Namespace) -> str:
         os.environ["QUIET_FLAG"] = "True"
 
     # 初始化配置文件
+    settings_file_instance: hpysettings.SettingsFileObject
     if args.config == INIT_CONFIG_FLAG or args.config in ("yaml", "json", "toml"):
         if args.config == INIT_CONFIG_FLAG:
-            settings_file_instance: hpysettings.SettingsFileObject = (
+            settings_file_instance = (
                 get_settings_file_instance(
                     f"{options_default['config_file_path_root_and_stem']}.{options_default['config_file_type']}"
                 )
             )
         elif args.config in ("yaml", "json", "toml"):
-            settings_file_instance: hpysettings.SettingsFileObject = (
+            settings_file_instance = (
                 get_settings_file_instance(
                     f"{options_default['config_file_path_root_and_stem']}.{args.config}"
                 )
@@ -195,7 +195,7 @@ def arg_parse(args: argparse.Namespace) -> str:
 
     # 通过 config 操作
     if args.config is not None:
-        settings_file_instance: hpysettings.SettingsFileObject = (
+        settings_file_instance = (
             get_settings_file_instance(args.config)
         )
 
@@ -331,22 +331,26 @@ def arg_parse(args: argparse.Namespace) -> str:
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[HitObject] = hit_objects_parser(
+    parsed_hit_objects_list: list[ManiaHitObject] | list[HitObject] | None = hit_objects_parser(
         osu_file_metadata, load_hit_objects_list(osu_file_full_path)
     )
+    if parsed_hit_objects_list is None:
+        return "stop"
 
+    parsed_mania_1k_hit_objects_list: list[ManiaHitObject]
+    parsed_mania_5k_hit_objects_list: list[ManiaHitObject]
     match osu_file_metadata_mode_parser(osu_file_metadata):
         case "osu!":
             # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
-            parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
-                map(std_object_type_to_mania_1k, parsed_hit_objects_list)
+            parsed_mania_1k_hit_objects_list = list(
+                map(any_object_type_to_mania_1k, parsed_hit_objects_list)
             )
         case "osu!taiko":
             error(CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP)
             return "stop"
             # TODO: CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP
 
-            parsed_mania_5k_hit_objects_list: list[ManiaHitObject] = list(
+            parsed_mania_5k_hit_objects_list = list(
                 map(taiko_object_type_to_mania_5k, parsed_hit_objects_list)
             )
         case "osu!catch":
@@ -354,8 +358,8 @@ def arg_parse(args: argparse.Namespace) -> str:
             return "stop"
         case "osu!mania":
             # mania 转 1k
-            parsed_mania_1k_hit_objects_list: list[ManiaHitObject] = list(
-                map(mania_object_to_mania_1k, parsed_hit_objects_list)
+            parsed_mania_1k_hit_objects_list = list(
+                map(any_object_type_to_mania_1k, parsed_hit_objects_list)
             )
 
     end_time: float = time.perf_counter()
@@ -365,7 +369,7 @@ def arg_parse(args: argparse.Namespace) -> str:
     start_time = time.perf_counter()
 
     # 根据配置值去除 sv
-    osu_file_metadata: list[str] = any_metadata_remove_sv(
+    osu_file_metadata = any_metadata_remove_sv(
         remove_sv_option=remove_sv_option, osu_file_metadata=osu_file_metadata
     )
 
@@ -375,7 +379,7 @@ def arg_parse(args: argparse.Namespace) -> str:
     match osu_file_metadata_mode_parser(osu_file_metadata):
         case "osu!":
             # 将铺面元数据转换为 osu!mania nk 元数据
-            osu_file_metadata: list[str] = any_metadata_to_mania(
+            osu_file_metadata = any_metadata_to_mania(
                 osu_file_metadata, keys=number_of_keys
             )
             parsed_mania_hit_objects_list: list[ManiaHitObject]
@@ -397,11 +401,18 @@ def arg_parse(args: argparse.Namespace) -> str:
                 keys=number_of_keys,
             )
         case "osu!taiko":
-            parsed_mania_5k_hit_objects_list: list[ManiaHitObject] = list(
+            parsed_mania_5k_hit_objects_list = list(
                 map(taiko_object_type_to_mania_5k, parsed_hit_objects_list)
             )
 
-            # TODO: 5k -> 4k 转换
+            if number_of_keys == 5:
+                # 目标产物 mania 5k
+                parsed_mania_hit_objects_list = parsed_mania_5k_hit_objects_list
+            elif number_of_keys == 4:
+                # 目标产物 mania 4k
+                # 将铺面从 5k 转换为 4k
+                # TODO: 5k -> 4k 转换
+                parsed_mania_hit_objects_list = parsed_mania_5k_hit_objects_list
 
             ## 生成铺面数据
             final_osu_file_content = generate_mania_osu_file(

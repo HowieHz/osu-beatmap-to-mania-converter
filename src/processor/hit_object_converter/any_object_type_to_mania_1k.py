@@ -1,7 +1,9 @@
+from typing import cast
+
 from custom_types import HitObject, ManiaHitObject
 
 
-def std_object_type_to_mania_1k(hit_object: HitObject) -> ManiaHitObject:
+def any_object_type_to_mania_1k(hit_object: HitObject) -> ManiaHitObject:
     """将滑条，转盘转换为长条，其他的不用转换\n
     把物件添加到 mania 一轨
 
@@ -16,6 +18,8 @@ def std_object_type_to_mania_1k(hit_object: HitObject) -> ManiaHitObject:
     else:
         pass
 
-    hit_object.update({"key": 1})
+    mania_hit_object = cast(ManiaHitObject, hit_object)
 
-    return hit_object
+    mania_hit_object.update({"key": 1})
+
+    return mania_hit_object

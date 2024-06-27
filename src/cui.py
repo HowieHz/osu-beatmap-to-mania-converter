@@ -13,9 +13,9 @@ def cui_main():
     print(PROGRAM_INFORMATION)
     print(PLEASE_PRESS_ENTER_AFTER_INPUT)
 
-    osu_file_full_path: str | None = None
+    osu_file_full_path: str = ""
     # 获取 osu 文件路径，去除两头的单双引号
-    while osu_file_full_path in ("", None):
+    while osu_file_full_path == "":
         osu_file_full_path = (
             input(PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH)
             .removeprefix('"')
@@ -49,13 +49,11 @@ def cui_main():
         remove_sv_option = input(PLEASE_INPUT_REMOVE_SV_OPTION)
 
     # std to mania 2k 生成参数询问部分
-    std_to_mania_2k_main_key: str | None = None
-    std_to_mania_2k_start_key: str | None = None  # 铺面起手键位置
-    std_to_mania_2k_trill_start_key: str | None = None  # 交互起手键位置
-    std_to_mania_2k_minimum_jack_time_interval: str | None = (
-        None  # 最小叠键时间间距，单位毫秒
-    )
-    std_to_mania_2k_maximum_number_of_jack_notes: str | None = None  # 最大叠键数
+    std_to_mania_2k_main_key: str = ""
+    std_to_mania_2k_start_key: str = ""  # 铺面起手键位置
+    std_to_mania_2k_trill_start_key: str = ""  # 交互起手键位置
+    std_to_mania_2k_minimum_jack_time_interval: str = "" # 最小叠键时间间距，单位毫秒
+    std_to_mania_2k_maximum_number_of_jack_notes: str = ""  # 最大叠键数
 
     # 读取 osu 文件除去去 [HitObjects] 的信息
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)

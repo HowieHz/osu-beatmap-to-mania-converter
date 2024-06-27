@@ -47,7 +47,7 @@ def std_hit_objects_parser(
                 timing_points_list=timing_points_list,
                 object_params=object_params,
             )  # 要求是 int，实际计算这个会出现 float，输出 float 游戏也能读，那就这样了
-            end_time: float = start_time + slide_time
+            end_time = start_time + slide_time  # 这里计算得值是 float
         elif raw_type[-4] == "1":
             # 主模式转盘
             object_type = "spinner"
@@ -144,6 +144,7 @@ def _slide_time_parser(
         ...
 
     # 找出当前 timing_point，计算 SV (slider_velocity_multiplier)
+    slider_velocity_multiplier: int | float
     for timing_point in timing_points_list:
         if int(timing_point[0]) > start_time:
             continue

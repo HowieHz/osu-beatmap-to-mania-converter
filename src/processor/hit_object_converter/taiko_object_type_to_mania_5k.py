@@ -1,3 +1,5 @@
+from typing import cast
+
 from custom_types import HitObject, ManiaHitObject
 
 # TODO: 待完成
@@ -18,6 +20,8 @@ def taiko_object_type_to_mania_5k(hit_object: HitObject) -> ManiaHitObject:
     else:
         pass
 
-    hit_object.update({"key": 1})
+    mania_hit_object = cast(ManiaHitObject, hit_object)
 
-    return hit_object
+    mania_hit_object.update({"key": 1})
+
+    return mania_hit_object

@@ -13,7 +13,7 @@ from .const_url import (
 )
 from .version import VERSION
 
-_lang: str = locale.getlocale()[0]
+_lang: str|None = locale.getlocale()[0]
 
 if _lang == "Chinese (Simplified)_China":
     from .i18n.chinese_simplified_china import *

@@ -13,7 +13,7 @@ def taiko_hit_objects_parser(
         hit_objects_list (list[str]): [HitObjects] 下每行的数据，例如 256,192,11000,21,2
 
     Returns:
-        list[HitObject]: 一个列表，装了解析后的铺面描述
+        list[ManiaHitObject]: 一个列表，装了解析后的铺面描述
     """
     rt_list: list[ManiaHitObject] = []
 
@@ -34,6 +34,9 @@ def taiko_hit_objects_parser(
         # 处理下数据，十进制转二进制，然后去掉左边 0b 标识，补齐八位避免 IndexError，转换成字符串方便直接取位值
         raw_type: str = str(bin(int(object_params[3]))).removeprefix("0b").zfill(8)
 
+        # 这只是初始化 TODO 还未完成
+        key: int = 1
+
         if raw_type[-1] == "1":
             # 音符（泡泡，米，Note）
             object_type = "hit circle"
@@ -49,7 +52,7 @@ def taiko_hit_objects_parser(
                 timing_points_list=timing_points_list,
                 object_params=object_params,
             )  # 要求是 int，实际计算这个会出现 float，输出 float 游戏也能读，那就这样了
-            end_time: float = start_time + slide_time
+            end_time = start_time + slide_time  # 这里出来是 float
         elif raw_type[-4] == "1":
             # 主模式转盘
             object_type = "spinner"
@@ -65,7 +68,12 @@ def taiko_hit_objects_parser(
             object_type = "unknown"
 
         rt_list.append(
-            {"type": object_type, "start_time": start_time, "end_time": end_time}
+            {
+                "type": object_type,
+                "start_time": start_time,
+                "end_time": end_time,
+                "key": key,
+            }
         )
 
     return rt_list
@@ -146,6 +154,7 @@ def _slide_time_parser(
         ...
 
     # 找出当前 timing_point，计算 SV (slider_velocity_multiplier)
+    slider_velocity_multiplier: int | float
     for timing_point in timing_points_list:
         if int(timing_point[0]) > start_time:
             continue
