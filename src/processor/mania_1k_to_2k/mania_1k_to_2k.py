@@ -64,7 +64,7 @@ def _convert_long_jack_to_trill(
     jack_flag = False  # 这个为 False 表示现在并没有已经创建的 jack 栈
 
     # TODO: 创建配置选项 要求两叠键距离恒定才能转换
-    object_interval: int|float  # 用于存储两键之间的间隔
+    object_interval: int | float  # 用于存储两键之间的间隔
 
     # 把长 jack 筛选出来
     last_hit_object: ManiaHitObject = hit_objects_list[0]

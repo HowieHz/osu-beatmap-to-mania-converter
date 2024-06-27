@@ -1,7 +1,11 @@
 from typing import cast
-from custom_types import ManiaHitObject, HitObject
+
+from custom_types import HitObject, ManiaHitObject
 from logger import error
-from message import CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP, CLI_DONT_SUPPORT_UNEXPECTED_MOD_BEATMAP
+from message import (
+    CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP,
+    CLI_DONT_SUPPORT_UNEXPECTED_MOD_BEATMAP,
+)
 
 from ._mania_hit_objects_parser import mania_hit_objects_parser
 from ._std_hit_objects_parser import std_hit_objects_parser

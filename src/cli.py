@@ -14,8 +14,8 @@ from options_default import mania_2k_options_default
 from processor import (
     any_metadata_remove_sv,
     any_metadata_to_mania,
-    mania_1k_to_2k,
     any_object_type_to_mania_1k,
+    mania_1k_to_2k,
     taiko_object_type_to_mania_5k,
 )
 from reader import (
@@ -159,16 +159,12 @@ def arg_parse(args: argparse.Namespace) -> str:
     settings_file_instance: hpysettings.SettingsFileObject
     if args.config == INIT_CONFIG_FLAG or args.config in ("yaml", "json", "toml"):
         if args.config == INIT_CONFIG_FLAG:
-            settings_file_instance = (
-                get_settings_file_instance(
-                    f"{options_default['config_file_path_root_and_stem']}.{options_default['config_file_type']}"
-                )
+            settings_file_instance = get_settings_file_instance(
+                f"{options_default['config_file_path_root_and_stem']}.{options_default['config_file_type']}"
             )
         elif args.config in ("yaml", "json", "toml"):
-            settings_file_instance = (
-                get_settings_file_instance(
-                    f"{options_default['config_file_path_root_and_stem']}.{args.config}"
-                )
+            settings_file_instance = get_settings_file_instance(
+                f"{options_default['config_file_path_root_and_stem']}.{args.config}"
             )
 
         settings_file_instance.add("--quiet", False).add("--osu-file-full-path", "").add(
@@ -195,9 +191,7 @@ def arg_parse(args: argparse.Namespace) -> str:
 
     # 通过 config 操作
     if args.config is not None:
-        settings_file_instance = (
-            get_settings_file_instance(args.config)
-        )
+        settings_file_instance = get_settings_file_instance(args.config)
 
         cli_arg_to_variable_dict: dict = settings_file_instance.readAll()
 
@@ -331,8 +325,8 @@ def arg_parse(args: argparse.Namespace) -> str:
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[ManiaHitObject] | list[HitObject] | None = hit_objects_parser(
-        osu_file_metadata, load_hit_objects_list(osu_file_full_path)
+    parsed_hit_objects_list: list[ManiaHitObject] | list[HitObject] | None = (
+        hit_objects_parser(osu_file_metadata, load_hit_objects_list(osu_file_full_path))
     )
     if parsed_hit_objects_list is None:
         return "stop"

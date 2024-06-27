@@ -15,11 +15,8 @@ def any_object_type_to_mania_1k(hit_object: HitObject) -> ManiaHitObject:
     """
     if hit_object["type"] in ("slider", "spinner"):
         hit_object["type"] = "hold"
-    else:
-        pass
 
     mania_hit_object = cast(ManiaHitObject, hit_object)
-
     mania_hit_object.update({"key": 1})
 
     return mania_hit_object

@@ -190,15 +190,13 @@ def webui():
                 "std_to_mania_2k_trill_start_key"
             ]
             # 最小叠键时间间距询问，单位毫秒
-            std_to_mania_2k_minimum_jack_time_interval = (
-                std_to_mania_2k_options_data["std_to_mania_2k_minimum_jack_time_interval"]
-            )
+            std_to_mania_2k_minimum_jack_time_interval = std_to_mania_2k_options_data[
+                "std_to_mania_2k_minimum_jack_time_interval"
+            ]
             # 最大叠键数询问
-            std_to_mania_2k_maximum_number_of_jack_notes = (
-                std_to_mania_2k_options_data[
-                    "std_to_mania_2k_maximum_number_of_jack_notes"
-                ]
-            )
+            std_to_mania_2k_maximum_number_of_jack_notes = std_to_mania_2k_options_data[
+                "std_to_mania_2k_maximum_number_of_jack_notes"
+            ]
 
         # 构建命令行参数
         cli_arg_to_variable_dict: dict[str, str] = {

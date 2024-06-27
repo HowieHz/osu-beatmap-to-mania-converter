@@ -52,7 +52,7 @@ def cui_main():
     std_to_mania_2k_main_key: str = ""
     std_to_mania_2k_start_key: str = ""  # 铺面起手键位置
     std_to_mania_2k_trill_start_key: str = ""  # 交互起手键位置
-    std_to_mania_2k_minimum_jack_time_interval: str = "" # 最小叠键时间间距，单位毫秒
+    std_to_mania_2k_minimum_jack_time_interval: str = ""  # 最小叠键时间间距，单位毫秒
     std_to_mania_2k_maximum_number_of_jack_notes: str = ""  # 最大叠键数
 
     # 读取 osu 文件除去去 [HitObjects] 的信息
