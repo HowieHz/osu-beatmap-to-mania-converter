@@ -1,3 +1,5 @@
+from typing import Literal
+
 from custom_types import HitObject
 
 
@@ -23,7 +25,9 @@ def std_hit_objects_parser(
     BASE_SLIDER_VELOCITY, timing_points_list = _init_slider_parser(osu_file_metadata)
 
     for hit_object in hit_objects_list:
-        object_type: str = ""
+        object_type: Literal["hit circle", "slider", "spinner", "hold", "unknown"] = (
+            "unknown"
+        )
         start_time: int | float = 0  # 毫秒
         end_time: int | float = 0
 

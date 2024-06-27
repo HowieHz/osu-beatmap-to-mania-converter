@@ -1,3 +1,5 @@
+from typing import Literal
+
 from custom_types import ManiaHitObject
 
 # TODO: 待完成
@@ -25,7 +27,7 @@ def taiko_hit_objects_parser(
     BASE_SLIDER_VELOCITY, timing_points_list = _init_slider_parser(osu_file_metadata)
 
     for hit_object in hit_objects_list:
-        object_type: str = ""
+        object_type: Literal["hit circle", "hold", "unknown"] = "unknown"
         start_time: int | float = 0  # 毫秒
         end_time: int | float = 0
 
@@ -43,7 +45,7 @@ def taiko_hit_objects_parser(
             start_time = end_time = int(object_params[2])
         elif raw_type[-2] == "1":
             # 主模式滑条
-            object_type = "slider"
+            object_type = "hold"
             start_time = int(object_params[2])
 
             # 滑条持续时间计算
@@ -55,7 +57,7 @@ def taiko_hit_objects_parser(
             end_time = start_time + slide_time  # 这里出来是 float
         elif raw_type[-4] == "1":
             # 主模式转盘
-            object_type = "spinner"
+            object_type = "hold"
             start_time = int(object_params[2])
             end_time = int(object_params[5])
         elif raw_type[-8] == "1":

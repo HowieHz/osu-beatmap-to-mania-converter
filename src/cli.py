@@ -2,6 +2,7 @@ import argparse
 import os
 import time
 from pathlib import Path
+from typing import Literal
 
 from hpyculator import hpysettings
 
@@ -282,16 +283,18 @@ def arg_parse(args: argparse.Namespace) -> str:
     info(f"{OUTPUT_FILENAME_IS} {final_osu_file_name}")
 
     # 主要单戳指设置
-    raw_std_to_mania_2k_main_key: int = args.std_to_mania_2k_main_key
-    mania_2k_main_key: int = raw_std_to_mania_2k_main_key
+    raw_std_to_mania_2k_main_key: Literal[1, 2] = args.std_to_mania_2k_main_key
+    mania_2k_main_key: Literal[1, 2] = raw_std_to_mania_2k_main_key
 
     # 铺面起手键位置
-    raw_std_to_mania_2k_start_key: int = args.std_to_mania_2k_start_key
-    mania_2k_start_key: int = raw_std_to_mania_2k_start_key
+    raw_std_to_mania_2k_start_key: Literal[1, 2] = args.std_to_mania_2k_start_key
+    mania_2k_start_key: Literal[1, 2] = raw_std_to_mania_2k_start_key
 
     # 交互起手键位置
-    raw_std_to_mania_2k_trill_start_key: int = args.std_to_mania_2k_trill_start_key
-    mania_2k_trill_start_key: int = raw_std_to_mania_2k_trill_start_key
+    raw_std_to_mania_2k_trill_start_key: Literal[1, 2] = (
+        args.std_to_mania_2k_trill_start_key
+    )
+    mania_2k_trill_start_key: Literal[1, 2] = raw_std_to_mania_2k_trill_start_key
 
     # 最小叠键时间间距，单位毫秒
     raw_std_to_mania_2k_minimum_jack_time_interval: float = (

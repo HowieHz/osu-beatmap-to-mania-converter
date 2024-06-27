@@ -1,6 +1,6 @@
-from typing import TypedDict
+from typing import TypedDict, cast
 
-from custom_types import Mania2kOptions, ManiaHitObject
+from custom_types import ExternalManiaHitObject, Mania2kOptions, ManiaHitObject
 
 
 class IndexManiaHitObject(TypedDict):
@@ -8,11 +8,11 @@ class IndexManiaHitObject(TypedDict):
 
     Args:
         index (int): 此项物件数据在 hit_objects_list 中的索引
-        hit_object (ManiaHitObject): 此项物件数据
+        hit_object (ExternalManiaHitObject): 此项物件数据
     """
 
     index: int
-    hit_object: ManiaHitObject
+    hit_object: ExternalManiaHitObject
 
 
 def mania_1k_to_2k(
@@ -65,14 +65,18 @@ def _convert_long_jack_to_trill(
     # TODO: 创建配置选项 要求两叠键距离恒定才能转换
     object_interval: int | float  # 用于存储两键之间的间隔
 
+    external_hit_objects_list: list[ExternalManiaHitObject] = cast(
+        list[ExternalManiaHitObject], hit_objects_list
+    )
+
     # 把长 jack 筛选出来
-    last_hit_object: ManiaHitObject = hit_objects_list[0]
+    last_hit_object: ExternalManiaHitObject = external_hit_objects_list[0]
     for index, hit_object in enumerate(
-        hit_objects_list[1:]
+        external_hit_objects_list[1:]
         + [{"type": "end sign", "start_time": 0, "end_time": 0, "key": -1}],
         start=1,
     ):
-        this_hit_object: ManiaHitObject = hit_object
+        this_hit_object: ExternalManiaHitObject = hit_object
 
         if this_hit_object["type"] == "end sign":  # 读取到尾部了
             if jack_flag and len(jack_node_stack) > maximum_number_of_jack_notes:
@@ -104,16 +108,18 @@ def _convert_long_jack_to_trill(
 
     # 开始处理长叠键为切
     for jack_node_stack in long_jack_node_stack_list:
-        hit_objects_list[jack_node_stack[0]["index"]]["key"] = trill_start_key
+        external_hit_objects_list[jack_node_stack[0]["index"]]["key"] = trill_start_key
 
         for stack_index, this_index_hit_object in enumerate(jack_node_stack[1:], start=1):
             last_index_hit_object = jack_node_stack[stack_index - 1]
-            # hit_objects_list[last_index_hit_object["index"]] 等于 last_index_hit_object["hit_object"]
+            # external_hit_objects_list[last_index_hit_object["index"]] 等于 last_index_hit_object["hit_object"]
             # TODO: 看似 last_index_hit_object["hit_object"] 能不能优化下，就是 90-96行那边 jack_node_stack.append 只要 index 加入就好、last_index_hit_object 变成 last_index_note
 
-            if hit_objects_list[last_index_hit_object["index"]]["key"] == 1:
-                hit_objects_list[this_index_hit_object["index"]]["key"] = 2
+            if external_hit_objects_list[last_index_hit_object["index"]]["key"] == 1:
+                external_hit_objects_list[this_index_hit_object["index"]]["key"] = 2
             else:
-                hit_objects_list[this_index_hit_object["index"]]["key"] = 1
+                external_hit_objects_list[this_index_hit_object["index"]]["key"] = 1
+
+    hit_objects_list = cast(list[ManiaHitObject], external_hit_objects_list)
 
     return hit_objects_list

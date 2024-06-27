@@ -1,5 +1,6 @@
 import webbrowser
 from multiprocessing import Process
+from typing import Literal, TypedDict
 
 import webview
 from cli import cli_main
@@ -12,6 +13,22 @@ from message import *
 from reader import load_osu_file_metadata, osu_file_metadata_mode_parser
 
 
+class BasicDataDict(TypedDict):
+    osu_file_full_path: str
+    output_dir: str
+    output_file_name: str
+    number_of_keys: Literal["1", "2", "4", "5", ""]
+    remove_sv_option: Literal["0", "1", "2", ""]
+
+
+class StdToMania2kOptionsDataDict(TypedDict):
+    std_to_mania_2k_main_key: Literal["1", "2", ""]
+    std_to_mania_2k_start_key: Literal["1", "2", ""]
+    std_to_mania_2k_trill_start_key: Literal["1", "2", ""]
+    std_to_mania_2k_minimum_jack_time_interval: str
+    std_to_mania_2k_maximum_number_of_jack_notes: str
+
+
 def _check_osu_file_full_path(osu_file_full_path: str) -> str | None:
     if osu_file_full_path in (
         "",
@@ -20,25 +37,30 @@ def _check_osu_file_full_path(osu_file_full_path: str) -> str | None:
         return THE_OPTION_CANNOT_BE_EMPTY
     return None
 
+
 def _check_number_of_keys(number_of_keys: str) -> str | None:
     if number_of_keys not in ("1", "2", "4", "5", ""):
         return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
     return None
 
+
 def _check_remove_sv_option(remove_sv_option: str) -> str | None:
-    if remove_sv_option not in ("1", "2", "0", ""):
+    if remove_sv_option not in ("0", "1", "2", ""):
         return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
     return None
+
 
 def _check_std_to_mania_2k_main_key(std_to_mania_2k_main_key: str) -> str | None:
     if std_to_mania_2k_main_key not in ("1", "2", ""):
         return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
     return None
 
+
 def _check_std_to_mania_2k_start_key(std_to_mania_2k_start_key: str) -> str | None:
     if std_to_mania_2k_start_key not in ("1", "2", ""):
         return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
     return None
+
 
 def _check_std_to_mania_2k_trill_start_key(
     std_to_mania_2k_trill_start_key: str,
@@ -46,6 +68,7 @@ def _check_std_to_mania_2k_trill_start_key(
     if std_to_mania_2k_trill_start_key not in ("1", "2", ""):
         return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
     return None
+
 
 def webui():
     """webui main program\n
@@ -83,7 +106,7 @@ def webui():
     put_markdown("---")
 
     while True:
-        basic_data: dict[str, str] = input_group(
+        basic_data: BasicDataDict = input_group(
             BASIC_INFO,
             [
                 input(
@@ -125,14 +148,14 @@ def webui():
         # 获取输出文件名
         output_file_name: str = basic_data["output_file_name"]
         # 询问用户输出 mania ?k
-        number_of_keys: str = basic_data["number_of_keys"]
+        number_of_keys: Literal["1", "2", "4", "5", ""] = basic_data["number_of_keys"]
         # 询问是否移除变速
-        remove_sv_option: str = basic_data["remove_sv_option"]
+        remove_sv_option: Literal["0", "1", "2", ""] = basic_data["remove_sv_option"]
 
         # std to mania 2k 生成参数询问部分
-        std_to_mania_2k_main_key: str = ""
-        std_to_mania_2k_start_key: str = ""  # 铺面起手键位置
-        std_to_mania_2k_trill_start_key: str = ""  # 交互起手键位置
+        std_to_mania_2k_main_key: Literal["1", "2", ""] = ""
+        std_to_mania_2k_start_key: Literal["1", "2", ""] = ""  # 铺面起手键位置
+        std_to_mania_2k_trill_start_key: Literal["1", "2", ""] = ""  # 交互起手键位置
         std_to_mania_2k_minimum_jack_time_interval: str = ""  # 最小叠键时间间距，单位毫秒
         std_to_mania_2k_maximum_number_of_jack_notes: str = ""  # 最大叠键数
 
@@ -147,7 +170,7 @@ def webui():
             "4",
             "",  # 取默认值的、不输入的、直接回车的
         ):
-            std_to_mania_2k_options_data: dict[str, str] = input_group(
+            std_to_mania_2k_options_data: StdToMania2kOptionsDataDict = input_group(
                 STD_TO_MANIA_2k_4k,
                 [
                     input(

@@ -1,3 +1,5 @@
+from typing import Literal
+
 from custom_types import ManiaHitObject
 
 
@@ -16,7 +18,9 @@ def mania_hit_objects_parser(
     rt_list: list[ManiaHitObject] = []
 
     for hit_object in hit_objects_list:
-        object_type: str = ""
+        object_type: Literal["hit circle", "slider", "spinner", "hold", "unknown"] = (
+            "unknown"
+        )
         start_time: int | float = 0  # 开始时间，毫秒
         end_time: int | float = 0  # 结束时间，毫秒
         key_position: int = 1  # 键的在哪个轨道，最左边是 1

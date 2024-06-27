@@ -1,14 +1,14 @@
 from typing import cast
 
-from custom_types import HitObject, ManiaHitObject
+from custom_types import ManiaHitObject, HitObject
 
 
-def any_object_type_to_mania_1k(hit_object: HitObject) -> ManiaHitObject:
+def any_object_type_to_mania_1k(hit_object: ManiaHitObject | HitObject) -> ManiaHitObject:
     """将滑条，转盘转换为长条，其他的不用转换\n
     把物件添加到 mania 一轨
 
     Args:
-        hit_object (HitObject): 转换前物件的信息
+        hit_object (ManiaHitObject | HitObject): 转换前物件的信息
 
     Returns:
         ManiaHitObject: 转换后物件的信息
