@@ -1,5 +1,3 @@
-from typing import cast
-
 from custom_types import HitObject, ManiaHitObject
 from logger import error
 from message import (

@@ -1,7 +1,6 @@
-from typing import TypedDict, cast
+from typing import TypedDict
 
 from custom_types import Mania2kOptions, ManiaHitObject
-from options_default import mania_2k_options_default
 
 
 class IndexManiaHitObject(TypedDict):
