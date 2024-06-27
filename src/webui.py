@@ -12,6 +12,41 @@ from message import *
 from reader import load_osu_file_metadata, osu_file_metadata_mode_parser
 
 
+def _check_osu_file_full_path(osu_file_full_path: str) -> str | None:
+    if osu_file_full_path in (
+        "",
+        None,
+    ):  # 如果为空，此处值为 ""。None 是来自 cui 的残留代码。
+        return THE_OPTION_CANNOT_BE_EMPTY
+    return None
+
+def _check_number_of_keys(number_of_keys: str) -> str | None:
+    if number_of_keys not in ("1", "2", "4", "5", ""):
+        return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+    return None
+
+def _check_remove_sv_option(remove_sv_option: str) -> str | None:
+    if remove_sv_option not in ("1", "2", "0", ""):
+        return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+    return None
+
+def _check_std_to_mania_2k_main_key(std_to_mania_2k_main_key: str) -> str | None:
+    if std_to_mania_2k_main_key not in ("1", "2", ""):
+        return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+    return None
+
+def _check_std_to_mania_2k_start_key(std_to_mania_2k_start_key: str) -> str | None:
+    if std_to_mania_2k_start_key not in ("1", "2", ""):
+        return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+    return None
+
+def _check_std_to_mania_2k_trill_start_key(
+    std_to_mania_2k_trill_start_key: str,
+) -> str | None:
+    if std_to_mania_2k_trill_start_key not in ("1", "2", ""):
+        return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
+    return None
+
 def webui():
     """webui main program\n
     输入引导 webui\n
@@ -48,44 +83,25 @@ def webui():
     put_markdown("---")
 
     while True:
-
-        def check_osu_file_full_path(osu_file_full_path: str) -> str | None:
-            if osu_file_full_path in (
-                "",
-                None,
-            ):  # 如果为空，此处值为 ""。None 是来自 cui 的残留代码。
-                return THE_OPTION_CANNOT_BE_EMPTY
-            return None
-
-        def check_number_of_keys(number_of_keys: str) -> str | None:
-            if number_of_keys not in ("1", "2", "4", "5", ""):
-                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
-            return None
-
-        def check_remove_sv_option(remove_sv_option: str) -> str | None:
-            if remove_sv_option not in ("1", "2", "0", ""):
-                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
-            return None
-
         basic_data: dict[str, str] = input_group(
             BASIC_INFO,
             [
                 input(
                     PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH,
                     name="osu_file_full_path",
-                    validate=check_osu_file_full_path,
+                    validate=_check_osu_file_full_path,
                 ),
                 input(PLEASE_OUTPUT_DIR, name="output_dir"),
                 input(PLEASE_OUTPUT_FILENAME, name="output_file_name"),
                 input(
                     PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA,
                     name="number_of_keys",
-                    validate=check_number_of_keys,
+                    validate=_check_number_of_keys,
                 ),
                 input(
                     PLEASE_INPUT_REMOVE_SV_OPTION,
                     name="remove_sv_option",
-                    validate=check_remove_sv_option,
+                    validate=_check_remove_sv_option,
                 ),
             ],
         )
@@ -124,23 +140,6 @@ def webui():
         osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
         debug("osu_file_game_mode", data=osu_file_metadata_mode_parser(osu_file_metadata))
 
-        def check_std_to_mania_2k_main_key(std_to_mania_2k_main_key: str) -> str | None:
-            if std_to_mania_2k_main_key not in ("1", "2", ""):
-                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
-            return None
-
-        def check_std_to_mania_2k_start_key(std_to_mania_2k_start_key: str) -> str | None:
-            if std_to_mania_2k_start_key not in ("1", "2", ""):
-                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
-            return None
-
-        def check_std_to_mania_2k_trill_start_key(
-            std_to_mania_2k_trill_start_key: str,
-        ) -> str | None:
-            if std_to_mania_2k_trill_start_key not in ("1", "2", ""):
-                return THIS_IS_NOT_A_LEGAL_INPUT_VALUE
-            return None
-
         if osu_file_metadata_mode_parser(
             osu_file_metadata
         ) == "osu!" and number_of_keys in (
@@ -154,17 +153,17 @@ def webui():
                     input(
                         MANIA_2k_PLEASE_INPUT_MAIN_KEY,
                         name="std_to_mania_2k_main_key",
-                        validate=check_std_to_mania_2k_main_key,
+                        validate=_check_std_to_mania_2k_main_key,
                     ),
                     input(
                         MANIA_2K_PLEASE_INPUT_START_KEY,
                         name="std_to_mania_2k_start_key",
-                        validate=check_std_to_mania_2k_start_key,
+                        validate=_check_std_to_mania_2k_start_key,
                     ),
                     input(
                         MANIA_2K_PLEASE_INPUT_TRILL_START_KEY,
                         name="std_to_mania_2k_trill_start_key",
-                        validate=check_std_to_mania_2k_trill_start_key,
+                        validate=_check_std_to_mania_2k_trill_start_key,
                     ),
                     input(
                         MANIA_2K_PLEASE_INPUT_MINIMUM_JACK_TIME_INTERVAL,
