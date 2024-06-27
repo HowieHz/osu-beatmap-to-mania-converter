@@ -1,6 +1,6 @@
 from typing import cast
 
-from custom_types import ManiaHitObject, HitObject
+from custom_types import HitObject, ManiaHitObject
 
 
 def any_object_type_to_mania_1k(hit_object: ManiaHitObject | HitObject) -> ManiaHitObject:

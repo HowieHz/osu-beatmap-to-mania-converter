@@ -1,10 +1,12 @@
 from typing import Literal, TypedDict
 
+
 class NoTypeObject(TypedDict):
-    """开始时间和结束时间单位是毫秒。\n
-    """
+    """开始时间和结束时间单位是毫秒。\n"""
+
     start_time: int | float
     end_time: int | float
+
 
 class HitObject(NoTypeObject):
     """
@@ -26,6 +28,7 @@ class ManiaHitObject(NoTypeObject):
     开始时间和结束时间单位是毫秒。\n
     key 从左到右计数，最左边是 1。\n
     """
+
     type: Literal["hit circle", "hold", "unknown"]
     key: int
 
@@ -38,6 +41,7 @@ class ExternalManiaHitObject(NoTypeObject):
     开始时间和结束时间单位是毫秒。\n
     key 从左到右计数，最左边是 1。\n
     """
+
     type: Literal["hit circle", "hold", "unknown", "end sign"]
     key: int
 
