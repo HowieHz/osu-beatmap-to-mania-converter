@@ -141,7 +141,7 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def arg_parse(args: argparse.Namespace) -> str:
+def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
     debug(message="args", data=args)
 
     # 输出版本信息
@@ -212,8 +212,6 @@ def arg_parse(args: argparse.Namespace) -> str:
 
     # 缺失必要参数，进入 webui 模式
     if args.osu_file_full_path is None:
-        # print(CLI_OSU_FILE_FULL_PATH_ARGUMENT_IS_REQUIRED)
-        # return "stop"
         return "enter-webui"
 
     # 获取 osu 文件路径，去除两头的单双引号
