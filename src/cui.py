@@ -1,5 +1,4 @@
 from cli import cli_main
-
 from logger import debug, info
 from message import *
 from reader import load_osu_file_metadata, osu_file_metadata_mode_parser

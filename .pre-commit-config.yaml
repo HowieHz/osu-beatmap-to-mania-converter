@@ -8,3 +8,15 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-toml
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+        name: black (python)
+        # verbose: True
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: isort (python)
+        # verbose: True

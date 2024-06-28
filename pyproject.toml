@@ -12,7 +12,7 @@ line-length = 90
 
 [tool.isort]
 profile = "black"
-src_paths = ["src/*"]
+src_paths = ["src"]
 multi_line_output = 3
 verbose = true
 line_length = 90

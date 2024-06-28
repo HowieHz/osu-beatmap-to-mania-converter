@@ -1,3 +1,0 @@
-black src/
-isort .
-mypy

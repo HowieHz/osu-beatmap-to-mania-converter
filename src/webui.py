@@ -3,11 +3,11 @@ from multiprocessing import Process
 from typing import Literal, TypedDict
 
 import webview
-from cli import cli_main
 from pywebio import start_server
 from pywebio.input import input, input_group
 from pywebio.output import put_buttons, put_code, put_markdown, put_text, put_warning
 
+from cli import cli_main
 from logger import debug
 from message import *
 from reader import load_osu_file_metadata, osu_file_metadata_mode_parser
