@@ -237,6 +237,8 @@ python ./src/main.py -h
 
 ### 通过二进制文件运行交互式命令行程序
 
+> cui 在 v0.7.0 版本已移除
+
 #### Windows
 
 从 [Releases](https://github.com/HowieHz/osu-beatmap-to-mania-converter/releases) 下载最新版本二进制文件 `obmc-latest.exe`。

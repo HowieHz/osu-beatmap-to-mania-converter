@@ -47,9 +47,6 @@ def create_parser() -> argparse.ArgumentParser:
 
     # 不能加入配置文件的项
     parser.add_argument(
-        "-cui", "--command-user-interface", action="store_true", help=CLI_HELP_CUI
-    )
-    parser.add_argument(
         "-webui", "--web-user-interface", action="store_true", help=CLI_HELP_WEBUI
     )
     parser.add_argument("-v", "--version", action="store_true", help=CLI_HELP_VERSION)
@@ -208,10 +205,6 @@ def arg_parse(args: argparse.Namespace) -> str:
         # 发送到指令解析/实际逻辑运行
         cli_main(args_list)
         return "stop"
-
-    # 进入 cui 程序
-    if args.command_user_interface:
-        return "enter-cui"
 
     # 进入 webui 程序
     if args.web_user_interface:
@@ -439,14 +432,14 @@ def arg_parse(args: argparse.Namespace) -> str:
     return "stop"
 
 
-def cli_main(args_list: list[str] | None = None) -> str:
+def cli_main(args_list: list[str] | None = None) -> Literal["stop", "enter-webui"]:
     """command-line interface main program
 
     Args:
         raw_args (list[str] | None, optional): 输入值为 list[str] 即为列表参数输入，如 ["-i", "1.osu", "-o", "./"]，默认值为 None。如为 None，即为选择解析运行程序时输入命令行的指令。
 
     Returns:
-        str: "enter-cui" or "stop" or "enter-webui"
+        str: "stop" or "enter-webui"
     """
     parser: argparse.ArgumentParser = create_parser()
 
@@ -455,4 +448,3 @@ def cli_main(args_list: list[str] | None = None) -> str:
         return arg_parse(parser.parse_args())
 
     return arg_parse(create_parser().parse_args(args_list))
-    # ret value: "enter-cui" "stop"

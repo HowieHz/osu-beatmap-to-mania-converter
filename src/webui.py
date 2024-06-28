@@ -30,10 +30,7 @@ class StdToMania2kOptionsDataDict(TypedDict):
 
 
 def _check_osu_file_full_path(osu_file_full_path: str) -> str | None:
-    if osu_file_full_path in (
-        "",
-        None,
-    ):  # 如果为空，此处值为 ""。None 是来自 cui 的残留代码。
+    if osu_file_full_path == "":  # 如果为空，此处值为 ""
         return THE_OPTION_CANNOT_BE_EMPTY
     return None
 
@@ -120,6 +117,7 @@ def webui():
                     PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA,
                     name="number_of_keys",
                     validate=_check_number_of_keys,
+                    help_text=PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA_HELP_TEXT,
                 ),
                 input(
                     PLEASE_INPUT_REMOVE_SV_OPTION,

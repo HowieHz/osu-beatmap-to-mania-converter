@@ -39,11 +39,14 @@ STD_TO_MANIA_2k_4k: str = "osu!std 转 osu!mania 2k/4k 选项"
 THE_OPTION_CANNOT_BE_EMPTY: str = "此项不能为空"
 THIS_IS_NOT_A_LEGAL_INPUT_VALUE: str = "这不是一个有效的输入值"
 
-# cui 使用指导
+# 使用指导
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，按下回车键。"
 PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "输入被转换铺面的完整路径（.osu 结尾）"
 PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = (
-    f"输入转换后 Mania 铺面的键数 (如读取的是主模式铺面，输入 1, 2, 4 中的数值；如读取的是 Taiko 模式的铺面，输入 4, 5 中的数值，默认值为 {options_default['converter_output_number_of_keys']})。注：读取主模式铺面时，如设置输出键数为 4 ，即将 4k 左边两轨当 2k 使用。"
+    f"输入转换后 Mania 铺面的键数 (如读取的是主模式铺面，输入 1, 2, 4 中的数值；如读取的是 Taiko 模式的铺面，输入 4, 5 中的数值，默认值为 {options_default['converter_output_number_of_keys']})。"
+)
+PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA_HELP_TEXT: str = (
+    "注：读取主模式铺面时，如设置输出键数为 4 ，即将 4k 左边两轨当 2k 使用。"
 )
 PLEASE_OUTPUT_DIR: str = (
     "指定输出的 .osu 文件的目录。输入为空则设定为 .osu 文件的同目录下"
@@ -98,7 +101,6 @@ CLI_HELP_MESSAGE = "显示此帮助信息并退出程序"
 CLI_HELP_QUIET = "使程序减少输出。--quiet 或 --quiet True 均可启用此选项"
 CLI_HELP_CONFIG = f"配置文件路径。如仅添加 --config 不带参数，则为在 {options_default['config_file_path_root_and_stem']}.{options_default['config_file_type']} 创建配置文件并退出程序。如添加 --config yaml 则为初始化一个 yaml 格式的配置文件；--config json 则为初始化一个 json 格式的配置文件；--config toml 则为初始化一个 toml 格式的配置文件。注：json 和 toml 中路径出现的 \\ 字符要改成 \\\\，而 yaml 中字符串只能用单引号 ' 而不能用双引号 \" 标注。"
 CLI_HELP_CONFIG_TYPE = "配置文件类型"
-CLI_HELP_CUI = "进入交互式命令提示程序"
 CLI_HELP_WEBUI = "进入 WebUI"
 CLI_HELP_LOG_VERBOSITY = "修改输出详细程度"  # change output verbosity
 CLI_HELP_VERSION = "输出软件版本信息并退出程序"
@@ -106,6 +108,7 @@ CLI_HELP_VERSION = "输出软件版本信息并退出程序"
 # cli 帮助文字前缀
 
 CLI_STD_TO_MANIA_2K_PREFIX = "（适用于 std 转 mania 2k/4k 铺面的选项）"
+CLI_MANIA_4K_TO_MANIA_4K_PREFIX = "（适用于 mania 4k 转 mania 4k 铺面的选项）"
 
 # cli 程序报错设置
 
