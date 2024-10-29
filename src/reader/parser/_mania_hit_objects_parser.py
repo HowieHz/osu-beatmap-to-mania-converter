@@ -32,6 +32,8 @@ def mania_hit_objects_parser(
 
         # 处理下数据，十进制转二进制，然后去掉左边 0b 标识，补齐八位避免 IndexError，转换成字符串方便直接取位值
         raw_type: str = str(bin(int(object_params[3]))).removeprefix("0b").zfill(8)
+        # 打击音效
+        raw_hitSound: str = str(bin(int(object_params[4]))).removeprefix("0b").zfill(4)
 
         if raw_type[-1] == "1":
             # 音符（泡泡，米，Note）

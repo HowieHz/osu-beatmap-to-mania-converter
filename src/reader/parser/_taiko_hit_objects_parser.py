@@ -1,13 +1,11 @@
 from typing import Literal
 
-from custom_types import ManiaHitObject
-
-# TODO: 待完成
+from custom_types import TaikoHitObject
 
 
 def taiko_hit_objects_parser(
     osu_file_metadata: list[str], hit_objects_list: list[str]
-) -> list[ManiaHitObject]:
+) -> list[TaikoHitObject]:
     """解析 [HitObjects] 下每行的数据为更易于处理的形式
 
     Args:
@@ -17,7 +15,7 @@ def taiko_hit_objects_parser(
     Returns:
         list[ManiaHitObject]: 一个列表，装了解析后的铺面描述
     """
-    rt_list: list[ManiaHitObject] = []
+    rt_list: list[TaikoHitObject] = []
 
     # 初始化用于滑条持续时间解析的数据
     BASE_SLIDER_VELOCITY: float  # 基础滑条速度倍率
@@ -27,7 +25,9 @@ def taiko_hit_objects_parser(
     BASE_SLIDER_VELOCITY, timing_points_list = _init_slider_parser(osu_file_metadata)
 
     for hit_object in hit_objects_list:
-        object_type: Literal["hit circle", "hold", "unknown"] = "unknown"
+        object_type: Literal[
+            "kat", "large kat", "don", "large don", "drum roll", "denden note", "unknown"
+        ] = "unknown"
         start_time: int | float = 0  # 毫秒
         end_time: int | float = 0
 
@@ -35,17 +35,37 @@ def taiko_hit_objects_parser(
 
         # 处理下数据，十进制转二进制，然后去掉左边 0b 标识，补齐八位避免 IndexError，转换成字符串方便直接取位值
         raw_type: str = str(bin(int(object_params[3]))).removeprefix("0b").zfill(8)
-
-        # 这只是初始化 TODO 还未完成
-        key: int = 1
+        # 打击音效
+        raw_hitSound: str = str(bin(int(object_params[4]))).removeprefix("0b").zfill(4)
+        # 0	Normal 8
+        # 1	Whistle 4
+        # 2	Finish 2
+        # 3	Clap 1
+        # 添加 Whistle（哨声）和 Clap（鼓掌）音效的圆圈会变为咔 kat（蓝色）音符，
+        # 未添加这两种音效的圆圈则默认为咚 don（红色）音符。
+        # 添加 Finish（镲）音效的物件会变为 large 大音符。
+        # 滑条变为黄色连打 drum roll。
+        # 转盘变为拨浪鼓音符 denden note。
 
         if raw_type[-1] == "1":
             # 音符（泡泡，米，Note）
             object_type = "hit circle"
             start_time = end_time = int(object_params[2])
+
+            if raw_hitSound[1] == 1 or raw_hitSound[3] == 1:
+                object_type = "kat"
+            else:
+                object_type = "don"
+
+            if raw_hitSound[2] == 1:
+                if object_type == "kat":
+                    object_type = "large kat"
+                else:  # object_type == "don"
+                    object_type = "large don"
+
         elif raw_type[-2] == "1":
             # 主模式滑条
-            object_type = "hold"
+            object_type = "drum roll"
             start_time = int(object_params[2])
 
             # 滑条持续时间计算
@@ -57,25 +77,22 @@ def taiko_hit_objects_parser(
             end_time = start_time + slide_time  # 这里出来是 float
         elif raw_type[-4] == "1":
             # 主模式转盘
-            object_type = "hold"
+            object_type = "denden note"
             start_time = int(object_params[2])
             end_time = int(object_params[5])
         elif raw_type[-8] == "1":
-            # mania 长音符（长条，long note，LN，面）
-            # 样例数据 448,192,31331,128,8,31836:2:0:0:0:
-            object_type = "hold"
-            start_time = int(object_params[2])
-            end_time = int(object_params[5].split(":")[0])
+            # # 不应该出现在 taiko 中的类型
+            # # mania 长音符（长条，long note，LN，面）
+            # # 样例数据 448,192,31331,128,8,31836:2:0:0:0:
+            # object_type = "hold"
+            # start_time = int(object_params[2])
+            # end_time = int(object_params[5].split(":")[0])
+            continue
         else:
             object_type = "unknown"
 
         rt_list.append(
-            {
-                "type": object_type,
-                "start_time": start_time,
-                "end_time": end_time,
-                "key": key,
-            }
+            {"type": object_type, "start_time": start_time, "end_time": end_time}
         )
 
     return rt_list

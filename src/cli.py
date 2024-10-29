@@ -17,7 +17,7 @@ from processor import (
     any_metadata_to_mania,
     any_object_type_to_mania_1k,
     mania_1k_to_2k,
-    taiko_object_type_to_mania_5k,
+    taiko_object_type_to_mania_6k,
 )
 from reader import (
     hit_objects_parser,
@@ -327,6 +327,7 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
 
     parsed_mania_1k_hit_objects_list: list[ManiaHitObject]
     parsed_mania_5k_hit_objects_list: list[ManiaHitObject]
+    parsed_mania_6k_hit_objects_list: list[ManiaHitObject]
     match osu_file_metadata_mode_parser(osu_file_metadata):
         case "osu!":
             # 滑条，转盘转 hold，并且给每条物件信息附加上在 mania 一轨的信息
@@ -334,12 +335,8 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
                 map(any_object_type_to_mania_1k, parsed_hit_objects_list)
             )
         case "osu!taiko":
-            error(CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP)
-            return "stop"
-            # TODO: CLI_DONT_SUPPORT_OSU_TAIKO_BEATMAP
-
-            parsed_mania_5k_hit_objects_list = list(
-                map(taiko_object_type_to_mania_5k, parsed_hit_objects_list)
+            parsed_mania_6k_hit_objects_list = list(
+                map(taiko_object_type_to_mania_6k, parsed_hit_objects_list)
             )
         case "osu!catch":
             error(CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP)
@@ -389,10 +386,11 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
                 keys=number_of_keys,
             )
         case "osu!taiko":
-            parsed_mania_5k_hit_objects_list = list(
-                map(taiko_object_type_to_mania_5k, parsed_hit_objects_list)
+            parsed_mania_6k_hit_objects_list = list(
+                map(taiko_object_type_to_mania_6k, parsed_hit_objects_list)
             )
 
+            # TODO 6k -> 5k 4k
             if number_of_keys == 5:
                 # 目标产物 mania 5k
                 parsed_mania_hit_objects_list = parsed_mania_5k_hit_objects_list
