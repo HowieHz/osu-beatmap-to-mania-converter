@@ -7,7 +7,7 @@ from typing import Literal
 from hpyculator import hpysettings
 
 from config import get_settings_file_instance
-from custom_types import HitObject, Mania2kOptions, ManiaHitObject
+from custom_types import HitObject, Mania2kOptions, ManiaHitObject, TaikoHitObject
 from exporter import generate_mania_osu_file
 from logger import debug, error, info
 from message import *
@@ -319,14 +319,13 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
     osu_file_metadata: list[str] = load_osu_file_metadata(osu_file_full_path)
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
-    parsed_hit_objects_list: list[ManiaHitObject] | list[HitObject] | None = (
-        hit_objects_parser(osu_file_metadata, load_hit_objects_list(osu_file_full_path))
-    )
+    parsed_hit_objects_list: (
+        list[ManiaHitObject] | list[HitObject] | list[TaikoHitObject] | None
+    ) = hit_objects_parser(osu_file_metadata, load_hit_objects_list(osu_file_full_path))
     if parsed_hit_objects_list is None:
         return "stop"
 
     parsed_mania_1k_hit_objects_list: list[ManiaHitObject]
-    parsed_mania_5k_hit_objects_list: list[ManiaHitObject]
     parsed_mania_6k_hit_objects_list: list[ManiaHitObject]
     match osu_file_metadata_mode_parser(osu_file_metadata):
         case "osu!":
@@ -361,14 +360,14 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
     # 最后写入文件的内容
     final_osu_file_content: str
 
+    # 将铺面元数据转换为 osu!mania nk 元数据
+    osu_file_metadata = any_metadata_to_mania(osu_file_metadata, keys=number_of_keys)
+
+    # 转换后最终写入的 mania 铺面数据
+    parsed_mania_hit_objects_list: list[ManiaHitObject]
+
     match osu_file_metadata_mode_parser(osu_file_metadata):
         case "osu!":
-            # 将铺面元数据转换为 osu!mania nk 元数据
-            osu_file_metadata = any_metadata_to_mania(
-                osu_file_metadata, keys=number_of_keys
-            )
-            parsed_mania_hit_objects_list: list[ManiaHitObject]
-
             if number_of_keys == 1:
                 # 目标产物 mania 1k
                 parsed_mania_hit_objects_list = parsed_mania_1k_hit_objects_list
@@ -378,7 +377,6 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
                 parsed_mania_hit_objects_list = mania_1k_to_2k(
                     parsed_mania_1k_hit_objects_list, options=mania_2k_options
                 )
-
             ## 生成铺面数据
             final_osu_file_content = generate_mania_osu_file(
                 file_metadata=osu_file_metadata,
@@ -386,19 +384,16 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
                 keys=number_of_keys,
             )
         case "osu!taiko":
-            parsed_mania_6k_hit_objects_list = list(
-                map(taiko_object_type_to_mania_6k, parsed_hit_objects_list)
-            )
-
             # TODO 6k -> 5k 4k
             if number_of_keys == 5:
                 # 目标产物 mania 5k
-                parsed_mania_hit_objects_list = parsed_mania_5k_hit_objects_list
+                # 下面这行是占位用的
+                parsed_mania_hit_objects_list = parsed_mania_6k_hit_objects_list
             elif number_of_keys == 4:
                 # 目标产物 mania 4k
-                # 将铺面从 5k 转换为 4k
-                # TODO: 5k -> 4k 转换
-                parsed_mania_hit_objects_list = parsed_mania_5k_hit_objects_list
+                # TODO 将铺面从 6k 转换为 4k
+                # 下面这行是占位用的
+                parsed_mania_hit_objects_list = parsed_mania_6k_hit_objects_list
 
             ## 生成铺面数据
             final_osu_file_content = generate_mania_osu_file(

@@ -1,4 +1,4 @@
-from custom_types import HitObject, ManiaHitObject
+from custom_types import HitObject, ManiaHitObject, TaikoHitObject
 from logger import error
 from message import (
     CLI_DONT_SUPPORT_OSU_CATCH_BEATMAP,
@@ -13,7 +13,7 @@ from .osu_file_metadata_mode_parser import osu_file_metadata_mode_parser
 
 def hit_objects_parser(
     osu_file_metadata: list[str], hit_objects_list: list[str]
-) -> list[ManiaHitObject] | list[HitObject] | None:
+) -> list[ManiaHitObject] | list[HitObject] | list[TaikoHitObject] | None:
     """解析 [HitObjects] 下每行的数据为更易于处理的形式
 
     Args:
