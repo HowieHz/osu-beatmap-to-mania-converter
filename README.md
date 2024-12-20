@@ -45,8 +45,8 @@ For fun.
 ### 对于 OSU!Standard 转 OSU!Mania
 
 1. 符合一般玩家双指分配的铺面（低密度单戳，高密度两指交替击打）
-2. 单戳练习铺生成器 （参数例：最大叠键数 1000000，最小叠键时间间距设置为 0）
-3. 强双练习铺生成器 （参数例：最大叠键数 1，最小叠键时间间隔 1000000）
+2. 单戳练习铺生成器（参数例：最大叠键数 1000000，最小叠键时间间距设置为 0）
+3. 强双练习铺生成器（参数例：最大叠键数 1，最小叠键时间间隔 1000000）
 
 ### 对于 OSU!Taiko 转 OSU!Mania
 
@@ -159,7 +159,7 @@ For fun.
   - 小蓝圈就在其中一个 k 轨生成一个音符
   - 大蓝圈就在两个 k 轨都生成音符，形成双押（可配置将大蓝圈视为小蓝圈）
   - 大/小黄条和拨浪鼓转换后的长音符在某个轨道上生成
-  - （具体有关“其中一个 x 轨”，“某个轨道” 具体是其中的哪个轨道，则由具体生成时的软件设置来决定）
+  - （具体有关“其中一个 x 轨”，“某个轨道”具体是其中的哪个轨道，则由具体生成时的软件设置来决定）
 - OSU!Mania 5k
   - 从左到右依次是 1-5 轨道
   - 1 轨道放小红圈转换后的音符
@@ -274,8 +274,8 @@ python ./src/main.py -cui
 
 ### 输出 Mania 模式铺面
 
-1. 官方 wiki 是 长键语法：x,y,开始时间,物件类型,长键音效,结束时间,长键音效组
-   - 错了，实际上长键语法是 x,y,开始时间,物件类型,长键音效,结束时间:长键音效组
+1. 官方 wiki 是 长键语法：x,y，开始时间，物件类型，长键音效，结束时间，长键音效组
+   - 错了，实际上长键语法是 x,y，开始时间，物件类型，长键音效，结束时间：长键音效组
    - 结束时间和长键音效组分隔符是冒号不是逗号！
 
 ## 软件原理解释
@@ -304,8 +304,8 @@ python ./src/main.py -cui
 ##### to mania!mania 1k
 
 1. 将元数据处理为 mania 1k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 1 （设置信息为 1k）
+   - 设置 Mode 为 3（设置铺面模式为 Mania）
+   - 设置 CircleSize 为 1（设置信息为 1k）
    - 设置 BeatmapSetID 为 -1
 2. 根据 osu_file_metadata 和 parsed_mania_1k_hit_objects_list 生成铺面
 
@@ -313,8 +313,8 @@ python ./src/main.py -cui
 
 1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
 2. 将元数据处理为 mania 2k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 2 （设置信息为 2k）
+   - 设置 Mode 为 3（设置铺面模式为 Mania）
+   - 设置 CircleSize 为 2（设置信息为 2k）
    - 设置 BeatmapSetID 为 -1
 3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
 
@@ -322,8 +322,8 @@ python ./src/main.py -cui
 
 1. 根据配置项处理 parsed_mania_1k_hit_objects_list，处理后的命名为 parsed_mania_2k_hit_objects_list
 2. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 4 （设置信息为 4k）
+   - 设置 Mode 为 3（设置铺面模式为 Mania）
+   - 设置 CircleSize 为 4（设置信息为 4k）
    - 设置 BeatmapSetID 为 -1
 3. 根据 osu_file_metadata 和 parsed_mania_2k_hit_objects_list 生成铺面
 
@@ -343,8 +343,8 @@ python ./src/main.py -cui
 4. 根据配置项去除铺面 sv 信息（处理 osu_file_metadata）
 5. 根据配置项处理 parsed_mania_5k_hit_objects_list，处理后的命名为 parsed_mania_4k_hit_objects_list
 6. 将元数据处理为 mania 4k 的元数据（处理 osu_file_metadata）
-   - 设置 Mode 为 3 （设置铺面模式为 Mania）
-   - 设置 CircleSize 为 4 （设置信息为 4k）
+   - 设置 Mode 为 3（设置铺面模式为 Mania）
+   - 设置 CircleSize 为 4（设置信息为 4k）
    - 设置 BeatmapSetID 为 -1
 7. 根据 osu_file_metadata 和 parsed_mania_4k_hit_objects_list 生成铺面
 

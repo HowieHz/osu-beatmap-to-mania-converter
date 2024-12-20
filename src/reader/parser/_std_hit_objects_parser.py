@@ -82,7 +82,7 @@ def _init_slider_parser(osu_file_metadata: list[str]) -> tuple[float, list[list[
         osu_file_metadata (list[str]): .osu 文件元数据
 
     Returns:
-        tuple[float, list[list[str]]]: (基础滑条速度倍率, [TimingPoints] 下每行的数据(行内数据已被 .split(',')))
+        tuple[float, list[list[str]]]: (基础滑条速度倍率，[TimingPoints] 下每行的数据 (行内数据已被 .split(',')))
     """
     # 找出 基础滑条速度倍率：Base slider velocity in hundreds of osu! pixels per beat
     BASE_SLIDER_VELOCITY: float = 0.0

@@ -15,8 +15,8 @@ def calculate_kps(
 
     Args:
         hit_objects (list[ManiaHitObject]): 解析后的铺面对象列表
-        window (int, optional): 时间窗口，以毫秒为单位. 默认为 1000。
-        keys_list (list[int], optional): 计算范围内的键列表. 默认为 None。
+        window (int, optional): 时间窗口，以毫秒为单位。默认为 1000。
+        keys_list (list[int], optional): 计算范围内的键列表。默认为 None。
 
     Returns:
         dict[int, int]: 每个时间窗口的起始时间和这个窗口内对应的键数，起始时间以毫秒为单位
@@ -47,7 +47,7 @@ def calculate_key_time_delta(
 
     Args:
         hit_objects (list[ManiaHitObject]): 解析后的铺面对象列表
-        keys_list (list[int], optional): 计算范围内的键列表. 默认为 None。
+        keys_list (list[int], optional): 计算范围内的键列表。默认为 None。
 
     Returns:
         list[tuple[int, int]]: 每个键的起始时间和下一个键的时间差，时间以毫秒为单位
@@ -81,8 +81,8 @@ def calculate_avg_key_time_delta(
 
     Args:
         hit_objects (list[ManiaHitObject]): 解析后的铺面对象列表
-        window (int, optional): 时间窗口，以毫秒为单位. 默认为 1000。
-        keys_list (list[int], optional): 计算范围内的键列表. 默认为 None。
+        window (int, optional): 时间窗口，以毫秒为单位。默认为 1000。
+        keys_list (list[int], optional): 计算范围内的键列表。默认为 None。
 
     Returns:
         dict[int, int]: 每个时间窗口的起始时间和这个窗口内对应的平均键时间差，起始时间以毫秒为单位
@@ -126,17 +126,17 @@ def generate_beatmap_difficulty_data_chart(
     Args:
         hit_objects_list (list[ManiaHitObject]): 铺面物件数据
         keys (int, optional): 铺面键数
-        window (int, optional): 时间窗口，以毫秒为单位. 默认为 1000。
-        time_range (tuple[int,int], optional): 时间范围，以毫秒为单位，格式 (开始时间, 结束时间), 包括开始时间，不包括结束时间, -1,-1 表示从头到尾，默认 (-1, -1)
+        window (int, optional): 时间窗口，以毫秒为单位。默认为 1000。
+        time_range (tuple[int,int], optional): 时间范围，以毫秒为单位，格式 (开始时间，结束时间), 包括开始时间，不包括结束时间，-1,-1 表示从头到尾，默认 (-1, -1)
         generate_individual_key_charts (bool, optional): 是否生成单独的单轨的图
         generate_individual_adjacent_keys_charts (bool, optional): 是否生成单独的邻轨的图
     """
     # 两类
-    # 第一类 横轴时间，纵轴kps
+    # 第一类 横轴时间，纵轴 kps
     # 第二类 横轴时间，纵轴前后两键出现时间
 
     # 第一类提供五张，分别是四条轨和总体
-    # 第二类提供八张，分别是四条轨，1+2轨，2+3轨，3+4轨，总体
+    # 第二类提供八张，分别是四条轨，1+2 轨，2+3 轨，3+4 轨，总体
 
     if keys is None:
         # 读取 hit_objects 里最大的 key

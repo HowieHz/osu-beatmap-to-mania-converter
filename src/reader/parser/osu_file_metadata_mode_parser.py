@@ -5,7 +5,7 @@ def osu_file_metadata_mode_parser(osu_file_metadata: list[str]) -> str:
         osu_file_metadata (list[str]): 铺面元数据
 
     Returns:
-        str: 游戏模式，在 osu! osu!taiko osu!catch osu!mania 中取值， osu! 在制铺器里是选择 all
+        str: 游戏模式，在 osu! osu!taiko osu!catch osu!mania 中取值，osu! 在制铺器里是选择 all
     """
     for line in osu_file_metadata:
         if line.startswith("Mode:"):

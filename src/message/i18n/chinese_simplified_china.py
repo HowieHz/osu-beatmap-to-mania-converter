@@ -43,16 +43,16 @@ THIS_IS_NOT_A_LEGAL_INPUT_VALUE: str = "这不是一个有效的输入值"
 PLEASE_PRESS_ENTER_AFTER_INPUT: str = "每条信息输入完成后，按下回车键。"
 PLEASE_INPUT_YOUR_OSU_FILE_FULL_PATH: str = "输入被转换铺面的完整路径（.osu 结尾）"
 PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA: str = (
-    f"输入转换后 Mania 铺面的键数 (如读取的是主模式铺面，输入 1, 2, 4 中的数值；如读取的是 Taiko 模式的铺面，输入 4, 5 中的数值，默认值为 {options_default['converter_output_number_of_keys']})。"
+    f"输入转换后 Mania 铺面的键数 (如读取的是主模式铺面，输入 1, 2, 4 中的数值；如读取的是 Taiko 模式的铺面，输入 4, 5 中的数值，默认值为 {options_default['converter_output_number_of_keys']}, (待完成，当前不论输入什么数字，输出均为 6k))。"
 )
 PLEASE_INPUT_THE_NUMBER_OF_KEYS_FOR_THE_CONVERTED_MANIA_HELP_TEXT: str = (
-    "注：读取主模式铺面时，如设置输出键数为 4 ，即将 4k 左边两轨当 2k 使用。"
+    "注：读取主模式铺面时，如设置输出键数为 4，即将 4k 左边两轨当 2k 使用。"
 )
 PLEASE_OUTPUT_DIR: str = (
     "指定输出的 .osu 文件的目录。输入为空则设定为 .osu 文件的同目录下"
 )
 PLEASE_OUTPUT_FILENAME: str = (
-    "指定输出的 .osu 文件的文件名。输入为空则设定为 '原文件文件名(转换参数)'"
+    "指定输出的 .osu 文件的文件名。输入为空则设定为 '原文件文件名 (转换参数)'"
 )
 PRESS_ENTER_EXIT_SOFTWARE: str = "按回车退出本程序。"
 PLEASE_INPUT_REMOVE_SV_OPTION: str = (
