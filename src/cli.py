@@ -394,6 +394,9 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
                 # TODO 将铺面从 6k 转换为 4k
                 # 下面这行是占位用的
                 parsed_mania_hit_objects_list = parsed_mania_6k_hit_objects_list
+            else:
+                # 目标产物 mania 6k
+                parsed_mania_hit_objects_list = parsed_mania_6k_hit_objects_list
 
             ## 生成铺面数据
             final_osu_file_content = generate_mania_osu_file(
@@ -403,7 +406,7 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
             )
         case "osu!mania":
             # TODO: mania 转 1k\2k
-            ...
+            return "stop"
 
     end_time = time.perf_counter()
     info(BEATMAP_CONVERTED)
