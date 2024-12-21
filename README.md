@@ -237,7 +237,7 @@ python ./src/main.py -h
 
 ### 通过二进制文件运行交互式命令行程序
 
-> cui 在 v0.7.0 版本已移除
+> cui 在 v0.6.0 版本已移除
 
 #### Windows
 

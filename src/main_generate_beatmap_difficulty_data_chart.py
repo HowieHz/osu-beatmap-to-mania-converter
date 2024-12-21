@@ -1,5 +1,7 @@
 from custom_types import ManiaHitObject
-from exporter import generate_beatmap_difficulty_data_chart
+from exporter.generate_beatmap_difficulty_data_chart import (
+    generate_beatmap_difficulty_data_chart,
+)
 from reader import hit_objects_parser, load_hit_objects_list, load_osu_file_metadata
 
 if __name__ == "__main__":
