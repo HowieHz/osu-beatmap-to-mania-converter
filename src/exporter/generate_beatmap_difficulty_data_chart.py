@@ -187,11 +187,13 @@ def generate_beatmap_difficulty_data_chart(
 
     # 生成折线图
 
+    dir_path = "charts"
+
     # 检查 charts 文件夹是否存在，不存在则创建
     import os
 
-    if not os.path.exists("charts"):
-        os.makedirs("charts")
+    if not os.path.exists(f"{dir_path}"):
+        os.makedirs(f"{dir_path}")
 
     # 生成总体铺面的折线图
     plt.figure(figsize=(10, 5))
@@ -201,7 +203,7 @@ def generate_beatmap_difficulty_data_chart(
     plt.title("Total KPS over Time")
     plt.legend()
     plt.grid(True)
-    plt.savefig("charts/total_kps_chart.png")
+    plt.savefig(f"{dir_path}/total_kps_chart.png")
     plt.close()
 
     if generate_individual_key_charts:
@@ -214,7 +216,7 @@ def generate_beatmap_difficulty_data_chart(
             plt.title(f"Key {key} KPS over Time")
             plt.legend()
             plt.grid(True)
-            plt.savefig(f"charts/key_{key}_kps_chart.png")
+            plt.savefig(f"{dir_path}/key_{key}_kps_chart.png")
             plt.close()
 
     # 把每个键的折线图画一张图里
@@ -226,7 +228,7 @@ def generate_beatmap_difficulty_data_chart(
     plt.title("Keys KPS over Time")
     plt.legend()
     plt.grid(True)
-    plt.savefig("charts/keys_kps_chart.png")
+    plt.savefig(f"{dir_path}/keys_kps_chart.png")
     plt.close()
 
     # 横轴为时间，纵轴为 KTD
@@ -310,7 +312,7 @@ def generate_beatmap_difficulty_data_chart(
     plt.title("Total KTD over Time")
     plt.legend()
     plt.grid(True)
-    plt.savefig("charts/total_ktd_chart.png")
+    plt.savefig(f"{dir_path}/total_ktd_chart.png")
     plt.close()
 
     if generate_individual_key_charts:
@@ -324,7 +326,7 @@ def generate_beatmap_difficulty_data_chart(
             plt.title(f"Key {key} KTD over Time")
             plt.legend()
             plt.grid(True)
-            plt.savefig(f"charts/key_{key}_ktd_chart.png")
+            plt.savefig(f"{dir_path}/key_{key}_ktd_chart.png")
             plt.close()
 
     if generate_individual_adjacent_keys_charts:
@@ -338,8 +340,36 @@ def generate_beatmap_difficulty_data_chart(
             plt.title(f"Keys {key_pair} KTD over Time")
             plt.legend()
             plt.grid(True)
-            plt.savefig(f"charts/keys_{key_pair}_ktd_chart.png")
+            plt.savefig(f"{dir_path}/keys_{key_pair}_ktd_chart.png")
             plt.close()
+
+    # 生成相邻两轨的综合的折线图 1+2 2+3 3+4 加起来平均值
+    combined_adjacent_ktd = {}
+    for key_pair, ktd in adjacent_keys_ktd.items():
+        for time, value in ktd.items():
+            if time not in combined_adjacent_ktd:
+                combined_adjacent_ktd[time] = []
+            combined_adjacent_ktd[time].append(value)
+
+    avg_combined_adjacent_ktd = {
+        time: sum(values) / len(values) for time, values in combined_adjacent_ktd.items()
+    }
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(
+        list(avg_combined_adjacent_ktd.keys()),
+        list(avg_combined_adjacent_ktd.values()),
+        label="Average Adjacent Keys KTD",
+        color="green",
+    )
+    plt.xlabel("Time (s)")
+    plt.ylabel("KTD (ms)")  # 添加单位 ms
+    plt.gca().invert_yaxis()  # 纵轴颠倒
+    plt.title("Average Adjacent Keys KTD over Time")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(f"{dir_path}/average_adjacent_keys_ktd_chart.png")
+    plt.close()
 
     # 生成每个键和相邻两轨的折线图在一张图里
     plt.figure(figsize=(10, 5))
@@ -360,7 +390,7 @@ def generate_beatmap_difficulty_data_chart(
     plt.title("Keys and Adjacent Keys KTD over Time")
     plt.legend()
     plt.grid(True)
-    plt.savefig("charts/keys_and_adjacent_keys_ktd_chart.png")
+    plt.savefig(f"{dir_path}/keys_and_adjacent_keys_ktd_chart.png")
     plt.close()
 
     # 生成对数折线图并标清晰的纵轴刻度
@@ -380,7 +410,7 @@ def generate_beatmap_difficulty_data_chart(
     plt.title("Total KTD over Time")
     plt.legend()
     plt.grid(True, which="both", ls="--")
-    plt.savefig("charts/total_ktd_chart_log.png")  # 文件名强调对数
+    plt.savefig(f"{dir_path}/total_ktd_chart_log.png")  # 文件名强调对数
     plt.close()
 
     if generate_individual_key_charts:
@@ -402,7 +432,7 @@ def generate_beatmap_difficulty_data_chart(
             plt.title(f"Key {key} KTD over Time")
             plt.legend()
             plt.grid(True, which="both", ls="--")
-            plt.savefig(f"charts/key_{key}_ktd_chart_log.png")  # 文件名强调对数
+            plt.savefig(f"{dir_path}/key_{key}_ktd_chart_log.png")  # 文件名强调对数
             plt.close()
 
     if generate_individual_adjacent_keys_charts:
@@ -424,8 +454,31 @@ def generate_beatmap_difficulty_data_chart(
             plt.title(f"Keys {key_pair} KTD over Time")
             plt.legend()
             plt.grid(True, which="both", ls="--")
-            plt.savefig(f"charts/keys_{key_pair}_ktd_chart_log.png")  # 文件名强调对数
+            plt.savefig(f"{dir_path}/keys_{key_pair}_ktd_chart_log.png")  # 文件名强调对数
             plt.close()
+
+    # 生成相邻两轨的综合的折线图 1+2 2+3 3+4 加起来平均值
+    plt.figure(figsize=(10, 5))
+    plt.plot(
+        list(avg_combined_adjacent_ktd.keys()),
+        list(avg_combined_adjacent_ktd.values()),
+        label="Average Adjacent Keys KTD",
+        color="green",
+    )
+    plt.xlabel("Time (s)")
+    plt.ylabel("KTD (ms)")  # 添加单位 ms
+    plt.yscale("log")  # 设置纵轴为对数尺度
+    plt.gca().invert_yaxis()  # 纵轴颠倒
+
+    # 设置清晰的纵轴刻度
+    plt.gca().yaxis.set_major_locator(LogLocator(base=10.0, numticks=15))
+    plt.gca().yaxis.set_major_formatter(LogFormatter(base=10.0, labelOnlyBase=True))
+
+    plt.title("Average Adjacent Keys KTD over Time")
+    plt.legend()
+    plt.grid(True, which="both", ls="--")
+    plt.savefig(f"{dir_path}/average_adjacent_keys_ktd_chart_log.png")  # 文件名强调对数
+    plt.close()
 
     # 生成每个键和相邻两轨的折线图在一张图里
     # adjacent_keys 都红色调 1+2 2+3 3+4
@@ -454,5 +507,5 @@ def generate_beatmap_difficulty_data_chart(
     plt.title("Keys and Adjacent Keys KTD over Time")
     plt.legend()
     plt.grid(True, which="both", ls="--")
-    plt.savefig("charts/keys_and_adjacent_keys_ktd_chart_log.png")  # 文件名强调对数
+    plt.savefig(f"{dir_path}/keys_and_adjacent_keys_ktd_chart_log.png")  # 文件名强调对数
     plt.close()
