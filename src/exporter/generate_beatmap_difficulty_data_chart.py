@@ -1,7 +1,6 @@
 from typing import Optional
 
-import matplotlib.pyplot as plt
-from matplotlib.ticker import LogFormatter, LogLocator
+import plotly.graph_objects as go
 
 from custom_types import ManiaHitObject
 
@@ -146,7 +145,11 @@ def generate_beatmap_difficulty_data_chart(
 
     # 横轴为时间，纵轴为 KPS
     # 计算总体铺面 kps
-    total_kps = calculate_kps(hit_objects_list, window=window, keys_list=keys_list)
+    total_kps: dict[int, int] = calculate_kps(
+        hit_objects_list, window=window, keys_list=keys_list
+    )
+    # 计算平均 kps
+    avg_kps: dict[int, int] = {key: value / keys for key, value in total_kps.items()}
     # 计算每个键的 kps
     keys_kps = {}
     for key in keys_list:
@@ -154,6 +157,7 @@ def generate_beatmap_difficulty_data_chart(
 
     # 还原原始时间
     total_kps = {time * window / 1000: kps for time, kps in total_kps.items()}
+    avg_kps = {time * window / 1000: kps for time, kps in avg_kps.items()}
     keys_kps = {
         key: {time * window / 1000: kps for time, kps in kps_data.items()}
         for key, kps_data in keys_kps.items()
@@ -196,55 +200,78 @@ def generate_beatmap_difficulty_data_chart(
         os.makedirs(f"{dir_path}")
 
     # 生成总体铺面的折线图
-    plt.figure(figsize=(10, 5))
-    plt.plot(list(total_kps.keys()), list(total_kps.values()), label="Total KPS")
-    plt.xlabel("Time (s)")
-    plt.ylabel("KPS")
-    plt.title("Total KPS over Time")
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(f"{dir_path}/total_kps_chart.png")
-    plt.close()
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=list(total_kps.keys()),
+            y=list(total_kps.values()),
+            mode="lines",
+            name="Total KPS",
+        )
+    )
+    fig.update_layout(
+        title="Total KPS over Time", xaxis_title="Time (s)", yaxis_title="KPS"
+    )
+    fig.write_html(f"{dir_path}/total_kps_chart.html")
 
     if generate_individual_key_charts:
         # 生成每个键的折线图
         for key, kps in keys_kps.items():
-            plt.figure(figsize=(10, 5))
-            plt.plot(list(kps.keys()), list(kps.values()), label=f"Key {key} KPS")
-            plt.xlabel("Time (s)")
-            plt.ylabel("KPS")
-            plt.title(f"Key {key} KPS over Time")
-            plt.legend()
-            plt.grid(True)
-            plt.savefig(f"{dir_path}/key_{key}_kps_chart.png")
-            plt.close()
+            fig = go.Figure()
+            fig.add_trace(
+                go.Scatter(
+                    x=list(kps.keys()),
+                    y=list(kps.values()),
+                    mode="lines",
+                    name=f"Key {key} KPS",
+                )
+            )
+            fig.update_layout(
+                title=f"Key {key} KPS over Time",
+                xaxis_title="Time (s)",
+                yaxis_title="KPS",
+            )
+            fig.write_html(f"{dir_path}/key_{key}_kps_chart.html")
 
     # 把每个键的折线图画一张图里
-    plt.figure(figsize=(10, 5))
+    fig = go.Figure()
     for key, kps in keys_kps.items():
-        plt.plot(list(kps.keys()), list(kps.values()), label=f"Key {key} KPS")
-    plt.xlabel("Time (s)")
-    plt.ylabel("KPS")
-    plt.title("Keys KPS over Time")
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(f"{dir_path}/keys_kps_chart.png")
-    plt.close()
+        fig.add_trace(
+            go.Scatter(
+                x=list(kps.keys()),
+                y=list(kps.values()),
+                mode="lines",
+                name=f"Key {key} KPS",
+            )
+        )
+    fig.add_trace(
+        go.Scatter(
+            x=list(avg_kps.keys()),
+            y=list(avg_kps.values()),
+            mode="lines",
+            name="Average KPS",
+            line=dict(color="orange"),
+        )
+    )
+    fig.update_layout(
+        title="Keys KPS over Time", xaxis_title="Time (s)", yaxis_title="KPS"
+    )
+    fig.write_html(f"{dir_path}/keys_kps_chart.html")
 
     # 横轴为时间，纵轴为 KTD
     # 计算总体 KTD
-    total_ktd = calculate_avg_key_time_delta(
+    total_ktd: dict[int, int] = calculate_avg_key_time_delta(
         hit_objects_list, window=window, keys_list=keys_list
     )
     # 计算每个键的 KTD
-    keys_ktd = {}
+    keys_ktd: dict[int, dict[int, int]] = {}
     for key in keys_list:
         keys_ktd[key] = calculate_avg_key_time_delta(
             hit_objects_list, window=window, keys_list=[key]
         )
 
     # 计算相邻两轨的 KTD，如 1 2 3 4 就要计算 1+2，2+3，3+4
-    adjacent_keys_ktd = {}
+    adjacent_keys_ktd: dict[str, dict[int, int]] = {}
     for i in range(1, keys):
         adjacent_keys_ktd[f"{i}+{i+1}"] = calculate_avg_key_time_delta(
             hit_objects_list, window=window, keys_list=[i, i + 1]
@@ -301,211 +328,286 @@ def generate_beatmap_difficulty_data_chart(
                 for key_pair, ktd_data in adjacent_keys_ktd.items()
             }
 
-    # 生成折线图
-
-    # 生成总体铺面的折线图
-    plt.figure(figsize=(10, 5))
-    plt.plot(list(total_ktd.keys()), list(total_ktd.values()), label="Total KTD")
-    plt.xlabel("Time (s)")
-    plt.ylabel("KTD (ms)")  # 添加单位 ms
-    plt.gca().invert_yaxis()  # 纵轴颠倒
-    plt.title("Total KTD over Time")
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(f"{dir_path}/total_ktd_chart.png")
-    plt.close()
-
-    if generate_individual_key_charts:
-        # 生成每个键的折线图
-        for key, ktd in keys_ktd.items():
-            plt.figure(figsize=(10, 5))
-            plt.plot(list(ktd.keys()), list(ktd.values()), label=f"Key {key} KTD")
-            plt.xlabel("Time (s)")
-            plt.ylabel("KTD (ms)")  # 添加单位 ms
-            plt.gca().invert_yaxis()  # 纵轴颠倒
-            plt.title(f"Key {key} KTD over Time")
-            plt.legend()
-            plt.grid(True)
-            plt.savefig(f"{dir_path}/key_{key}_ktd_chart.png")
-            plt.close()
-
-    if generate_individual_adjacent_keys_charts:
-        # 生成相邻两轨的折线图
-        for key_pair, ktd in adjacent_keys_ktd.items():
-            plt.figure(figsize=(10, 5))
-            plt.plot(list(ktd.keys()), list(ktd.values()), label=f"Keys {key_pair} KTD")
-            plt.xlabel("Time (s)")
-            plt.ylabel("KTD (ms)")  # 添加单位 ms
-            plt.gca().invert_yaxis()  # 纵轴颠倒
-            plt.title(f"Keys {key_pair} KTD over Time")
-            plt.legend()
-            plt.grid(True)
-            plt.savefig(f"{dir_path}/keys_{key_pair}_ktd_chart.png")
-            plt.close()
-
-    # 生成相邻两轨的综合的折线图 1+2 2+3 3+4 加起来平均值
-    combined_adjacent_ktd = {}
+    # 生成相邻两轨的综合 1+2 2+3 3+4 加起来平均值
+    combined_adjacent_ktd: dict[int, list[int]] = {}
     for key_pair, ktd in adjacent_keys_ktd.items():
         for time, value in ktd.items():
             if time not in combined_adjacent_ktd:
                 combined_adjacent_ktd[time] = []
             combined_adjacent_ktd[time].append(value)
 
-    avg_combined_adjacent_ktd = {
-        time: sum(values) / len(values) for time, values in combined_adjacent_ktd.items()
+    avg_combined_adjacent_ktd: dict[int, float] = {
+        time: sum(values) / len(values)
+        for time, values in sorted(combined_adjacent_ktd.items())
     }
 
-    plt.figure(figsize=(10, 5))
-    plt.plot(
-        list(avg_combined_adjacent_ktd.keys()),
-        list(avg_combined_adjacent_ktd.values()),
-        label="Average Adjacent Keys KTD",
-        color="green",
-    )
-    plt.xlabel("Time (s)")
-    plt.ylabel("KTD (ms)")  # 添加单位 ms
-    plt.gca().invert_yaxis()  # 纵轴颠倒
-    plt.title("Average Adjacent Keys KTD over Time")
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(f"{dir_path}/average_adjacent_keys_ktd_chart.png")
-    plt.close()
-
-    # 生成每个键和相邻两轨的折线图在一张图里
-    plt.figure(figsize=(10, 5))
+    # 生成每一轨的综合 1 2 3 4 5 加起来平均值
+    combined_keys_ktd: dict[int, list[int]] = {}
     for key, ktd in keys_ktd.items():
-        plt.plot(
-            list(ktd.keys()), list(ktd.values()), label=f"Key {key} KTD", color="blue"
-        )
-    for key_pair, ktd in adjacent_keys_ktd.items():
-        plt.plot(
-            list(ktd.keys()),
-            list(ktd.values()),
-            label=f"Keys {key_pair} KTD",
-            color="red",
-        )
-    plt.xlabel("Time (s)")
-    plt.ylabel("KTD (ms)")  # 添加单位 ms
-    plt.gca().invert_yaxis()  # 纵轴颠倒
-    plt.title("Keys and Adjacent Keys KTD over Time")
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(f"{dir_path}/keys_and_adjacent_keys_ktd_chart.png")
-    plt.close()
+        for time, value in ktd.items():
+            if time not in combined_keys_ktd:
+                combined_keys_ktd[time] = []
+            combined_keys_ktd[time].append(value)
 
-    # 生成对数折线图并标清晰的纵轴刻度
+    avg_combined_keys_ktd: dict[int, float] = {
+        time: sum(values) / len(values)
+        for time, values in sorted(combined_keys_ktd.items())
+    }
 
     # 生成总体铺面的折线图
-    plt.figure(figsize=(10, 5))
-    plt.plot(list(total_ktd.keys()), list(total_ktd.values()), label="Total KTD")
-    plt.xlabel("Time (s)")
-    plt.ylabel("KTD (ms)")  # 添加单位 ms
-    plt.yscale("log")  # 设置纵轴为对数尺度
-    plt.gca().invert_yaxis()  # 纵轴颠倒
-
-    # 设置清晰的纵轴刻度
-    plt.gca().yaxis.set_major_locator(LogLocator(base=10.0, numticks=15))
-    plt.gca().yaxis.set_major_formatter(LogFormatter(base=10.0, labelOnlyBase=True))
-
-    plt.title("Total KTD over Time")
-    plt.legend()
-    plt.grid(True, which="both", ls="--")
-    plt.savefig(f"{dir_path}/total_ktd_chart_log.png")  # 文件名强调对数
-    plt.close()
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=list(total_ktd.keys()),
+            y=list(total_ktd.values()),
+            mode="lines",
+            name="Total KTD",
+        )
+    )
+    fig.update_layout(
+        title="Total KTD over Time",
+        xaxis_title="Time (s)",
+        yaxis_title="KTD (ms)",
+        yaxis_autorange="reversed",
+    )
+    fig.write_html(f"{dir_path}/total_ktd_chart.html")
 
     if generate_individual_key_charts:
         # 生成每个键的折线图
         for key, ktd in keys_ktd.items():
-            plt.figure(figsize=(10, 5))
-            plt.plot(list(ktd.keys()), list(ktd.values()), label=f"Key {key} KTD")
-            plt.xlabel("Time (s)")
-            plt.ylabel("KTD (ms)")  # 添加单位 ms
-            plt.yscale("log")  # 设置纵轴为对数尺度
-            plt.gca().invert_yaxis()  # 纵轴颠倒
-
-            # 设置清晰的纵轴刻度
-            plt.gca().yaxis.set_major_locator(LogLocator(base=10.0, numticks=15))
-            plt.gca().yaxis.set_major_formatter(
-                LogFormatter(base=10.0, labelOnlyBase=True)
+            fig = go.Figure()
+            fig.add_trace(
+                go.Scatter(
+                    x=list(ktd.keys()),
+                    y=list(ktd.values()),
+                    mode="lines",
+                    name=f"Key {key} KTD",
+                )
             )
-
-            plt.title(f"Key {key} KTD over Time")
-            plt.legend()
-            plt.grid(True, which="both", ls="--")
-            plt.savefig(f"{dir_path}/key_{key}_ktd_chart_log.png")  # 文件名强调对数
-            plt.close()
+            fig.update_layout(
+                title=f"Key {key} KTD over Time",
+                xaxis_title="Time (s)",
+                yaxis_title="KTD (ms)",
+                yaxis_autorange="reversed",
+            )
+            fig.write_html(f"{dir_path}/key_{key}_ktd_chart.html")
 
     if generate_individual_adjacent_keys_charts:
         # 生成相邻两轨的折线图
         for key_pair, ktd in adjacent_keys_ktd.items():
-            plt.figure(figsize=(10, 5))
-            plt.plot(list(ktd.keys()), list(ktd.values()), label=f"Keys {key_pair} KTD")
-            plt.xlabel("Time (s)")
-            plt.ylabel("KTD (ms)")  # 添加单位 ms
-            plt.yscale("log")  # 设置纵轴为对数尺度
-            plt.gca().invert_yaxis()  # 纵轴颠倒
-
-            # 设置清晰的纵轴刻度
-            plt.gca().yaxis.set_major_locator(LogLocator(base=10.0, numticks=15))
-            plt.gca().yaxis.set_major_formatter(
-                LogFormatter(base=10.0, labelOnlyBase=True)
+            fig = go.Figure()
+            fig.add_trace(
+                go.Scatter(
+                    x=list(ktd.keys()),
+                    y=list(ktd.values()),
+                    mode="lines",
+                    name=f"Keys {key_pair} KTD",
+                )
             )
-
-            plt.title(f"Keys {key_pair} KTD over Time")
-            plt.legend()
-            plt.grid(True, which="both", ls="--")
-            plt.savefig(f"{dir_path}/keys_{key_pair}_ktd_chart_log.png")  # 文件名强调对数
-            plt.close()
-
-    # 生成相邻两轨的综合的折线图 1+2 2+3 3+4 加起来平均值
-    plt.figure(figsize=(10, 5))
-    plt.plot(
-        list(avg_combined_adjacent_ktd.keys()),
-        list(avg_combined_adjacent_ktd.values()),
-        label="Average Adjacent Keys KTD",
-        color="green",
-    )
-    plt.xlabel("Time (s)")
-    plt.ylabel("KTD (ms)")  # 添加单位 ms
-    plt.yscale("log")  # 设置纵轴为对数尺度
-    plt.gca().invert_yaxis()  # 纵轴颠倒
-
-    # 设置清晰的纵轴刻度
-    plt.gca().yaxis.set_major_locator(LogLocator(base=10.0, numticks=15))
-    plt.gca().yaxis.set_major_formatter(LogFormatter(base=10.0, labelOnlyBase=True))
-
-    plt.title("Average Adjacent Keys KTD over Time")
-    plt.legend()
-    plt.grid(True, which="both", ls="--")
-    plt.savefig(f"{dir_path}/average_adjacent_keys_ktd_chart_log.png")  # 文件名强调对数
-    plt.close()
+            fig.update_layout(
+                title=f"Keys {key_pair} KTD over Time",
+                xaxis_title="Time (s)",
+                yaxis_title="KTD (ms)",
+                yaxis_autorange="reversed",
+            )
+            fig.write_html(f"{dir_path}/keys_{key_pair}_ktd_chart.html")
 
     # 生成每个键和相邻两轨的折线图在一张图里
-    # adjacent_keys 都红色调 1+2 2+3 3+4
-    # keys 都蓝色调 1 2 3 4
-    plt.figure(figsize=(10, 5))
+    fig = go.Figure()
     for key, ktd in keys_ktd.items():
-        plt.plot(
-            list(ktd.keys()), list(ktd.values()), label=f"Key {key} KTD", color="blue"
+        fig.add_trace(
+            go.Scatter(
+                x=list(ktd.keys()),
+                y=list(ktd.values()),
+                mode="lines",
+                name=f"Key {key} KTD",
+                line=dict(color="blue"),
+            )
         )
     for key_pair, ktd in adjacent_keys_ktd.items():
-        plt.plot(
-            list(ktd.keys()),
-            list(ktd.values()),
-            label=f"Keys {key_pair} KTD",
-            color="red",
+        fig.add_trace(
+            go.Scatter(
+                x=list(ktd.keys()),
+                y=list(ktd.values()),
+                mode="lines",
+                name=f"Keys {key_pair} KTD",
+                line=dict(color="red"),
+            )
         )
-    plt.xlabel("Time (s)")
-    plt.ylabel("KTD (ms)")  # 添加单位 ms
-    plt.yscale("log")  # 设置纵轴为对数尺度
-    plt.gca().invert_yaxis()  # 纵轴颠倒
+    fig.add_trace(
+        go.Scatter(
+            x=list(avg_combined_adjacent_ktd.keys()),
+            y=list(avg_combined_adjacent_ktd.values()),
+            mode="lines",
+            name="Average Adjacent Keys KTD",
+            line=dict(color="green"),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=list(avg_combined_keys_ktd.keys()),
+            y=list(avg_combined_keys_ktd.values()),
+            mode="lines",
+            name="Average Keys KTD",
+            line=dict(color="purple"),
+        )
+    )
+    fig.update_layout(
+        title="Keys and Adjacent Keys KTD over Time",
+        xaxis_title="Time (s)",
+        yaxis_title="KTD (ms)",
+        yaxis_autorange="reversed",
+    )
+    fig.write_html(f"{dir_path}/keys_and_adjacent_keys_ktd_chart.html")
 
-    # 设置清晰的纵轴刻度
-    plt.gca().yaxis.set_major_locator(LogLocator(base=10.0, numticks=15))
-    plt.gca().yaxis.set_major_formatter(LogFormatter(base=10.0, labelOnlyBase=True))
+    # 生成对数折线图并标清晰的纵轴刻度
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=list(total_ktd.keys()),
+            y=list(total_ktd.values()),
+            mode="lines",
+            name="Total KTD",
+        )
+    )
+    fig.update_layout(
+        title="Total KTD over Time",
+        xaxis_title="Time (s)",
+        yaxis_title="KTD (ms)",
+        yaxis_type="log",
+        yaxis_autorange="reversed",
+    )
+    fig.write_html(f"{dir_path}/total_ktd_chart_log.html")
 
-    plt.title("Keys and Adjacent Keys KTD over Time")
-    plt.legend()
-    plt.grid(True, which="both", ls="--")
-    plt.savefig(f"{dir_path}/keys_and_adjacent_keys_ktd_chart_log.png")  # 文件名强调对数
-    plt.close()
+    if generate_individual_key_charts:
+        # 生成每个键的折线图
+        for key, ktd in keys_ktd.items():
+            fig = go.Figure()
+            fig.add_trace(
+                go.Scatter(
+                    x=list(ktd.keys()),
+                    y=list(ktd.values()),
+                    mode="lines",
+                    name=f"Key {key} KTD",
+                )
+            )
+            fig.update_layout(
+                title=f"Key {key} KTD over Time",
+                xaxis_title="Time (s)",
+                yaxis_title="KTD (ms)",
+                yaxis_type="log",
+                yaxis_autorange="reversed",
+            )
+            fig.write_html(f"{dir_path}/key_{key}_ktd_chart_log.html")
+
+    if generate_individual_adjacent_keys_charts:
+        # 生成相邻两轨的折线图
+        for key_pair, ktd in adjacent_keys_ktd.items():
+            fig = go.Figure()
+            fig.add_trace(
+                go.Scatter(
+                    x=list(ktd.keys()),
+                    y=list(ktd.values()),
+                    mode="lines",
+                    name=f"Keys {key_pair} KTD",
+                )
+            )
+            fig.update_layout(
+                title=f"Keys {key_pair} KTD over Time",
+                xaxis_title="Time (s)",
+                yaxis_title="KTD (ms)",
+                yaxis_type="log",
+                yaxis_autorange="reversed",
+            )
+            fig.write_html(f"{dir_path}/keys_{key_pair}_ktd_chart_log.html")
+
+    # 生成每个键和相邻两轨的折线图在一张图里
+    fig = go.Figure()
+    for key, ktd in keys_ktd.items():
+        fig.add_trace(
+            go.Scatter(
+                x=list(ktd.keys()),
+                y=list(ktd.values()),
+                mode="lines",
+                name=f"Key {key} KTD",
+                line=dict(color="blue"),
+            )
+        )
+    for key_pair, ktd in adjacent_keys_ktd.items():
+        fig.add_trace(
+            go.Scatter(
+                x=list(ktd.keys()),
+                y=list(ktd.values()),
+                mode="lines",
+                name=f"Keys {key_pair} KTD",
+                line=dict(color="red"),
+            )
+        )
+    fig.add_trace(
+        go.Scatter(
+            x=list(avg_combined_adjacent_ktd.keys()),
+            y=list(avg_combined_adjacent_ktd.values()),
+            mode="lines",
+            name="Average Adjacent Keys KTD",
+            line=dict(color="green"),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=list(avg_combined_keys_ktd.keys()),
+            y=list(avg_combined_keys_ktd.values()),
+            mode="lines",
+            name="Average Keys KTD",
+            line=dict(color="purple"),
+        )
+    )
+    fig.update_layout(
+        title="Keys and Adjacent Keys KTD over Time",
+        xaxis_title="Time (s)",
+        yaxis_title="KTD (ms)",
+        yaxis_type="log",
+        yaxis_autorange="reversed",
+    )
+    fig.write_html(f"{dir_path}/keys_and_adjacent_keys_ktd_chart_log.html")
+
+    # 生成 index.html 目录
+    index_content = """
+    <html>
+    <head>
+        <title>Beatmap Difficulty Data Charts</title>
+    </head>
+    <body>
+        <h1>Beatmap Difficulty Data Charts</h1>
+        <ul>
+            <li><a href="total_kps_chart.html">Total KPS Chart</a></li>
+            <li><strong><a href="keys_kps_chart.html">Keys KPS Chart</a></strong></li>
+            <li><a href="total_ktd_chart.html">Total KTD Chart</a></li>
+            <li><a href="total_ktd_chart_log.html">Total KTD Chart (Log Scale)</a></li>
+            <li><strong><a href="keys_and_adjacent_keys_ktd_chart.html">Keys and Adjacent Keys KTD Chart</a></strong></li>
+            <li><strong><a href="keys_and_adjacent_keys_ktd_chart_log.html">Keys and Adjacent Keys KTD Chart (Log Scale)</a></strong></li>
+    """
+
+    if generate_individual_key_charts:
+        for key in keys_list:
+            index_content += (
+                f'<li><a href="key_{key}_kps_chart.html">Key {key} KPS Chart</a></li>'
+            )
+            index_content += (
+                f'<li><a href="key_{key}_ktd_chart.html">Key {key} KTD Chart</a></li>'
+            )
+            index_content += f'<li><a href="key_{key}_ktd_chart_log.html">Key {key} KTD Chart (Log Scale)</a></li>'
+
+    if generate_individual_adjacent_keys_charts:
+        for i in range(1, keys):
+            key_pair = f"{i}+{i+1}"
+            index_content += f'<li><a href="keys_{key_pair}_ktd_chart.html">Keys {key_pair} KTD Chart</a></li>'
+            index_content += f'<li><a href="keys_{key_pair}_ktd_chart_log.html">Keys {key_pair} KTD Chart (Log Scale)</a></li>'
+
+    index_content += """
+        </ul>
+    </body>
+    </html>
+    """
+
+    with open(f"{dir_path}/index.html", "w", encoding="utf-8") as f:
+        f.write(index_content)

@@ -8,4 +8,4 @@ pre-commit
 hpyculator
 pywebio
 pywebview
-matplotlib
+plotly

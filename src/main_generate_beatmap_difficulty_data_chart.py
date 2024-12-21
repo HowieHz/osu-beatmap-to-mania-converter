@@ -10,7 +10,7 @@ if __name__ == "__main__":
         ).strip()
     window: int = int(
         input(
-            "Input window size (in milliseconds, must be an integer, suggest 100 or 1000, default is 1000)\n输入窗口大小（单位为毫秒，必须为整数，建议 100 或 1000，默认值为 1000）："
+            "Input window size (in milliseconds, must be an integer, suggest 100 or 1000, default is 1000)\n输入窗口大小（单位为毫秒，必须为整数，建议 100、200、500、1000，默认值为 1000）："
         )
         or 1000
     )
@@ -43,8 +43,8 @@ if __name__ == "__main__":
         parsed_hit_objects_list,
         window=window,
         time_range=(time_range_start, time_range_end),
-        generate_individual_key_charts=True,
-        generate_individual_adjacent_keys_charts=True,
+        generate_individual_key_charts=False,
+        generate_individual_adjacent_keys_charts=False,
     )
 
     print(
