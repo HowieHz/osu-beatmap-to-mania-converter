@@ -1,6 +1,6 @@
 from typing import Literal, cast
 
-from custom_types import TaikoHitObject, ManiaHitObject
+from custom_types import ManiaHitObject, TaikoHitObject
 
 
 def taiko_object_type_to_mania_6k(
@@ -26,12 +26,13 @@ def taiko_object_type_to_mania_6k(
         "kat", "large kat", "don", "large don", "drum roll", "denden note", "unknown"
     ] = hit_object["type"]
 
-    if note_type in ("kat", "large kat", "don", "large don"):
-        hit_object["type"] = "hit circle"
-    else:  # "drum roll", "denden note"
-        hit_object["type"] = "hold"
-
     mania_hit_object = cast(ManiaHitObject, hit_object)
+
+    if note_type in ("kat", "large kat", "don", "large don"):
+        mania_hit_object["type"] = "hit circle"
+    else:  # "drum roll", "denden note"
+        mania_hit_object["type"] = "hold"
+
     match note_type:
         case "don":
             key_position = 2

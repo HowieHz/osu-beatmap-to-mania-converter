@@ -42,7 +42,9 @@ class TaikoHitObject(NoTypeObject):
     key 从左到右计数，最左边是 1。\n
     """
 
-    type: Literal["kat", "large kat", "don", "large don", "drum roll", "denden note", "unknown"]
+    type: Literal[
+        "kat", "large kat", "don", "large don", "drum roll", "denden note", "unknown"
+    ]
 
 
 class ExternalManiaHitObject(NoTypeObject):

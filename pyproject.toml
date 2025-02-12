@@ -30,6 +30,8 @@ module = [
     "webview",
     "pywebio",
     "pywebio.output",
-    "pywebio.input"
+    "pywebio.input",
+    "plotly.graph_objects",
+    "plotly"
 ]
 ignore_missing_imports = true

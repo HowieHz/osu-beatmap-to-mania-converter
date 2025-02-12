@@ -1,4 +1,5 @@
-from typing import Optional
+import os
+from typing import Optional, cast
 
 import plotly.graph_objects as go
 
@@ -9,8 +10,8 @@ def calculate_kps(
     hit_objects: list[ManiaHitObject],
     window: int = 1000,
     keys_list: Optional[list[int]] = None,
-) -> dict[int, int]:
-    """计算每秒的键数 (KPS)
+) -> dict[float, float]:
+    """统计每秒的键数
 
     Args:
         hit_objects (list[ManiaHitObject]): 解析后的铺面对象列表
@@ -18,7 +19,7 @@ def calculate_kps(
         keys_list (list[int], optional): 计算范围内的键列表。默认为 None。
 
     Returns:
-        dict[int, int]: 每个时间窗口的起始时间和这个窗口内对应的键数，起始时间以毫秒为单位
+        dict[float, float]: 每个时间窗口的起始时间和这个窗口内对应的键数，起始时间以毫秒为单位。字典键表示这个 window 开始的时间，单位为秒
     """
     if keys_list is None:
         # 读取 hit_objects 里最大的 key
@@ -30,12 +31,14 @@ def calculate_kps(
     for obj in hit_objects:
         if obj["key"] not in keys_list:
             continue
-        window_start_time: int = obj["start_time"] // window
+        window_start_time: int = cast(int, obj["start_time"] // window)
         if window_start_time not in kps_data:
             kps_data[window_start_time] = 1
         else:
             kps_data[window_start_time] += 1
-    return kps_data
+
+    # window index -> sec
+    return {time * window / 1000: kps for time, kps in kps_data.items()}
 
 
 def calculate_key_time_delta(
@@ -58,7 +61,7 @@ def calculate_key_time_delta(
 
     # 统计 hit_objects_list 中出现的 obj['start_time'] 并且按照升序排列，并且检查 obj['key'] 在 keys_list 范围内
     sorted_start_times: list[int] = sorted(
-        {obj["start_time"] for obj in hit_objects if obj["key"] in keys_list}
+        {cast(int, obj["start_time"]) for obj in hit_objects if obj["key"] in keys_list}
     )
 
     # 计算 key_time_delta
@@ -75,7 +78,7 @@ def calculate_avg_key_time_delta(
     hit_objects: list[ManiaHitObject],
     window: int = 1000,
     keys_list: Optional[list[int]] = None,
-) -> dict[int, int]:
+) -> dict[float, float]:
     """计算平均键时间差 (平均 KTD)
 
     Args:
@@ -84,7 +87,7 @@ def calculate_avg_key_time_delta(
         keys_list (list[int], optional): 计算范围内的键列表。默认为 None。
 
     Returns:
-        dict[int, int]: 每个时间窗口的起始时间和这个窗口内对应的平均键时间差，起始时间以毫秒为单位
+        dict[int, float]: 每个时间窗口的起始时间和这个窗口内对应的平均键时间差，起始时间以毫秒为单位。字典键表示这个 window 开始的时间，单位为秒
     """
     if keys_list is None:
         # 读取 hit_objects 里最大的 key
@@ -95,7 +98,7 @@ def calculate_avg_key_time_delta(
     key_time_deltas = calculate_key_time_delta(hit_objects, keys_list)
 
     # 计算每个时间窗口的平均键时间差
-    time_delta_data: dict[list[int]] = {}
+    time_delta_data: dict[int, list[int]] = {}
     for start_time, delta in key_time_deltas:
         window_start_time: int = start_time // window
         if window_start_time not in time_delta_data:
@@ -103,13 +106,14 @@ def calculate_avg_key_time_delta(
         time_delta_data[window_start_time].append(delta)
 
     # 计算每个时间窗口的平均值
-    avg_key_time_delta_data: dict[int, int] = {}
+    avg_key_time_delta_data: dict[int, float] = {}
     for window_start_time in time_delta_data:
         avg_key_time_delta_data[window_start_time] = sum(
             time_delta_data[window_start_time]
         ) / len(time_delta_data[window_start_time])
 
-    return avg_key_time_delta_data
+    # window index -> sec
+    return {time * window / 1000: ktd for time, ktd in avg_key_time_delta_data.items()}
 
 
 def generate_beatmap_difficulty_data_chart(
@@ -119,6 +123,7 @@ def generate_beatmap_difficulty_data_chart(
     time_range: tuple[int, int] = (-1, -1),
     generate_individual_key_charts: bool = True,
     generate_individual_adjacent_keys_charts: bool = True,
+    dir_path: str = "charts",
 ) -> None:
     """生成图表，表示该铺面的难度信息
 
@@ -129,6 +134,7 @@ def generate_beatmap_difficulty_data_chart(
         time_range (tuple[int,int], optional): 时间范围，以毫秒为单位，格式 (开始时间，结束时间), 包括开始时间，不包括结束时间，-1,-1 表示从头到尾，默认 (-1, -1)
         generate_individual_key_charts (bool, optional): 是否生成单独的单轨的图
         generate_individual_adjacent_keys_charts (bool, optional): 是否生成单独的邻轨的图
+        dir_path (str, optional): 保存目录路径
     """
     # 两类
     # 第一类 横轴时间，纵轴 kps
@@ -144,24 +150,16 @@ def generate_beatmap_difficulty_data_chart(
     keys_list = [i for i in range(1, 1 + keys)]
 
     # 横轴为时间，纵轴为 KPS
-    # 计算总体铺面 kps
-    total_kps: dict[int, int] = calculate_kps(
+    # 计算 总体 kps 的数据
+    total_kps: dict[float, float] = calculate_kps(
         hit_objects_list, window=window, keys_list=keys_list
     )
-    # 计算平均 kps
-    avg_kps: dict[int, int] = {key: value / keys for key, value in total_kps.items()}
-    # 计算每个键的 kps
-    keys_kps = {}
+    # 计算 总体 kps 除以键数 的数据
+    avg_kps: dict[float, float] = {key: value / keys for key, value in total_kps.items()}
+    # 生成用于计算 每个键的 kps 的数据
+    keys_kps: dict[int, dict[float, float]] = {}
     for key in keys_list:
         keys_kps[key] = calculate_kps(hit_objects_list, window=window, keys_list=[key])
-
-    # 还原原始时间
-    total_kps = {time * window / 1000: kps for time, kps in total_kps.items()}
-    avg_kps = {time * window / 1000: kps for time, kps in avg_kps.items()}
-    keys_kps = {
-        key: {time * window / 1000: kps for time, kps in kps_data.items()}
-        for key, kps_data in keys_kps.items()
-    }
 
     # 按照时间范围过滤
     if time_range != (-1, -1):
@@ -191,10 +189,7 @@ def generate_beatmap_difficulty_data_chart(
 
     # 生成折线图
 
-    dir_path = "charts"
-
     # 检查 charts 文件夹是否存在，不存在则创建
-    import os
 
     if not os.path.exists(f"{dir_path}"):
         os.makedirs(f"{dir_path}")
@@ -259,34 +254,23 @@ def generate_beatmap_difficulty_data_chart(
     fig.write_html(f"{dir_path}/keys_kps_chart.html")
 
     # 横轴为时间，纵轴为 KTD
-    # 计算总体 KTD
-    total_ktd: dict[int, int] = calculate_avg_key_time_delta(
+    # 计算总体 KTD 的数据
+    total_ktd: dict[float, float] = calculate_avg_key_time_delta(
         hit_objects_list, window=window, keys_list=keys_list
     )
-    # 计算每个键的 KTD
-    keys_ktd: dict[int, dict[int, int]] = {}
+    # 计算每个键的 KTD 的数据
+    keys_ktd: dict[int, dict[float, float]] = {}
     for key in keys_list:
         keys_ktd[key] = calculate_avg_key_time_delta(
             hit_objects_list, window=window, keys_list=[key]
         )
 
-    # 计算相邻两轨的 KTD，如 1 2 3 4 就要计算 1+2，2+3，3+4
-    adjacent_keys_ktd: dict[str, dict[int, int]] = {}
+    # 计算相邻两轨的 KTD 的数据，如 1 2 3 4 就要计算 1+2，2+3，3+4
+    adjacent_keys_ktd: dict[str, dict[float, float]] = {}
     for i in range(1, keys):
         adjacent_keys_ktd[f"{i}+{i+1}"] = calculate_avg_key_time_delta(
             hit_objects_list, window=window, keys_list=[i, i + 1]
         )
-
-    # 还原原始时间
-    total_ktd = {time * window / 1000: ktd for time, ktd in total_ktd.items()}
-    keys_ktd = {
-        key: {time * window / 1000: ktd for time, ktd in ktd_data.items()}
-        for key, ktd_data in keys_ktd.items()
-    }
-    adjacent_keys_ktd = {
-        key_pair: {time * window / 1000: ktd for time, ktd in ktd_data.items()}
-        for key_pair, ktd_data in adjacent_keys_ktd.items()
-    }
 
     # 按照时间范围过滤
     if time_range != (-1, -1):
@@ -329,27 +313,27 @@ def generate_beatmap_difficulty_data_chart(
             }
 
     # 生成相邻两轨的综合 1+2 2+3 3+4 加起来平均值
-    combined_adjacent_ktd: dict[int, list[int]] = {}
+    combined_adjacent_ktd: dict[float, list[float]] = {}
     for key_pair, ktd in adjacent_keys_ktd.items():
         for time, value in ktd.items():
             if time not in combined_adjacent_ktd:
                 combined_adjacent_ktd[time] = []
             combined_adjacent_ktd[time].append(value)
 
-    avg_combined_adjacent_ktd: dict[int, float] = {
+    avg_combined_adjacent_ktd: dict[float, float] = {
         time: sum(values) / len(values)
         for time, values in sorted(combined_adjacent_ktd.items())
     }
 
     # 生成每一轨的综合 1 2 3 4 5 加起来平均值
-    combined_keys_ktd: dict[int, list[int]] = {}
+    combined_keys_ktd: dict[float, list[float]] = {}
     for key, ktd in keys_ktd.items():
         for time, value in ktd.items():
             if time not in combined_keys_ktd:
                 combined_keys_ktd[time] = []
             combined_keys_ktd[time].append(value)
 
-    avg_combined_keys_ktd: dict[int, float] = {
+    avg_combined_keys_ktd: dict[float, float] = {
         time: sum(values) / len(values)
         for time, values in sorted(combined_keys_ktd.items())
     }

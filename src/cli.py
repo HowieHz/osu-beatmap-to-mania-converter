@@ -2,7 +2,7 @@ import argparse
 import os
 import time
 from pathlib import Path
-from typing import Literal
+from typing import Literal, cast
 
 from hpyculator import hpysettings
 
@@ -334,6 +334,7 @@ def arg_parse(args: argparse.Namespace) -> Literal["stop", "enter-webui"]:
                 map(any_object_type_to_mania_1k, parsed_hit_objects_list)
             )
         case "osu!taiko":
+            parsed_hit_objects_list = cast(list[TaikoHitObject], parsed_hit_objects_list)
             parsed_mania_6k_hit_objects_list = list(
                 map(taiko_object_type_to_mania_6k, parsed_hit_objects_list)
             )

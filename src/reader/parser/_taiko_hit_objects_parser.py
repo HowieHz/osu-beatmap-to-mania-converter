@@ -49,7 +49,6 @@ def taiko_hit_objects_parser(
 
         if raw_type[-1] == "1":
             # 音符（泡泡，米，Note）
-            object_type = "hit circle"
             start_time = end_time = int(object_params[2])
 
             if raw_hitSound[1] == 1 or raw_hitSound[3] == 1:
