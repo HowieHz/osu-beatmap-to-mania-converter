@@ -44,8 +44,22 @@ deactivate
 
 ### 安装项目所需库
 
+> 主程序依赖
+
 ```bash
 pip install -r requirements.txt
+```
+
+> 难度图生成程序依赖
+
+```bash
+pip install -r requirements-main_generate_beatmap_difficulty_data_chart.txt
+```
+
+> 开发依赖
+
+```bash
+pip install -r requirements-dev.txt
 ```
 
 创建 pre-commit 钩子，以便在每次提交前自动格式化代码

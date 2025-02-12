@@ -1,11 +1,4 @@
-mypy
-black
-isort
-pytest
-pyinstaller
-pre-commit
-
 hpyculator
 pywebio
 pywebview
-plotly
+pyinstaller
