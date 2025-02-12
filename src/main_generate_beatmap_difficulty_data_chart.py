@@ -98,14 +98,20 @@ Enter the full path of the osu file to specify the beatmap to convert directly O
         ).strip()
 
     if input_value.lower() != "f":
-        osu_file_full_path = input_value
+        osu_file_full_path = input_value.strip('"')
+        if not osu_file_full_path.endswith(".osu"):
+            print(
+                "The file you entered is not an .osu file. Please enter a valid .osu file."
+            )
+            print("您输入的文件不是 .osu 文件。请输入有效的 .osu 文件。")
+            exit(1)
 
         call_beatmap_difficulty_data_chart_generator(
             osu_file_full_path=osu_file_full_path,
             time_range_start=time_range_start,
             time_range_end=time_range_end,
             window=window,
-            dir_path="charts",
+            dir_path=osu_file_full_path.removesuffix(".osu"),
         )
 
     else:
