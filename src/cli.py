@@ -8,7 +8,7 @@ from hpyculator import hpysettings
 
 from config import get_settings_file_instance
 from custom_types import HitObject, Mania2kOptions, ManiaHitObject, TaikoHitObject
-from exporter import generate_mania_osu_file
+from exporter.generate_mania_osu_file import generate_mania_osu_file
 from logger import debug, error, info
 from message import *
 from options_default import mania_2k_options_default
