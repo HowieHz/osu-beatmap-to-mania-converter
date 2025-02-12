@@ -1,3 +1,4 @@
+import os
 from typing import cast
 
 from custom_types import ManiaHitObject
@@ -8,7 +9,11 @@ from reader import hit_objects_parser, load_hit_objects_list, load_osu_file_meta
 
 
 def call_beatmap_difficulty_data_chart_generator(
-    osu_file_full_path: str, time_range_start: int, time_range_end: int, window: int
+    osu_file_full_path: str,
+    time_range_start: int,
+    time_range_end: int,
+    window: int,
+    dir_path: str,
 ):
     """生成铺面图像
 
@@ -17,11 +22,12 @@ def call_beatmap_difficulty_data_chart_generator(
         time_range_start (int): 开始时间刻 单位为毫秒
         time_range_end (int): 结束时间刻 单位为毫秒
         window (int): 窗口大小 单位为毫秒
+        dir_path (str): 生成目录路径
     """
     print(
         f"Processing time range: [{time_range_start}, {time_range_end})\n处理时间范围：[{time_range_start}, {time_range_end})"
     )
-    print("Reading...\n读取中...\n")
+    print(f"Reading {osu_file_full_path}...\n读取中 {osu_file_full_path}...\n")
 
     # 读取并解析 [HitObjects] 下每行的数据为更易于处理的形式
     # 简单小程序，相信用户输入的是 mania 铺面不是其他别的
@@ -41,7 +47,10 @@ def call_beatmap_difficulty_data_chart_generator(
         time_range=(time_range_start, time_range_end),
         generate_individual_key_charts=False,
         generate_individual_adjacent_keys_charts=False,
+        dir_path=dir_path,
     )
+
+    print(f"Generated charts in {dir_path}\n已生成图表在 {dir_path}\n")
 
 
 if __name__ == "__main__":
@@ -91,14 +100,35 @@ Enter the full path of the osu file to specify the beatmap to convert directly O
     if input_value.lower() != "f":
         osu_file_full_path = input_value
 
-    call_beatmap_difficulty_data_chart_generator(
-        osu_file_full_path=osu_file_full_path,
-        time_range_start=time_range_start,
-        time_range_end=time_range_end,
-        window=window,
-    )
+        call_beatmap_difficulty_data_chart_generator(
+            osu_file_full_path=osu_file_full_path,
+            time_range_start=time_range_start,
+            time_range_end=time_range_end,
+            window=window,
+            dir_path="charts",
+        )
 
-    print(
-        "Generated in the charts folder in the current directory\n已生成在当前目录下的 charts 文件夹中\n"
-    )
+    else:
+        osu_file_dir_path: str = ""
+        while not osu_file_dir_path:
+            osu_file_dir_path = input(
+                """\
+Enter the directory path containing .osu files for batch processing:
+输入包含 .osu 文件的目录路径以进行批量处理："""
+            ).strip()
+
+        for filename in os.listdir(osu_file_dir_path):
+            if filename.endswith(".osu"):
+                osu_file_full_path = os.path.join(osu_file_dir_path, filename)
+                call_beatmap_difficulty_data_chart_generator(
+                    osu_file_full_path=osu_file_full_path,
+                    time_range_start=time_range_start,
+                    time_range_end=time_range_end,
+                    window=window,
+                    dir_path=os.path.join(
+                        osu_file_dir_path, filename.removesuffix(".osu")
+                    ),
+                )
+
+    print("Generation complete.\n生成完毕\n")
     input("Press Enter to exit\n按 Enter 退出\n")
