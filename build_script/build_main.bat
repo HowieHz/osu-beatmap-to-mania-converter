@@ -1,3 +1,4 @@
+pip install pyinstaller
 del .\dist\obmc-latest.exe
 del .\dist\obmc-latest-noconsole.exe
 pyinstaller .\src\main.py --onefile

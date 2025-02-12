@@ -1,5 +1,8 @@
 charts/
 charts copy/
+.venv1
+.venv2
+.venv3
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
