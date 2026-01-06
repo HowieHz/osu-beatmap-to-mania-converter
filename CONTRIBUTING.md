@@ -6,7 +6,7 @@
 
 ## 部署开发环境
 
-### 在本地部署 Python3.12 环境
+### 在本地部署 Python3.13 环境
 
 [Download Python](https://www.python.org/downloads/)
 
@@ -19,6 +19,12 @@ git clone https://github.com/HowieHz/osu-beatmap-to-mania-converter && cd osu-be
 ### 创建虚拟环境
 
 ```bash
+py -3.13 -m venv .venv
+```
+
+如果你的系统没有 `py` 启动器，请确保当前的 `python` 版本为 3.13 再执行：
+
+```bash
 python -m venv .venv
 ```
 
@@ -27,10 +33,16 @@ python -m venv .venv
 在 Windows 环境下
 
 ```powershell
-./.venv/Scripts/activate
+.\.venv\Scripts\Activate.ps1
 ```
 
-在 Bash
+在 CMD
+
+```cmd
+\.venv\Scripts\activate.bat
+```
+
+在 Bash（Linux/macOS）
 
 ```bash
 source ./.venv/bin/activate
